@@ -6775,7 +6775,7 @@ grep "platform-ops" /etc/hosts</code></pre>
             <strong>Git kimliğini tanımla — her commit'te bu bilgi görünür.</strong><br>
             <pre style="margin:6px 0"><code>cd ~/platform-ops
 git config --global user.name "Ahmed Said Tuncpinar"
-git config --global user.email "your-personal@email.com"
+git config --global user.email "senin-github-emailin@example.com"  # ← bunu GitHub hesabındaki e-postayla değiştir
 git config --global init.defaultBranch main</code></pre>
             ✓ Hata çıkmazsa ayarlandı. <code>git config --global --list</code> ile doğrula.
           </li>
@@ -6812,7 +6812,7 @@ EOF</code></pre>
             <strong>Stage'e ekle ve ilk commit'i at.</strong><br>
             <pre style="margin:6px 0"><code>git add .gitignore README.md
 git commit -m "chore: proje başlatıldı"</code></pre>
-            ✓ <code>1 file changed</code> satırlarını görürsün.
+            ✓ <code>2 files changed, 22 insertions(+)</code> görürsün — .gitignore ve README.md eklendi.
           </li>
 
           <li>
@@ -7038,6 +7038,12 @@ git tag</code></pre>
           </li>
 
           <li>
+            <strong>GitHub'da repo oluştur.</strong><br>
+            <pre style="margin:6px 0"><code>gh repo create platform-ops --public --description "Production-ready DevOps stack"</code></pre>
+            ✓ <code>https://github.com/AhmedSaidTuncpinar/platform-ops</code> bağlantısı görürsün.
+          </li>
+
+          <li>
             <strong>GitHub'a gönder.</strong><br>
             <pre style="margin:6px 0"><code>git push -u origin main
 git push origin --tags
@@ -7192,6 +7198,18 @@ EOF</code></pre>
             <pre style="margin:6px 0"><code>git add app/
 git commit -m "feat(app): server.js ve .dockerignore eklendi"</code></pre>
             ✓ Commit SHA'sı görürsün.
+          </li>
+
+          <li>
+            <strong>Bağımlılıkları yerel olarak kur — package-lock.json oluşsun ve repoya eklensin.</strong><br>
+            <pre style="margin:6px 0"><code>cd ~/platform-ops/app
+npm install
+<span class="comment"># → Node | npm install = node_modules kur, package-lock.json oluştur — CI/CD için bu dosya şart — EZBER</span>
+ls package-lock.json
+cd ~/platform-ops
+git add app/package-lock.json
+git commit -m "chore(app): package-lock.json eklendi"</code></pre>
+            ✓ <code>package-lock.json</code> dosyası commit edildi. CI/CD'deki <code>npm ci</code> bu dosyayı kullanır.
           </li>
 
         </ol>
@@ -7403,7 +7421,8 @@ docker compose down</code></pre>
             <strong>Image'ı tag'le — CI/CD ileride bu formatla push edecek.</strong><br>
             <pre style="margin:6px 0"><code>docker build -t platform-ops:v1 ./app
 docker tag platform-ops:v1 platform-ops:latest
-docker tag platform-ops:v1 ghcr.io/AhmedSaidTuncpinar/platform-ops:v1
+docker tag platform-ops:v1 ghcr.io/$(git config user.name | tr "[:upper:]" "[:lower:]" | tr " " -)/platform-ops:v1
+<span class="comment"># → Docker | kullanıcı adını Git config'den otomatik al — hardcoded yazmak hata çıkarır — EZBER</span>
 docker images | grep platform-ops</code></pre>
             ✓ Üç farklı tag görürsün.
           </li>
