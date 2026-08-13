@@ -6888,8 +6888,9 @@ git log --oneline --graph --all</code></pre>
           <li>
             <strong>Feature branch'te yarım iş bırak.</strong><br>
             <pre style="margin:6px 0"><code>git checkout -b feature/add-healthcheck
-echo "TODO: implement health endpoint" &gt; app/health-todo.txt</code></pre>
-            ✓ Dosya oluştu ama commit atmadık — değişiklik askıda.
+echo "TODO: implement health endpoint" &gt; app/health-todo.txt
+git add app/health-todo.txt</code></pre>
+            ✓ Dosya oluştu ve staged edildi — şimdi stash alabilir.
           </li>
 
           <li>
