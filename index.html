@@ -191,6 +191,9 @@
   <a class="nav-btn" href="#faz7">G7 Terraform</a>
   <a class="nav-btn" href="#faz8">G8 AWS</a>
   <a class="nav-btn" href="#faz9">G9 Monitoring</a>
+  <div class="nav-divider"></div>
+  <span class="nav-section">Mülakat Hazırlığı</span>
+  <a class="nav-btn" href="#production-senaryolar">10 Senaryo</a>
 </nav>
 
 <main>
@@ -9446,6 +9449,647 @@ echo "Settings → Danger Zone → Delete this repository"</code></pre>
     </div>
   </div>
 
+  <!-- PRODUCTION SENARYOLARI -->
+  <div class="section-card" id="production-senaryolar">
+    <div class="section-header" onclick="toggle(this)">
+      <span class="section-num">🎯</span>
+      <span class="section-title">Production Senaryoları — Mülakat ve Gerçek Hayat</span>
+      <span class="badge badge-upcoming">10 Senaryo + Lab</span>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
+        Kıdemli DevOps mülakatlarında ve gerçek production’da karşılaşılan 10 senaryo. Her biri için: “ne anlama geliyor”dan başla, katman katman daralt, root cause’a in, fix et, önle. Her senaryonun sonunda minikube + platform-ops üzerinde gerçekten deneyebileceğin bir lab var.
+      </p>
+
+      <!-- FRAMEWORK BOX -->
+      <div style="background:var(--bg-card);border-left:3px solid var(--accent-blue);border-radius:0 6px 6px 0;padding:14px 16px;margin-bottom:24px">
+        <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Her Senaryoda Kullanacağın Çerçeve</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;font-size:13px">
+          <div style="background:var(--bg);border-radius:6px;padding:10px">
+            <div style="font-weight:700;color:var(--text);margin-bottom:4px">A — Anlıyorum</div>
+            <div style="color:var(--text-muted)">Bu hata ne demek? Teknik olarak ne oluyor? QA perspektifinden ne benziyor?</div>
+          </div>
+          <div style="background:var(--bg);border-radius:6px;padding:10px">
+            <div style="font-weight:700;color:var(--text);margin-bottom:4px">B — Daraltıyorum</div>
+            <div style="color:var(--text-muted)">Karar ağacı. “Önce bunu kontrol ederim çünkü...” Her adımın gerekçesi var.</div>
+          </div>
+          <div style="background:var(--bg);border-radius:6px;padding:10px">
+            <div style="font-weight:700;color:var(--text);margin-bottom:4px">C — Çözüyorum</div>
+            <div style="color:var(--text-muted)">Root cause ve fix. Komutu değil, kararı anlat.</div>
+          </div>
+          <div style="background:var(--bg);border-radius:6px;padding:10px">
+            <div style="font-weight:700;color:var(--text);margin-bottom:4px">D — Önlemi Alıyorum</div>
+            <div style="color:var(--text-muted)">Bir daha olmasın. QA geçmişin burada fark yaratır — proaktif düşünmek DNA’nda var.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 1 ===== -->
+      <div style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+        <div class="block-title">Senaryo 1 — Kubernetes: Pod Sürekli Yeniden Başlıyor (CrashLoopBackOff)</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">CrashLoopBackOff bir Kubernetes hatası değil, Kubernetes’in sana söylediği bir hikaye: “Ben bu pod’u başlattım, içindeki süreç hemen öldü, tekrar başlattım, yine öldü — ve bu o kadar çok tekrar etti ki artık geri sayım yaparak başlatıyorum.” Sorun Kubernetes’te değil, içindeki uygulamada. Kubernetes burada sadece kötü habercinin ta kendisi.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> Sanki bir test senaryosunun setup adımı sürekli fail oluyor. Testin kendisi hiç çalışmıyor çünkü ortam hazır değil. Uygulama ayağa kalkmaya çalışıyor ama bir şey onu çökertiyor.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Nereden bakmalıyım?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">İlk sorum: <strong>“Uygulama hiç başlayabiliyor mu, yoksa başlar başlamaz mı çöküyor?”</strong></p>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Restart sayısına bak — yeni sorun mu, saatlerdir devam ediyor mu?<pre style="margin:6px 0"><code>kubectl get pods -n platform-ops</code></pre></li>
+            <li>Pod hangi aşamada öldü? Events bölümüne bak — OOMKilled mı, ImagePullBackOff mı, Liveness probe mı?<pre style="margin:6px 0"><code>kubectl describe pod &lt;pod-adı&gt; -n platform-ops</code></pre></li>
+            <li><strong>--previous bayrağı kritik</strong> — şu anki pod’un değil, bir önceki ölmüş pod’un son çığlığını gösterir:<pre style="margin:6px 0"><code>kubectl logs &lt;pod-adı&gt; -n platform-ops --previous</code></pre></li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><strong>Log’da “Cannot connect to database”:</strong> Environment variable eksik. ConfigMap veya Secret kontrol et:<pre style="margin:6px 0"><code>kubectl describe configmap platform-ops-config -n platform-ops
+kubectl get secret platform-ops-secret -n platform-ops -o yaml</code></pre></li>
+            <li><strong>Log’da “FATAL: Out of memory”:</strong> Memory limit çok düşük. Deployment’ta <code>resources.limits.memory</code> değerini artır.</li>
+            <li><strong>Liveness probe fail:</strong> Uygulama 30 saniyede ayağa kalkıyor ama probe 10 saniyede ölü ilan ediyor. <code>initialDelaySeconds</code> değerini artır.</li>
+            <li>Fix sonrası deployment’ı gerçek zamanlı izle:<pre style="margin:6px 0"><code>kubectl rollout status deployment/platform-ops -n platform-ops</code></pre></li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Liveness ve Readiness probe’ları doğru ayarla — “süreç çalışıyor mu” değil, “gerçekten hazır mı” ölç</li>
+            <li>Resource limit’leri gerçekçi koy: <code>kubectl top pods</code> ile gerçek kullanımı ölç, tahmin etme</li>
+            <li>CI/CD pipeline’ına smoke test ekle — deploy sonrası /health endpoint’ini 30 saniye kontrol eden adım. Canlıya geçmeden CrashLoop’u yakala.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — deployment’a imkânsız bir başlangıç komutu ver:</div>
+          <pre style="margin:0 0 10px"><code>kubectl patch deployment platform-ops -n platform-ops \
+  --type='json' \
+  -p='[{"op":"add","path":"/spec/template/spec/containers/0/command","value":["sh","-c","echo starting &amp;&amp; exit 1"]}]'</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin — 30 saniye bekle:</div>
+          <pre style="margin:0 0 8px"><code>watch kubectl get pods -n platform-ops</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ CrashLoopBackOff ve RESTARTS sayısı artmaya başlar.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Template çerçevesiyle çöz → describe → logs --previous → root cause bul → patch’i geri al → sağlıklı olana kadar izle.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama — başardın mı kontrol et:</div>
+          <pre style="margin:0"><code>kubectl rollout status deployment/platform-ops -n platform-ops
+kubectl get pods -n platform-ops</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Tüm pod’lar Running 1/1 görünüyorsa başardın.</div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 2 ===== -->
+      <div style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+        <div class="block-title">Senaryo 2 — Terraform: State Dosyası Kilitli</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">Terraform state dosyası, Terraform’un “şu an dünyada ne var” diye tuttuğu kayıttır. Bir çalışma başladığında Terraform bu dosyayı kilitler — “Ben burada çalışıyorum, başkası dokunmasın.” Kilidi açmayan şeyler: yarım kalan bir apply, crash eden bir pipeline, veya birinin makinesinde takılı kalan bir işlem.</p>
+          <pre style="margin:6px 0"><code>Error: Error acquiring the state lock
+Lock Info: ID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code></pre>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> İki test runner’ın aynı test veritabanına aynı anda yazmaya çalışması gibi. Race condition. Birincisi zaten gitmiş, sadece kilidi bırakmayı unutmuş.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Nereden bakmalıyım?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">İlk sorum: <strong>“Bu kilit gerçekten aktif bir işlem mi, yoksa zombi bir kilit mi?”</strong></p>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>CI/CD sistemine bak — şu anda çalışan başka bir Terraform job’u var mı? Varsa <code>force-unlock</code> yapma, bekle. İki Terraform’un aynı state’e yazması felaket olur.</li>
+            <li>Aktif işlem yoksa ve kilit 15+ dakikadır duruyorsa → zombi kilit. Güvenle açabilirsin.</li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Kilit ID’sini hata mesajından al ve aç:<pre style="margin:6px 0"><code>terraform force-unlock &lt;lock-id&gt;</code></pre></li>
+            <li>State dosyasının tutarlı olup olmadığını doğrula — beklenmedik diff’ler varsa biri elle bir şey değiştirmiş demek (Senaryo 9):<pre style="margin:6px 0"><code>terraform plan</code></pre></li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Pipeline’a timeout ekle — her Terraform job’u max 20 dakikada sonlanmalı, sonlanmazsa otomatik iptal ve kilit açma</li>
+            <li>State backend olarak S3 + DynamoDB kullan — DynamoDB lock mekanizması hem güvenilir hem kilitlenme geçmişini gösteriyor</li>
+            <li>Hiçbir zaman local’den production’a <code>apply</code> yapma — sadece CI/CD’den. Kimin çalıştırdığı her zaman kayıtlı.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — sahte bir kilit dosyası oluştur:</div>
+          <pre style="margin:0 0 10px"><code>cd ~/platform-ops
+cat &gt; terraform.tfstate.lock.info &lt;&lt; 'EOF'
+{
+  "ID": "zombi-kilit-abc-123",
+  "Operation": "OperationTypeApply",
+  "Who": "pipeline@ci-server",
+  "Version": "1.5.0",
+  "Created": "2026-08-17T08:00:00.000000Z",
+  "Path": "terraform.tfstate"
+}
+EOF</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
+          <pre style="margin:0 0 8px"><code>terraform plan</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ "Error acquiring the state lock / ID: zombi-kilit-abc-123" hatasını görürsün.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Zombi kilit mi? Aktif işlem var mı? Güvenli mi? force-unlock yap, plan’ı tekrar çalıştır.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
+          <pre style="margin:0"><code>ls terraform.tfstate.lock.info
+terraform plan</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Dosya yoksa ve plan temiz çalışıyorsa başardın.</div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 3 ===== -->
+      <div style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+        <div class="block-title">Senaryo 3 — AWS: EC2’ye Bağlanamıyorum</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">EC2’ye bağlanamıyorum aslında beş farklı sorunun aynı semptomu: makine kapanmış olabilir, network izni olmayabilir, SSH key yanlış olabilir, security group yanlış olabilir, VPC routing bozuk olabilir. Bu yüzden “sorun nerede” sorusu, “komutu çalıştır” kadar önemli.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> Bu bir “hata mesajı yok, sadece timeout” durumu. En zor bug türü. Sistematik olmak zorundasın.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Dışarıdan içe katman katman:</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><strong>Katman 1 — Makine ayakta mı?</strong> Running değilse başlat, buradan ileri gitme:<pre style="margin:6px 0"><code>aws ec2 describe-instances \
+  --instance-ids &lt;instance-id&gt; \
+  --query 'Reservations[*].Instances[*].[State.Name,PublicIpAddress]'</code></pre></li>
+            <li><strong>Katman 2 — Security group SSH’a izin veriyor mu?</strong> Port 22 kurallarına bak:<pre style="margin:6px 0"><code>aws ec2 describe-security-groups \
+  --group-ids &lt;sg-id&gt; \
+  --query 'SecurityGroups[*].IpPermissions'</code></pre></li>
+            <li><strong>Katman 3 — Doğru key ile mi bağlanıyorsun?</strong> -v verbose modu hangi adımda takıldığını gösterir:<pre style="margin:6px 0"><code>ssh -i ~/.ssh/dogru-key.pem ubuntu@&lt;ip&gt; -v</code></pre></li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">En yaygın senaryo: Security group’ta port 22 var ama IP adresi değişmiş (dinamik IP). <code>/32</code> sadece tek bir IP anlamına gelir:</p>
+          <pre style="margin:6px 0"><code>MY_IP=$(curl -s ifconfig.me)
+aws ec2 authorize-security-group-ingress \
+  --group-id &lt;sg-id&gt; \
+  --protocol tcp \
+  --port 22 \
+  --cidr $MY_IP/32</code></pre>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Production’a doğrudan SSH açma — AWS Systems Manager Session Manager kullan, key bile gerekmez, her şey kayıt altında</li>
+            <li>Bastion host veya VPN — tek giriş noktası, geri kalan private subnet’te</li>
+            <li>Security group kurallarını Terraform’da yönet — elle değiştirilirse otomatik alarm çalsın</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene (Kubernetes Service adaptasyonu)</div>
+          <p style="font-size:12px;color:var(--text-muted);margin:0 0 8px">Gerçek hayatta EC2 SSH sorunu, burada Kubernetes NodePort sorunu. Aynı troubleshoot kası.</p>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — servisin portunu yanlış değerle güncelle:</div>
+          <pre style="margin:0 0 10px"><code>kubectl patch service platform-ops-service -n platform-ops \
+  --type='json' \
+  -p='[{"op":"replace","path":"/spec/ports/0/port","value":9999}]'</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
+          <pre style="margin:0 0 8px"><code>curl -s $(minikube service platform-ops-service -n platform-ops --url)/health</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ "curl: (7) Failed to connect... port 9999: Connection refused" görürsin.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Hangi katmanda sorun? Network mı, servis mi, pod mu? Katman katman daralt. Servisi doğru porta geri al, erişimi doğrula.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
+          <pre style="margin:0"><code>curl -s $(minikube service platform-ops-service -n platform-ops --url)/health</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ {"status":"ok"} görüyorsan başardın.</div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 4 ===== -->
+      <div style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+        <div class="block-title">Senaryo 4 — CI/CD Pipeline Yeşil Ama Uygulama Bozuk</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">Bu, DevOps’taki en sinsi senaryo. Pipeline geçti, testler yeşil, deploy başarılı — ama kullanıcı şikâyet ediyor. Bu ne anlama geliyor? Testlerin test ettiği şey ile kullanıcının kullandığı şey farklı.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> “False positive” durumu. Test geçti ama sistemi doğru test etmedi. Bu senin için çok tanıdık bir his — testin geçmesi her şeyin çalıştığı anlamına gelmiyor.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Nereden bakmalıyım?</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><strong>Production’da gerçek hata nerede?</strong> -l ile label selector — pod adını bilmene gerek yok, hepsinin loguna bakıyorsun:<pre style="margin:6px 0"><code>kubectl logs -l app=platform-ops -n platform-ops --tail=50</code></pre></li>
+            <li><strong>Bu hata ne zaman başladı?</strong> Son deploy ile çakışıyor mu?<pre style="margin:6px 0"><code>kubectl rollout history deployment/platform-ops -n platform-ops</code></pre></li>
+            <li><strong>CI testleri ne test ediyordu?</strong> Pipeline loglarına bak — sadece “HTTP 200 döndü mü” test miydi, yoksa gerçekten iş mantığını mı?</li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">Test ortamında mock veritabanı var, production’da gerçek veritabanı var. Önce rollback, sonra sakin kafayla gerçek hatayı incele:</p>
+          <pre style="margin:6px 0"><code>kubectl rollout undo deployment/platform-ops -n platform-ops
+kubectl rollout status deployment/platform-ops -n platform-ops</code></pre>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Contract testleri yaz — API’nin sadece 200 döndürmesini değil, döndürdüğü verinin şemasını test et. QA’da “schema validation” dediğin şeyin tam karşılığı.</li>
+            <li>Canary deployment — yeni versiyonu önce %5 trağiğe ver. Metrikler kötüleşirse otomatik geri dön.</li>
+            <li>Deploy sonrası otomatik smoke test — deploy adımının son işi olarak /health, /api/items gibi kritik endpoint’leri çağır, gerçek yanıtı doğrula.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — /health geçiyor ama /api/items bozuk:</div>
+          <pre style="margin:0 0 10px"><code>POD=$(kubectl get pod -n platform-ops -l app=platform-ops -o jsonpath='{.items[0].metadata.name}')
+kubectl exec -n platform-ops $POD -- sh -c \
+  "sed -i 's/res.json(items)/res.status(500).json({error: \"DB baglantisi kesildi\"})/g' /app/server.js &amp;&amp; kill 1"</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
+          <pre style="margin:0 0 8px"><code>URL=$(minikube service platform-ops-service -n platform-ops --url)
+curl -s $URL/health       # {"status":"ok"} -- CI bunu geçiyor
+curl -s $URL/api/items    # {"error":"DB baglantisi kesildi"} -- kullanıcı bunu görüyor</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: CI neden bunu yakalamadı? Hangi testi eklersen yakalar? Rollback yap, /api/items’i doğrula.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
+          <pre style="margin:0"><code>kubectl rollout undo deployment/platform-ops -n platform-ops
+curl -s $URL/api/items</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Array dönüyorsa başardın.</div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 5 ===== -->
+      <div style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+        <div class="block-title">Senaryo 5 — Docker Local’de Çalışıyor, Production’da Çalışmıyor</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">Yazılım tarihinin en eski sözü: “Bende çalışıyor.” Docker bu problemi çözmek için doğdu ama bazı hatalar hâlâ bu kanaldan geliyor. Sebebi: image farklı build edildi, environment variable’lar farklı, volume mount’lar farklı, ya da local’de olmayan bir servis production’da var.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> Bu bir “environment-specific bug.” Test ortamında geçiyor ama staging veya production’da fail ediyor. Ortam farkı her zaman bu tip hataların ilk şüphelisi.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Nereden bakmalıyım?</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><strong>Aynı image mı kullanılıyor?</strong> “latest” tag görürsen sorun bulundu bile — latest her zaman aynı şeyi işaret etmez:<pre style="margin:6px 0"><code>kubectl get deployment platform-ops -n platform-ops \
+  -o jsonpath='{.spec.template.spec.containers[0].image}'</code></pre></li>
+            <li><strong>Environment variable’lar aynı mı?</strong> Container’ın içine girip listele, local .env ile karşılaştır:<pre style="margin:6px 0"><code>kubectl exec -it &lt;pod-adı&gt; -n platform-ops -- env | sort</code></pre></li>
+            <li><strong>Log’da ilk hata satırı nerede?</strong> Ortasını değil, en başını oku:<pre style="margin:6px 0"><code>kubectl logs &lt;pod-adı&gt; -n platform-ops | head -30</code></pre></li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">En sık: local’de <code>DB_HOST=localhost</code>, production’da <code>DB_HOST=postgres-service</code>. Biri container içindeki localhost’u, diğeri Kubernetes servis adını kastediyor. Fix öncesi production config ile local’de test et:</p>
+          <pre style="margin:6px 0"><code>docker run --env-file .env.production platform-ops:v1.2.3</code></pre>
+          <p style="font-size:13px;color:var(--text-muted);margin:0">Bu şekilde “local’de çalışıyor” değil, “production config ile local’de çalışıyor” diyebilirsin.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Hiçbir zaman <code>latest</code> tag kullanma — her image git sha veya semantic version ile taglen: <code>platform-ops:abc1234</code></li>
+            <li><code>.env.example</code> dosyasını güncel tut ve CI’de bunu doğrula — eksik environment variable varsa pipeline fail etsin</li>
+            <li>Docker Compose ile production-benzeri ortam kur — local’de de Kubernetes’e benzer network isimleriyle test et</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — kritik bir environment variable’ı configmap’ten sil:</div>
+          <pre style="margin:0 0 10px"><code>kubectl patch configmap platform-ops-config -n platform-ops \
+  --type='json' \
+  -p='[{"op":"remove","path":"/data/DB_HOST"}]'
+kubectl rollout restart deployment/platform-ops -n platform-ops</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
+          <pre style="margin:0 0 8px"><code>kubectl get pods -n platform-ops
+kubectl logs -n platform-ops -l app=platform-ops</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Pod CrashLoopBackOff’a giriyor veya "DB_HOST is not defined" hatası loglanıyor.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Container içindeki env’leri listele. Local .env ile karşılaştır. Eksik variable’ı configmap’e geri ekle.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
+          <pre style="margin:0"><code>kubectl exec -n platform-ops \
+  $(kubectl get pod -n platform-ops -l app=platform-ops -o jsonpath='{.items[0].metadata.name}') \
+  -- env | grep DB_HOST</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Değer görünüyorsa başardın.</div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 6 ===== -->
+      <div style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+        <div class="block-title">Senaryo 6 — Kubernetes: 502/503 Hataları</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">502 ve 503 ağ katmanından gelen hatalardır — uygulama değil. 502 “gateway upstream’den geçersiz cevap aldı” demek. 503 “bu servise hiç ulaşamadım” demek. Kubernetes’te bu hataları görüyorsan sorun genellikle şurada: Service pod’u bulamiyor, ya da Ingress Service’i bulamiyor.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> Sanki test fixture’ı setup’sız çalışmış gibi. Asıl test (uygulama) belki mükemmel çalışıyor, ama ona erişim yolu (Service/Ingress) yanlış kurulmuş.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Ingress’ten içe doğru:</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><strong>Katman 1 — Pod’lar çalışıyor mu?</strong> Hepsi Running 1/1 ise pod sorunu değil:<pre style="margin:6px 0"><code>kubectl get pods -n platform-ops</code></pre></li>
+            <li><strong>Katman 2 — Service doğru pod’ları seçiyor mu?</strong> &lt;none&gt; görürsen Service hiçbir pod’u seçemiryor demek — selector ile labels uyuşmuyor:<pre style="margin:6px 0"><code>kubectl get endpoints -n platform-ops</code></pre></li>
+            <li><strong>Katman 3 — Ingress doğru Service’e yönlendiriyor mu?</strong> Backend service adı ve port numarası doğru mu?<pre style="margin:6px 0"><code>kubectl describe ingress platform-ops-ingress -n platform-ops</code></pre></li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">En yaygın sebep: deployment güncellendi ama label değişti, Service eski label’ı arıyor. İkisini karşılaştır, Service’i düzelttikten sonra endpoint otomatik oluşur:</p>
+          <pre style="margin:6px 0"><code>kubectl get pod &lt;pod-adı&gt; -n platform-ops --show-labels
+kubectl get service platform-ops-service -n platform-ops -o yaml | grep selector -A5</code></pre>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Label convention’ı standartlaştır — her deployment, service, ingress aynı label yapısını kullansın. Terraform veya Helm ile yönet.</li>
+            <li>Deploy sonrası endpoint kontrolü — <code>kubectl get endpoints -n platform-ops</code> satırı CI pipeline’ında smoke test olarak çalışabilir</li>
+            <li>Readiness probe ekle — pod hazır olmadan Service arkasına alınmaz, 502 görülmez</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — Service selector’ı yanlış bir label’a yönlendir:</div>
+          <pre style="margin:0 0 10px"><code>kubectl patch service platform-ops-service -n platform-ops \
+  --type='json' \
+  -p='[{"op":"replace","path":"/spec/selector/app","value":"platform-ops-YANLIS"}]'</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
+          <pre style="margin:0 0 8px"><code>kubectl get endpoints -n platform-ops</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ &lt;none&gt; görürsin — hiçbir pod seçilemiyor.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Neden &lt;none&gt;? Pod’ların label’larına bak. Service’in selector’ına bak. İkisini eşleştir. Endpoint otomatik oluşacak mı?</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
+          <pre style="margin:0"><code>kubectl get endpoints -n platform-ops</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ IP adresi görünüyorsa başardın.</div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 7 ===== -->
+      <div style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+        <div class="block-title">Senaryo 7 — Git’e Yanlışlıkla Credentials Push Ettim</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">Bu bir hata değil, bir güvenlik olayı (security incident). Öğrenmem gereken ilk şey: <strong>“Silmek yetmez.”</strong> Git history silmek değil, üstüne yazmak demek. Commit’i silsen bile herkes o commit hash’ini biliyor olabilir. GitHub’a bir kez push ettiysen, GitHub botu onu saniyeler içinde taramış olabilir.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> Bu bir “irreversible action” durumu. Test verisi production’a karışmış gibi — önce durdur, sonra temizle, sonra hasar tespiti yap.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Önce dur ve değerlendir:</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Ne push edildi? Gerçek credentials mi, yoksa placeholder mı?</li>
+            <li>Ne zaman push edildi? Kaç dakika önce?</li>
+            <li>Public repo mu, private repo mu? Public ise — credential’ı <strong>hemen</strong> geçersiz kıl. Temizleme ikincil öncelik.</li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><strong>Adım 1 — Credential’ı hemen iptal et.</strong> AWS key ise:<pre style="margin:6px 0"><code>aws iam delete-access-key --access-key-id &lt;key-id&gt;</code></pre></li>
+            <li><strong>Adım 2 — Git history’den temizle.</strong> Bu komut tüm branch’lerde .env dosyasını tarihten siliyor:<pre style="margin:6px 0"><code>git filter-branch --force --index-filter \
+  'git rm --cached --ignore-unmatch .env' \
+  --prune-empty --tag-name-filter cat -- --all</code></pre></li>
+            <li><strong>Adım 3 — Temizlenmiş history’yi force push et:</strong><pre style="margin:6px 0"><code>git push origin --force --all
+git push origin --force --tags</code></pre></li>
+            <li><strong>Adım 4 — Collaborator’ları uyard:</strong> <code>filter-branch</code> sonrası herkes <code>git fetch --all &amp;&amp; git reset --hard origin/main</code> yapmalı.</li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><code>.gitignore</code>’a <code>.env</code> ekle — proje kurulumunun ilk adımı bu olmalı</li>
+            <li>Pre-commit hook kur: <code>git-secrets</code> veya <code>detect-secrets</code> araçları commit öncesi tarıyor, credential içeren dosyaları engelliyor</li>
+            <li>Credentials’ı asla dosyada tutma — AWS Secrets Manager, HashiCorp Vault, veya environment variable olarak injection</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene (LOCAL commit — remote’a push etme)</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — sahte credential dosyası oluştur ve commit et:</div>
+          <pre style="margin:0 0 10px"><code>cd ~/platform-ops
+cat &gt; .env.production &lt;&lt; 'EOF'
+AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+DB_PASSWORD=super_gizli_sifre_123
+JWT_SECRET=jwt-secret-kimse-goremez
+EOF
+git add .env.production
+git commit -m "feat: production config eklendi"</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
+          <pre style="margin:0 0 8px"><code>git log --oneline -5
+git show HEAD</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Commit’te tüm credential’lar görünür durumda.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Credential’ı “iptal et” (log’la). History’den temizle. .gitignore’a ekle. Temiz olduğunu doğrula.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
+          <pre style="margin:0"><code>git log --oneline -5
+git show HEAD -- .env.production</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Dosya commit history’de görünmüyorsa başardın.</div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 8 ===== -->
+      <div style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+        <div class="block-title">Senaryo 8 — AWS Faturası Bir Ayda %40 Arttı</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">Bu teknik bir hata değil, bir sinyal. Sistem çalışıyor — ama beklenenden çok daha fazla kaynak tükeniyor. Sebep birkaç kategoriden biri: kullanılmayan ama çalışan kaynaklar (eski EC2, boşta ELB), traffic spike, yanlış instance tipi, ya da data transfer maliyetleri.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> Bu bir “non-functional test” bulgusunu kaçırmak gibi. Performans testi yapmadın, sistem production’da beklenenden 10x kaynak yedi.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Nereden bakmalıyım?</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><strong>Önce hangi servis arttı?</strong> Servise göre maliyet dökümü — EC2 mü arttı, RDS mi, data transfer mi?<pre style="margin:6px 0"><code>aws ce get-cost-and-usage \
+  --time-period Start=2026-07-01,End=2026-08-01 \
+  --granularity MONTHLY \
+  --metrics BlendedCost \
+  --group-by Type=DIMENSION,Key=SERVICE</code></pre></li>
+            <li><strong>Sonra hangi kaynak?</strong> Çalışan tüm instance’ları listele. “Running” ama tanımadığın birini görürsen buldun:<pre style="margin:6px 0"><code>aws ec2 describe-instances \
+  --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType]' \
+  --output table</code></pre></li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">En sık: test sırasında başlatılan bir EC2 kapatılmamış. CPU kullanımı %5’in altındaysa bu instance iş yapmıyor — durdur veya sil:</p>
+          <pre style="margin:6px 0"><code>aws cloudwatch get-metric-statistics \
+  --namespace AWS/EC2 \
+  --metric-name CPUUtilization \
+  --dimensions Name=InstanceId,Value=&lt;instance-id&gt; \
+  --statistics Average \
+  --period 604800 \
+  --start-time 2026-08-10T00:00:00Z \
+  --end-time 2026-08-17T00:00:00Z</code></pre>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>AWS Cost Anomaly Detection kur — maliyet beklenmedik artış gösterince otomatik email atar. Üretsiz.</li>
+            <li>Budget alarm kur: <code>aws budgets create-budget --account-id &lt;id&gt; --budget file://budget.json</code></li>
+            <li>Tüm kaynakları Terraform ile yönet — elle oluşturulan kaynak görülirse alarm. Sahipsiz kaynak kalmaz.</li>
+            <li>Test kaynaklarına TTL tag ekle: <code>AutoDelete: 2026-08-18</code> gibi. Bir Lambda bu tag’i okur, süresi dolan kaynakları siler.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene (Kubernetes atıl kaynak tespiti)</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — “unutulmuş” deployment’lar oluştur:</div>
+          <pre style="margin:0 0 10px"><code>for name in eski-servis-v1 test-deployment-silinmedi load-test-server; do
+  kubectl create deployment $name --image=nginx:alpine --replicas=1 -n platform-ops
+done
+aws --endpoint-url=http://localhost:4566 s3 mb s3://eski-test-bucket-sil 2&gt;/dev/null || true
+aws --endpoint-url=http://localhost:4566 s3 mb s3://backup-artik-lazim-degil 2&gt;/dev/null || true</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
+          <pre style="margin:0 0 8px"><code>kubectl get all -n platform-ops
+aws --endpoint-url=http://localhost:4566 s3 ls</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Tanımadığın deployment’lar ve bucket’lar listede.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Hangi kaynaklar platform-ops projesine ait değil? Label’lara bak. Atıl olanları sil.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
+          <pre style="margin:0"><code>kubectl get deployments -n platform-ops</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Sadece platform-ops deployment’ı kalıyorsa başardın.</div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 9 ===== -->
+      <div style="border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px">
+        <div class="block-title">Senaryo 9 — Terraform Plan Beklenmedik Değişiklikler Gösteriyor (Drift)</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">Terraform drift şu demek: “Ben şunu yapmasını söyledim, ama biri gidip elle başka bir şey yaptı.” State dosyasında “Security group’ta port 443 var” yazıyor, ama AWS’de birisi konsoldan port 80’i de eklemiş. Terraform bir sonraki plan’da bunu görüyor ve “ben bunu bilmiyorum, kaldıracağım” diyor.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> “Configuration drift” testi. Test ortamı zamanla production’dan ayrışıyor — aynı şey. Elle yapılan değişiklikler kodu geçersiz kılıyor.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Nereden bakmalıyım?</div>
+          <pre style="margin:6px 0"><code>terraform plan -detailed-exitcode</code></pre>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Exit code <code>0</code> → değişiklik yok</li>
+            <li>Exit code <code>1</code> → hata</li>
+            <li>Exit code <code>2</code> → değişiklik var (normal hata değil, bilgi)</li>
+          </ul>
+          <p style="font-size:13px;color:var(--text-muted);margin:0;margin-top:8px">Çıktıda <code>-</code> ile başlayan satırlar “Terraform kaldıracak”, <code>+</code> ile başlayan “Terraform ekleyecek” demek. Bu diff’i dikkatlice oku.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">İki seçenek var ve bu bir karar:</p>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><strong>Seçenek A — Elle yapılan değişiklik doğruysa:</strong> Terraform koduna ekle, sonra <code>apply</code> yap. State ve gerçeklik tekrar hizalanır.</li>
+            <li><strong>Seçenek B — Elle yapılan değişiklik yanlışsa:</strong> Terraform kazanır:<pre style="margin:6px 0"><code>terraform apply</code></pre></li>
+            <li><strong>Her iki durumda — kim ne zaman ne değiştirdi?</strong> CloudTrail tüm AWS API çağrılarını kaydediyor:<pre style="margin:6px 0"><code>aws cloudtrail lookup-events \
+  --lookup-attributes AttributeKey=ResourceName,AttributeValue=&lt;resource-name&gt; \
+  --start-time 2026-08-10T00:00:00Z</code></pre></li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>AWS Config kur — kaynak her değiştiğinde kayıt tutar ve drift’i otomatik tespit eder</li>
+            <li>Service Control Policy (SCP) ile konsoldan değişikliği engelle — sadece Terraform (CI/CD) değiştirebilsin</li>
+            <li>Haftalık <code>terraform plan</code> cronjob’u kur — drift varsa Slack’e bildirim gönder</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — Terraform’un yönettiği bir kaynağı elle değiştir:</div>
+          <pre style="margin:0 0 10px"><code>kubectl patch configmap platform-ops-config -n platform-ops \
+  --type='json' \
+  -p='[{"op":"add","path":"/data/ELLE_EKLENDI","value":"kimse-bilmiyor"}]'
+kubectl label configmap platform-ops-config -n platform-ops acil-degisiklik=evet</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
+          <pre style="margin:0 0 8px"><code>cd ~/platform-ops
+terraform plan</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Terraform “ELLE_EKLENDI key’ini bilmiyorum, sileceğim” diyor. Drift tespit edildi.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Plan çıktısını oku. Değişiklik doğru muydu? Doğruysa Terraform koduna ekle. Yanlışsa apply ile geri al.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
+          <pre style="margin:0"><code>terraform plan 2&gt;&amp;1 | grep -c "will be"</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ 0 dönüyorsa (değişiklik yok) başardın.</div>
+        </div>
+      </div>
+
+      <!-- ===== SENARYO 10 ===== -->
+      <div style="padding-bottom:16px">
+        <div class="block-title">Senaryo 10 — Deployment Sonrası Downtime: Rollback Gerekiyor</div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);margin-bottom:6px">A. ANLIYORUM — Bu hata ne demek?</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">Bu senaryonun gerçek anlamı: planlı bir değişiklik planlanmayan bir sonuç doğurdu. Şu an her saniye kullanıcı etkileniyor. Bu durumda önce düşün, sonra hareket et — ama hızlı düşün.</p>
+          <p style="font-size:13px;color:var(--text-muted);margin:0"><strong>QA perspektifinden:</strong> Bu bir “production defect” — test ortamında yakalanmayan, production’da patlayan kritik bug. Rollback bir yenilgi değil, kontrollü geri çekilme. Profesyonel davranış.</p>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#f59e0b;margin-bottom:6px">B. DARALTIYORUM — Rollback mı, forward fix mi?</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li><strong>Ne kadar süre geçti?</strong> Deploy 5 dakika önceyse → hemen rollback. Tartışma yok. Deploy 2 saat önceyse → “rollback güvenli mi?” sorusunu sor.</li>
+            <li><strong>Araya database migration girdi mi?</strong> Girdi mi → rollback tehlikeli olabilir. Rollback yaparsan schema uyumsuzluğu çıkabilir.</li>
+            <li><strong>Fix 10 dakikada yazılabilir mi?</strong> Evet → forward fix daha güvenli. Saatler sürerse → rollback.</li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
+          <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Mevcut deployment geçmişine bak:<pre style="margin:6px 0"><code>kubectl rollout history deployment/platform-ops -n platform-ops</code></pre></li>
+            <li>Bir önceki versiyona dön. <code>rollout undo</code> Kubernetes’e şunu söylüyor: “Son apply ettiğin ReplicaSet’i unut, bir öncekini tekrar kullan.”:<pre style="margin:6px 0"><code>kubectl rollout undo deployment/platform-ops -n platform-ops</code></pre></li>
+            <li>Belirli bir versiyona dönmek istersen:<pre style="margin:6px 0"><code>kubectl rollout undo deployment/platform-ops \
+  --to-revision=3 -n platform-ops</code></pre></li>
+            <li>İlerlemeyi izle ve doğrula:<pre style="margin:6px 0"><code>kubectl rollout status deployment/platform-ops -n platform-ops
+kubectl get pods -n platform-ops
+curl -s http://platform-ops.local/health</code></pre></li>
+          </ol>
+        </div>
+
+        <div style="margin-bottom:14px">
+          <div style="font-size:12px;font-weight:700;color:#8b5cf6;margin-bottom:6px">D. ÖNLEMİ ALIYORUM — Bir daha olmasın</div>
+          <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">Bu senaryo, tüm önceki senaryoların özetidir:</p>
+          <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-muted);margin:0">
+            <li>Staging ortamı canlıya birebir benzesin — Senaryo 5’in dersi</li>
+            <li>Automated rollback kur — error rate %5’i geçerse otomatik geri dön. İnsan kararı beklemene gerek yok.</li>
+            <li>Deployment runbook yaz — “Bu deploy neyi değiştiriyor, nasıl test ederiz, rollback adımları neler, kim sorumlu.” QA’da test senaryosu yazmak gibi — ama deployment için.</li>
+            <li>Post-mortem yap — ne oldu, neden oldu, bir daha olmaması için ne yapıyoruz. Parmak işaret değil, sistem nasıl iyileştirilir sorusu. Bu kültür QA’da zaten var.</li>
+          </ul>
+        </div>
+
+        <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
+          <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — tamamen bozuk bir image deploy et:</div>
+          <pre style="margin:0 0 10px"><code>kubectl rollout history deployment/platform-ops -n platform-ops
+kubectl set image deployment/platform-ops \
+  platform-ops=node:20-alpine \
+  -n platform-ops</code></pre>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin — 20 saniye bekle:</div>
+          <pre style="margin:0 0 8px"><code>watch kubectl get pods -n platform-ops</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Pod’lar Error veya CrashLoopBackOff. Servis çöktü. Kullanıcılar etkileniyor.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Kaç dakika önce deploy yapıldı? DB migration var mıydı? Rollback güvenli mi? Rollback yap. Başarılı oldu mu doğrula. /health tekrar cevap veriyor mu?</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
+          <pre style="margin:0"><code>kubectl rollout status deployment/platform-ops -n platform-ops
+curl -s $(minikube service platform-ops-service -n platform-ops --url)/health</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ {"status":"ok"} dönüyorsa başardın.</div>
+        </div>
+      </div>
+
+      <!-- LAB SIRASI -->
+      <div style="background:var(--bg-card);border-radius:8px;padding:16px;margin-top:8px">
+        <div style="font-size:12px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Lab Sırası Önerisi — Her Biri Bir Öncekini Pekiştirir</div>
+        <pre style="margin:0"><code>Lab 1 → Lab 10 → Lab 6 → Lab 5 → Lab 2 → Lab 9 → Lab 3 → Lab 4 → Lab 7 → Lab 8
+(kolay)  (geri al)  (network)  (env)    (lock)   (drift)  (erişim)  (ci)     (git)    (audit)</code></pre>
+        <p style="font-size:13px;color:var(--text-muted);margin:10px 0 0">Bir lab’da takılırsan çerçeveyi kağıda yaz: Anlıyorum → Daraltıyorum → Çözüyorum → Önlemi. Sonra yüksek sesle oku, sonra komutu çalıştır.</p>
+      </div>
+
+    </div>
+  </div>
+
+  
   <!-- NOT: GUNCELLEME -->
   <div style="margin:24px 16px 8px;padding:14px 18px;background:var(--card-bg,#f9fafb);border:1px solid var(--border,#e5e7eb);border-radius:10px;font-size:13px;color:var(--text-muted)">
     <strong style="color:var(--text,#111827)">📌 Bu rehberi güncellemek için:</strong>
