@@ -8308,14 +8308,13 @@ EOF</code></pre>
           </li>
 
           <li>
-            <strong>Ingress addon'unu etkinleştir ve /etc/hosts'u güncelle.</strong><br>
-            <pre style="margin:6px 0"><code>minikube addons enable ingress
-kubectl get pods -n ingress-nginx
+            <strong>Ingress controller'ı doğrula ve /etc/hosts'u minikube IP ile güncelle.</strong><br>
+            <pre style="margin:6px 0"><code>kubectl get pods -n ingress-nginx
 
 MINIKUBE_IP=$(minikube ip)
 sudo sed -i "s/.*platform-ops.local/$MINIKUBE_IP platform-ops.local/" /etc/hosts
 grep platform-ops /etc/hosts</code></pre>
-            ✓ <code>ingress-nginx</code> pod'u Running, hosts'ta minikube IP yazıyor (örn. <code>192.168.49.2 platform-ops.local</code>).
+            ✓ <code>ingress-nginx-controller</code> pod'u Running, hosts satırı <code>192.168.49.2 platform-ops.local</code> gibi görünür.
           </li>
 
           <li>
