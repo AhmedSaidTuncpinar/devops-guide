@@ -9261,16 +9261,41 @@ curl -s "http://localhost:9090/api/v1/targets" \
           </li>
 
           <li>
-            <strong>Prometheus UI'da (http://localhost:9090) bu sorguları dene.</strong><br>
-            <pre style="margin:6px 0"><code>echo 'up'
-echo 'rate(http_requests_total[5m])'
-echo '100 * rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m])'
-echo '100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)'
-echo 'histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))'
-<span class="comment"># → PromQL | histogram_quantile(0.95, ...) = p95 gecikme — isteklerin %95'i bu ms'den hızlı — SLO dashboard'un kalp atışı — EZBER</span>
-echo 'avg_over_time(up{job="platform-ops"}[30d])'
-<span class="comment"># → PromQL | avg_over_time(...[30d]) = 30 günlük ortalama uptime — 1.0 = %100, 0.999 = %99.9 SLO — EZBER</span></code></pre>
-            ✓ Bu komutları çalıştır, çıktıları oku. Sonra UI'yi aç ve sorguları tek tek dene.
+            <strong>Prometheus UI'ı tarayıcıda aç.</strong><br>
+            <pre style="margin:6px 0"><code>minikube service prometheus-service -n monitoring --url</code></pre>
+            Çıkan URL'yi kopyala (örn. <code>http://192.168.49.2:30090</code>) ve tarayıcıda aç.<br>
+            Prometheus çalışmıyorsa önce kontrol et:
+            <pre style="margin:6px 0"><code>kubectl get pods -n monitoring</code></pre>
+            ✓ Tarayıcıda Prometheus arayüzü açılır — üstte beyaz bir "Expression" kutusu görürsün.
+          </li>
+
+          <li>
+            <strong>PromQL sorgularını Expression kutusuna tek tek yapıştır, Execute'e bas.</strong><br>
+            <br>
+            Bu sorgular terminalde değil, Prometheus UI'daki Expression kutusunda çalışır:<br><br>
+            <strong>1 — Sistemin ayakta mı?</strong>
+            <pre style="margin:6px 0"><code>up</code></pre>
+            ✓ <code>1</code> = çalışıyor, <code>0</code> = çökmüş.<br><br>
+
+            <strong>2 — Saniyedeki istek sayısı (son 5 dakika):</strong>
+            <pre style="margin:6px 0"><code>rate(http_requests_total[5m])</code></pre>
+            ✓ <code>rate()</code> = ham sayacı hız değerine çevirir. <code>[5m]</code> = son 5 dakikanın ortalaması.<br><br>
+
+            <strong>3 — Hata oranı % (5xx istekler):</strong>
+            <pre style="margin:6px 0"><code>100 * rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m])</code></pre>
+            ✓ <code>status=~"5.."</code> = 500, 502, 503 gibi tüm 5xx kodları. Sonuç %5'i geçerse alarm kurulur.<br><br>
+
+            <strong>4 — CPU kullanımı %:</strong>
+            <pre style="margin:6px 0"><code>100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)</code></pre>
+            ✓ <code>mode="idle"</code> = boşta geçen CPU zamanı. 100'den çıkarınca kullanım oranı çıkar. — EZBER<br><br>
+
+            <strong>5 — p95 gecikme (SLO kalp atışı):</strong>
+            <pre style="margin:6px 0"><code>histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))</code></pre>
+            ✓ İsteklerin %95'i bu ms'den hızlı yanıt veriyor demek. SLO dashboard'un temel metriği. — EZBER<br><br>
+
+            <strong>6 — 30 günlük ortalama uptime:</strong>
+            <pre style="margin:6px 0"><code>avg_over_time(up{job="platform-ops"}[30d])</code></pre>
+            ✓ <code>1.0</code> = %100 uptime, <code>0.999</code> = %99.9 SLO. Müşteriye verilen garantinin ölçüsü. — EZBER
           </li>
 
         </ol>
@@ -9282,11 +9307,15 @@ echo 'avg_over_time(up{job="platform-ops"}[30d])'
         <ol start="11" style="padding-left:1.25rem;display:flex;flex-direction:column;gap:14px;font-size:14px;color:var(--text-muted)">
 
           <li>
-            <strong>Grafana'da hazır dashboard import et.</strong><br>
-            <pre style="margin:6px 0"><code>echo "Grafana: http://localhost:3001"
-echo "Kullanıcı: admin / Şifre: admin123"
-echo "Dashboards → Import → Dashboard ID: 1860 (Node Exporter Full)"</code></pre>
-            ✓ Grafana'yı aç, adımları takip et. CPU, memory ve disk grafiklerini görürsün.
+            <strong>Grafana'yı tarayıcıda aç.</strong><br>
+            <pre style="margin:6px 0"><code>minikube service grafana-service -n monitoring --url</code></pre>
+            Çıkan URL'yi tarayıcıda aç. Giriş bilgileri:<br>
+            <pre style="margin:6px 0"><code>Kullanıcı: admin
+Şifre:     admin123</code></pre>
+            ✓ Grafana ana ekranı açılır.<br><br>
+            <strong>Hazır dashboard import et:</strong><br>
+            Sol menüden <strong>Dashboards → Import</strong> seç → Dashboard ID kutusuna <code>1860</code> yaz → <strong>Load</strong> → <strong>Import</strong> butonuna bas.<br>
+            ✓ Node Exporter Full dashboard açılır — CPU, memory, disk ve network grafiklerini görürsün.
           </li>
 
           <li>
