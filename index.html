@@ -9262,11 +9262,11 @@ curl -s "http://localhost:9090/api/v1/targets" \
 
           <li>
             <strong>Prometheus UI'ı tarayıcıda aç.</strong><br>
-            <pre style="margin:6px 0"><code>minikube service prometheus-service -n monitoring --url</code></pre>
-            Çıkan URL'yi kopyala (örn. <code>http://192.168.49.2:30090</code>) ve tarayıcıda aç.<br>
-            Prometheus çalışmıyorsa önce kontrol et:
-            <pre style="margin:6px 0"><code>kubectl get pods -n monitoring</code></pre>
-            ✓ Tarayıcıda Prometheus arayüzü açılır — üstte beyaz bir "Expression" kutusu görürsün.
+            Prometheus Docker Compose ile çalışıyor — direkt aç:
+            <pre style="margin:6px 0"><code>http://localhost:9090</code></pre>
+            Çalışıp çalışmadığını önce terminalde doğrula:
+            <pre style="margin:6px 0"><code>docker ps --format "table {{.Names}}\t{{.Ports}}" | grep 9090</code></pre>
+            ✓ <code>platform-ops-prometheus-1</code> görünüyorsa Prometheus hazır. Tarayıcıda üstte beyaz bir "Expression" kutusu göreceksin.
           </li>
 
           <li>
@@ -9308,13 +9308,16 @@ curl -s "http://localhost:9090/api/v1/targets" \
 
           <li>
             <strong>Grafana'yı tarayıcıda aç.</strong><br>
-            <pre style="margin:6px 0"><code>minikube service grafana-service -n monitoring --url</code></pre>
-            Çıkan URL'yi tarayıcıda aç. Giriş bilgileri:<br>
+            Grafana da Docker Compose ile çalışıyor — direkt aç:
+            <pre style="margin:6px 0"><code>http://localhost:3001</code></pre>
+            Çalışıp çalışmadığını önce terminalde doğrula:
+            <pre style="margin:6px 0"><code>docker ps --format "table {{.Names}}\t{{.Ports}}" | grep 3001</code></pre>
+            Giriş bilgileri:
             <pre style="margin:6px 0"><code>Kullanıcı: admin
 Şifre:     admin123</code></pre>
             ✓ Grafana ana ekranı açılır.<br><br>
             <strong>Hazır dashboard import et:</strong><br>
-            Sol menüden <strong>Dashboards → Import</strong> seç → Dashboard ID kutusuna <code>1860</code> yaz → <strong>Load</strong> → <strong>Import</strong> butonuna bas.<br>
+            Sol menüden <strong>Dashboards → Import</strong> seç → Dashboard ID kutusuna <code>1860</code> yaz → <strong>Load</strong> butonuna bas → Prometheus veri kaynağını seç → <strong>Import</strong> butonuna bas.<br>
             ✓ Node Exporter Full dashboard açılır — CPU, memory, disk ve network grafiklerini görürsün.
           </li>
 
