@@ -4709,7 +4709,7 @@ jobs:
         <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:8px;font-size:14px;color:var(--text-muted)">
           <li>environments/staging/ ve environments/production/ klasör yapısını oluştur<br><code>mkdir -p ~/terraform-practice/environments/staging</code><br><code>mkdir -p ~/terraform-practice/environments/production</code></li>
           <li>Her iki ortam için farklı tfvars yaz — staging: t3.micro, production: t3.medium</li>
-          <li>.gitignore oluştur — terraform.tfstate ve *.tfvars hariç tut<br><code>echo "terraform.tfstate\nterraform.tfstate.backup\n*.tfvars\n.terraform/" > .gitignore</code></li>
+          <li>.gitignore oluştur — terraform.tfstate ve *.tfvars hariç tut<br><code>printf "terraform.tfstate\nterraform.tfstate.backup\n*.tfvars\n.terraform/\n" > .gitignore</code></li>
           <li>Git repo başlat ve ilk commit at<br><code>git init && git add . && git commit -m "feat: terraform proje yapısı"</code></li>
           <li>Şirket terraform reposunda kaç ortam (environment) var?<br><code>ls /home/astuncpinar/terraform-infrastructure/</code></li>
           <li>Bir .tf dosyasını oku ve şu soruları yanıtla: hangi provider? hangi resource'lar? değişkenler neler?<br><code>cat /home/astuncpinar/terraform-infrastructure/&lt;dosya&gt;.tf</code></li>
@@ -6167,6 +6167,25 @@ count_over_time({app="api-service"} |= "ERROR" [5m])
     volumes:
       - /var/log:/var/log
       - ./promtail.yml:/etc/promtail/config.yml</code></pre>
+        <p style="font-size:13px;color:var(--text-muted);margin:8px 0 4px"><strong>promtail.yml</strong> — bu dosyayı oluşturmadan container başlamaz:</p>
+        <pre><code><span class="comment"># promtail.yml</span>
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: system
+    static_configs:
+      - targets: [localhost]
+        labels:
+          job: varlogs
+          __path__: /var/log/*.log</code></pre>
       </div>
       <div>
         <div class="block-title">Log Yönetimi En İyi Uygulamalar</div>
@@ -6409,7 +6428,7 @@ services:
     image: prom/alertmanager:latest
     ports: ["9093:9093"]
     volumes:
-      - ./alertmanager.yml:/etc/alertmanager/config.yml
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
   grafana:
     image: grafana/grafana:latest
@@ -6968,6 +6987,7 @@ cat README.md
 sed -i '/^&lt;&lt;&lt;&lt;&lt;&lt;&lt;/d; /^=======/d; /^&gt;&gt;&gt;&gt;&gt;&gt;&gt;/d' README.md
 git add README.md
 git commit -m "fix: merge conflict çözüldü"
+git checkout develop
 git branch -d feature/readme-v1 feature/readme-v2</code></pre>
             ✓ Conflict çözüldü, tek versiyon kaldı.
           </li>
@@ -7670,8 +7690,13 @@ else
   log "UYARI: DB container bulunamadı — atlandı"
 fi
 
-tar -czf "$BACKUP_DIR/files-${TS}.tar.gz" <span class="comment"># → Bash | tar -c oluştur, -z gzip ile sıkıştır, -f dosya adını belirt — üçü de olmak zorunda — EZBER</span>
-  --exclude="$HOME/$APP/node_modules"   --exclude="$HOME/$APP/.terraform"   --exclude="$HOME/$APP/logs"   --exclude="$HOME/$APP/backups"   "$HOME/$APP/" 2&gt;/dev/null
+<span class="comment"># → Bash | tar -c oluştur, -z gzip ile sıkıştır, -f dosya adını belirt — üçü de olmak zorunda — EZBER</span>
+tar -czf "$BACKUP_DIR/files-${TS}.tar.gz" \
+  --exclude="$HOME/$APP/node_modules" \
+  --exclude="$HOME/$APP/.terraform" \
+  --exclude="$HOME/$APP/logs" \
+  --exclude="$HOME/$APP/backups" \
+  "$HOME/$APP/" 2&gt;/dev/null
 
 log "Dosya yedeği: files-${TS}.tar.gz ($(du -sh "$BACKUP_DIR/files-${TS}.tar.gz" | cut -f1))"
 
@@ -8263,7 +8288,10 @@ kind: Ingress
 metadata:
   name: platform-ops-ingress
   namespace: platform-ops
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
     - host: platform-ops.local
       http:
@@ -8280,10 +8308,21 @@ EOF</code></pre>
           </li>
 
           <li>
+            <strong>Ingress addon'unu etkinleştir ve /etc/hosts'u güncelle.</strong><br>
+            <pre style="margin:6px 0"><code>minikube addons enable ingress
+kubectl get pods -n ingress-nginx
+
+MINIKUBE_IP=$(minikube ip)
+sudo sed -i "s/.*platform-ops.local/$MINIKUBE_IP platform-ops.local/" /etc/hosts
+grep platform-ops /etc/hosts</code></pre>
+            ✓ <code>ingress-nginx</code> pod'u Running, hosts'ta minikube IP yazıyor (örn. <code>192.168.49.2 platform-ops.local</code>).
+          </li>
+
+          <li>
             <strong>Tüm manifest'leri doğrula.</strong><br>
             <pre style="margin:6px 0"><code>ls -la ~/platform-ops/kubernetes/
 grep "kind:" ~/platform-ops/kubernetes/*.yaml</code></pre>
-            ✓ 5 dosya görürsün: Namespace, ConfigMap, Secret, Deployment, Service, Ingress.
+            ✓ 6 dosya görürsün: Namespace, ConfigMap, Secret, Deployment, Service, Ingress.
           </li>
 
         </ol>
@@ -8945,9 +8984,20 @@ docker ps | grep localstack || echo "Temizlendi"</code></pre>
           </li>
 
           <li>
-            <strong>Commit et, develop'a merge et.</strong><br>
+            <strong>AWS notlarını belgele ve commit et.</strong><br>
             <pre style="margin:6px 0"><code>cd ~/platform-ops
-git add scripts/
+mkdir -p docs
+cat > docs/aws-notes.md << 'EOF'
+# AWS / LocalStack Notlari
+
+- S3 bucket: platform-ops-bucket (us-east-1)
+- IAM role: lambda-exec (AWSLambdaBasicExecutionRole)
+- CloudWatch: LocalStack 2.3 community surumunde desteklenmez
+- AWS CLI v2 uyumlulugu: request_checksum_calculation = when_required
+- Alias: alias awsl='aws --endpoint-url=http://localhost:4566'
+EOF
+
+git add docs/aws-notes.md
 git commit -m "feat(aws): LocalStack ile AWS CLI komutlari calistirildi"
 git checkout develop
 git merge --no-ff feature/aws-localstack -m "merge: AWS/LocalStack altyapisi"
@@ -9316,7 +9366,12 @@ curl -s "http://localhost:9090/api/v1/targets" \
             <pre style="margin:6px 0"><code>Kullanıcı: admin
 Şifre:     admin123</code></pre>
             ✓ Grafana ana ekranı açılır.<br><br>
-            <strong>Hazır dashboard import et:</strong><br>
+            <strong>Önce Prometheus veri kaynağını ekle:</strong><br>
+            Sol menüden <strong>Connections → Data Sources → Add data source</strong> seç → <strong>Prometheus</strong>'u seç → URL kutusuna yaz:
+            <pre style="margin:6px 0"><code>http://prometheus:9090</code></pre>
+            Sayfanın altında <strong>Save &amp; Test</strong> butonuna bas.<br>
+            ✓ "Successfully queried the Prometheus API" mesajı görünür — bağlantı kuruldu.<br><br>
+            <strong>Sonra dashboard import et:</strong><br>
             Sol menüden <strong>Dashboards → Import</strong> seç → Dashboard ID kutusuna <code>1860</code> yaz → <strong>Load</strong> butonuna bas → Prometheus veri kaynağını seç → <strong>Import</strong> butonuna bas.<br>
             ✓ Node Exporter Full dashboard açılır — CPU, memory, disk ve network grafiklerini görürsün.
           </li>
@@ -9660,7 +9715,7 @@ Lock Info: ID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</code></pre>
         <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
           <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene</div>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — sahte bir kilit dosyası oluştur:</div>
-          <pre style="margin:0 0 10px"><code>cd ~/platform-ops
+          <pre style="margin:0 0 10px"><code>cd ~/platform-ops/terraform
 cat &gt; terraform.tfstate.lock.info &lt;&lt; 'EOF'
 {
   "ID": "zombi-kilit-abc-123",
@@ -9729,15 +9784,19 @@ aws ec2 authorize-security-group-ingress \
           <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene (Kubernetes Service adaptasyonu)</div>
           <p style="font-size:12px;color:var(--text-muted);margin:0 0 8px">Gerçek hayatta EC2 SSH sorunu, burada Kubernetes NodePort sorunu. Aynı troubleshoot kası.</p>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — servisin portunu yanlış değerle güncelle:</div>
-          <pre style="margin:0 0 10px"><code>kubectl patch service platform-ops-service -n platform-ops \
+          <pre style="margin:0 0 10px"><code>kubectl patch service platform-ops-svc -n platform-ops \
   --type='json' \
   -p='[{"op":"replace","path":"/spec/ports/0/port","value":9999}]'</code></pre>
-          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
-          <pre style="margin:0 0 8px"><code>curl -s $(minikube service platform-ops-service -n platform-ops --url)/health</code></pre>
-          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ "curl: (7) Failed to connect... port 9999: Connection refused" görürsin.</div>
+          <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin (port-forward ile test et):</div>
+          <pre style="margin:0 0 8px"><code>kubectl port-forward svc/platform-ops-svc 8080:80 -n platform-ops &>/dev/null &
+sleep 1
+curl -s http://localhost:8080/health
+kill %1 2>/dev/null</code></pre>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ "curl: (7) Failed to connect... Connection refused" görürsin — servis yanlış porta bakıyor.</div>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Hangi katmanda sorun? Network mı, servis mi, pod mu? Katman katman daralt. Servisi doğru porta geri al, erişimi doğrula.</div>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
-          <pre style="margin:0"><code>curl -s $(minikube service platform-ops-service -n platform-ops --url)/health</code></pre>
+          <pre style="margin:0"><code>kubectl port-forward svc/platform-ops-svc 8080:80 -n platform-ops &>/dev/null &
+sleep 1; curl -s http://localhost:8080/health; kill %1 2>/dev/null</code></pre>
           <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ {"status":"ok"} görüyorsan başardın.</div>
         </div>
       </div>
@@ -9784,13 +9843,16 @@ kubectl rollout status deployment/platform-ops -n platform-ops</code></pre>
 kubectl exec -n platform-ops $POD -- sh -c \
   "sed -i 's/res.json(items)/res.status(500).json({error: \"DB baglantisi kesildi\"})/g' /app/server.js &amp;&amp; kill 1"</code></pre>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
-          <pre style="margin:0 0 8px"><code>URL=$(minikube service platform-ops-service -n platform-ops --url)
-curl -s $URL/health       # {"status":"ok"} -- CI bunu geçiyor
-curl -s $URL/api/items    # {"error":"DB baglantisi kesildi"} -- kullanıcı bunu görüyor</code></pre>
+          <pre style="margin:0 0 8px"><code>kubectl port-forward svc/platform-ops-svc 8080:80 -n platform-ops &>/dev/null &
+sleep 1
+curl -s http://localhost:8080/health       # {"status":"ok"} -- CI bunu geçiyor
+curl -s http://localhost:8080/api/items    # {"error":"DB baglantisi kesildi"} -- kullanıcı bunu görüyor
+kill %1 2>/dev/null</code></pre>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: CI neden bunu yakalamadı? Hangi testi eklersen yakalar? Rollback yap, /api/items’i doğrula.</div>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
           <pre style="margin:0"><code>kubectl rollout undo deployment/platform-ops -n platform-ops
-curl -s $URL/api/items</code></pre>
+kubectl port-forward svc/platform-ops-svc 8080:80 -n platform-ops &>/dev/null &
+sleep 1; curl -s http://localhost:8080/api/items; kill %1 2>/dev/null</code></pre>
           <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ Array dönüyorsa başardın.</div>
         </div>
       </div>
@@ -9874,7 +9936,7 @@ kubectl logs -n platform-ops -l app=platform-ops</code></pre>
           <div style="font-size:12px;font-weight:700;color:#10b981;margin-bottom:6px">C. ÇÖZÜYORUM — Root cause ve adımlar</div>
           <p style="font-size:13px;color:var(--text-muted);margin:0 0 8px">En yaygın sebep: deployment güncellendi ama label değişti, Service eski label’ı arıyor. İkisini karşılaştır, Service’i düzelttikten sonra endpoint otomatik oluşur:</p>
           <pre style="margin:6px 0"><code>kubectl get pod &lt;pod-adı&gt; -n platform-ops --show-labels
-kubectl get service platform-ops-service -n platform-ops -o yaml | grep selector -A5</code></pre>
+kubectl get service platform-ops-svc -n platform-ops -o yaml | grep selector -A5</code></pre>
         </div>
 
         <div style="margin-bottom:14px">
@@ -9889,7 +9951,7 @@ kubectl get service platform-ops-service -n platform-ops -o yaml | grep selector
         <div style="background:var(--bg-card);border:1px solid var(--accent-blue);border-radius:8px;padding:14px;margin-top:4px">
           <div style="font-size:12px;font-weight:700;color:var(--accent-blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">🔬 Lab — Gerçekten Dene</div>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Sabotaj — Service selector’ı yanlış bir label’a yönlendir:</div>
-          <pre style="margin:0 0 10px"><code>kubectl patch service platform-ops-service -n platform-ops \
+          <pre style="margin:0 0 10px"><code>kubectl patch service platform-ops-svc -n platform-ops \
   --type='json' \
   -p='[{"op":"replace","path":"/spec/selector/app","value":"platform-ops-YANLIS"}]'</code></pre>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px">Ne görürsin:</div>
@@ -10149,7 +10211,8 @@ kubectl set image deployment/platform-ops \
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:10px">Görevin: Kaç dakika önce deploy yapıldı? DB migration var mıydı? Rollback güvenli mi? Rollback yap. Başarılı oldu mu doğrula. /health tekrar cevap veriyor mu?</div>
           <div style="font-size:12px;font-weight:600;color:var(--text-muted);margin-bottom:4px;margin-top:8px">Lab sıfırlama:</div>
           <pre style="margin:0"><code>kubectl rollout status deployment/platform-ops -n platform-ops
-curl -s $(minikube service platform-ops-service -n platform-ops --url)/health</code></pre>
+kubectl port-forward svc/platform-ops-svc 8080:80 -n platform-ops &>/dev/null &
+sleep 1; curl -s http://localhost:8080/health; kill %1 2>/dev/null</code></pre>
           <div style="font-size:12px;color:var(--text-muted);margin-top:4px">✓ {"status":"ok"} dönüyorsa başardın.</div>
         </div>
       </div>
