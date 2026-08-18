@@ -9322,11 +9322,55 @@ curl -s "http://localhost:9090/api/v1/targets" \
           </li>
 
           <li>
+            <strong>Prometheus'ta tanımlı alarm kurallarını gör.</strong><br>
+            Tarayıcıda şu adresi aç:
+            <pre style="margin:6px 0"><code>http://localhost:9090/alerts</code></pre>
+            <code>monitoring/alerts.yml</code> dosyasında 4 kural tanımlı:<br><br>
+            <ul style="padding-left:1.25rem;display:flex;flex-direction:column;gap:6px;font-size:13px;margin:6px 0">
+              <li><strong>ServisDown</strong> — platform-ops 1 dakika boyunca erişilemezse tetiklenir (severity: critical)</li>
+              <li><strong>YuksekHataOrani</strong> — 5xx hata oranı %5'i geçerse tetiklenir (severity: warning)</li>
+              <li><strong>YuksekBellek</strong> — bellek kullanımı %80'i geçerse tetiklenir (severity: warning)</li>
+              <li><strong>DoluDisk</strong> — disk doluluku %85'i geçerse tetiklenir (severity: critical)</li>
+            </ul>
+            ✓ Her alarm için durum görürsün: <code>inactive</code> (tetiklenmedi), <code>pending</code> (eşik aşıldı, süre dolmadı), <code>firing</code> (aktif alarm).<br><br>
+            <strong>Yeni kural eklemek istersen</strong> <code>monitoring/alerts.yml</code> dosyasını düzenle, sonra Prometheus'u yenile:
+            <pre style="margin:6px 0"><code>curl -X POST http://localhost:9090/-/reload</code></pre>
+            ✓ Prometheus kuralları yeniden yükler, container'ı yeniden başlatmana gerek yok.
+          </li>
+
+          <li>
+            <strong>Test alarmı tetikle — ServisDown'ı gerçekten gör.</strong><br>
+            Platform-ops container'ını geçici olarak durdur:
+            <pre style="margin:6px 0"><code>docker stop platform-ops-app</code></pre>
+            Prometheus UI'da <code>http://localhost:9090/alerts</code> sayfasını yenile — 15 saniye içinde <strong>ServisDown</strong> kuralının <code>pending</code>, 1 dakika sonra <code>firing</code> durumuna geçtiğini göreceksin.<br><br>
+            Terminalde de kontrol edebilirsin:
+            <pre style="margin:6px 0"><code>curl -s "http://localhost:9090/api/v1/alerts" \
+  | python3 -m json.tool | grep -E '"state"|"alertname"'</code></pre>
+            ✓ <code>"state": "firing"</code> ve <code>"alertname": "ServisDown"</code> görürsün.<br><br>
+            Servisi geri başlat:
+            <pre style="margin:6px 0"><code>docker start platform-ops-app</code></pre>
+            ✓ Alarm 1 dakika içinde <code>inactive</code>'e döner.
+          </li>
+
+          <li>
             <strong>Alertmanager'da aktif alarm var mı kontrol et.</strong><br>
-            <pre style="margin:6px 0"><code>curl -s http://localhost:9093/api/v2/alerts | python3 -m json.tool
-curl -s "http://localhost:9090/api/v1/alerts" \
-  | python3 -m json.tool | grep '"state"'</code></pre>
-            ✓ Alarm yoksa boş liste döner. Alarm varsa <code>"state": "firing"</code> görürsün.
+            <pre style="margin:6px 0"><code>curl -s http://localhost:9093/api/v2/alerts | python3 -m json.tool</code></pre>
+            ✓ Alarm yoksa boş liste <code>[]</code> döner. Alarm varsa <code>"status": {"state": "active"}</code> görürsün.
+          </li>
+
+          <li>
+            <strong>Grafana'da alarm kur — CPU %80 geçince bildirim.</strong><br>
+            Sol menüden <strong>Alerting → Alert rules → New alert rule</strong> seç.<br><br>
+            <strong>Adım 1 — Sorgu yaz:</strong><br>
+            "A" sorgusuna şunu yapıştır:
+            <pre style="margin:6px 0"><code>100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)</code></pre>
+            <strong>Adım 2 — Eşik belirle:</strong><br>
+            "B — Threshold" bölümünde <strong>IS ABOVE</strong> seç, değer olarak <code>80</code> yaz.<br><br>
+            <strong>Adım 3 — Alarm adı ve klasör:</strong><br>
+            Name: <code>YuksekCPU</code> → Folder: <code>platform-ops</code> → Evaluation group: <code>default</code> → Evaluate every: <code>1m</code> → For: <code>2m</code><br><br>
+            <strong>Adım 4 — Kaydet:</strong><br>
+            Sağ üstten <strong>Save rule and exit</strong> butonuna bas.<br>
+            ✓ Grafana Alerting → Alert rules altında <code>YuksekCPU</code> kuralı görünür. CPU %80'i 2 dakika aşarsa <code>Firing</code> durumuna geçer.
           </li>
 
         </ol>
