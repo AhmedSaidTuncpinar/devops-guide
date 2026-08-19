@@ -45,23 +45,17 @@
   .nav-section { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 5px 4px; align-self: center; white-space: nowrap; }
   .nav-divider { width: 1px; background: var(--border); align-self: stretch; margin: 4px 2px; }
   .nav-btn { white-space: nowrap; padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-muted); font-size: 13px; cursor: pointer; text-decoration: none; }
-  .nav-btn.done { border-color: var(--done); color: var(--done); background: var(--accent-pale); }
   main { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 4rem; display: flex; flex-direction: column; gap: 2rem; }
   .hero { text-align: center; padding: 2rem 1rem 1rem; }
   .hero h1 { font-size: clamp(1.6rem, 5vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
   .hero p { color: var(--text-muted); }
   .progress-wrap { margin: 1.25rem auto 0; background: var(--border); border-radius: 4px; height: 6px; max-width: 380px; overflow: hidden; }
-  .progress-bar { height: 100%; background: var(--accent); width: 21%; border-radius: 4px; }
-  .progress-label { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
   .topic-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding: 0.5rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.5rem; }
   .section-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
   .section-header { display: flex; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); cursor: pointer; }
   .section-header:hover { background: var(--bg); }
   .section-num { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; color: var(--text-muted); min-width: 28px; }
   .section-title { flex: 1; font-size: 16px; font-weight: 700; }
-  .badge { font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; }
-  .badge-done { background: var(--accent-pale); color: var(--done); }
-  .badge-upcoming { background: var(--bg-code); color: var(--upcoming); }
   .chevron { color: var(--text-muted); font-size: 12px; transition: transform 0.2s; }
   .section-card.open .chevron { transform: rotate(180deg); }
   .section-body { display: none; padding: 1.5rem; flex-direction: column; gap: 1.5rem; }
@@ -95,9 +89,9 @@
   <a class="nav-btn" href="#baslangic">Kurulum Rehberi</a>
   <div class="nav-divider"></div>
   <span class="nav-section">Linux</span>
-  <a class="nav-btn done" href="#b1">B1 Navigasyon</a>
-  <a class="nav-btn done" href="#b2">B2 İzinler</a>
-  <a class="nav-btn done" href="#b3">B3 Metin</a>
+  <a class="nav-btn" href="#b1">B1 Navigasyon</a>
+  <a class="nav-btn" href="#b2">B2 İzinler</a>
+  <a class="nav-btn" href="#b3">B3 Metin</a>
   <a class="nav-btn" href="#b4">B4 Process</a>
   <a class="nav-btn" href="#b5">B5 Kullanıcı</a>
   <a class="nav-btn" href="#b6">B6 Servis</a>
@@ -200,8 +194,7 @@
   <div class="hero">
     <h1>DevOps Rehberi</h1>
     <p>Linux · Git · Docker · Bash · CI/CD · Kubernetes · Terraform · Cloud · Monitoring</p>
-    <div class="progress-wrap"><div class="progress-bar" style="width:11%"></div></div>
-    <p class="progress-label">3 / 28 bölüm tamamlandı</p>
+</div>
   </div>
 
   <!-- BASLANGIC -->
@@ -209,7 +202,6 @@
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">🔧</span>
       <span class="section-title">Başlamadan Önce — Ortam Kurulumu</span>
-      <span class="badge badge-upcoming">Ön Hazırlık</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -514,7 +506,6 @@ ls ~/.vscode-server/bin/ 2>/dev/null | head -3 || echo "WSL server henüz kurulm
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">🗺</span>
       <span class="section-title">Platform Mühendisi Yol Haritası</span>
-      <span class="badge badge-upcoming">Genel Bakış</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -603,7 +594,6 @@ ls ~/.vscode-server/bin/ 2>/dev/null | head -3 || echo "WSL server henüz kurulm
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">B1</span>
       <span class="section-title">Navigasyon ve Dosya Sistemi</span>
-      <span class="badge badge-done">Tamamlandı</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -653,7 +643,6 @@ ls ~/.vscode-server/bin/ 2>/dev/null | head -3 || echo "WSL server henüz kurulm
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">B2</span>
       <span class="section-title">Dosya İzinleri</span>
-      <span class="badge badge-done">Tamamlandı</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -715,7 +704,6 @@ x = çalıştır / klasörde: içine gir  (1)
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">B3</span>
       <span class="section-title">Metin İşleme</span>
-      <span class="badge badge-done">Tamamlandı</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -793,7 +781,6 @@ grep -i "ERROR" app.log | wc -l</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">B4</span>
       <span class="section-title">Process Yönetimi</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -842,7 +829,6 @@ kill 1234</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">B5</span>
       <span class="section-title">Kullanıcı Yönetimi</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -886,7 +872,6 @@ kill 1234</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">B6</span>
       <span class="section-title">Servis Yönetimi (systemd)</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -930,7 +915,6 @@ kill 1234</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">B7</span>
       <span class="section-title">Ağ Temelleri</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -967,7 +951,6 @@ kill 1234</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">B8</span>
       <span class="section-title">Disk ve Sistem Kaynakları</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1007,7 +990,6 @@ kill 1234</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">O1</span>
       <span class="section-title">Senaryo: Sabah Vardiyası — Sunucu Kontrolü</span>
-      <span class="badge badge-upcoming">Hafta Sonu</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1079,7 +1061,6 @@ kill 1234</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">O2</span>
       <span class="section-title">Senaryo: Yeni Geliştirici + Güvenli Ortam Kurulumu</span>
-      <span class="badge badge-upcoming">Hafta Sonu</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1160,7 +1141,6 @@ kill 1234</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">O3</span>
       <span class="section-title">Playwright Projesi — Kapsamlı Linux Araştırması</span>
-      <span class="badge badge-upcoming">Hafta Sonu</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1311,7 +1291,6 @@ kill 1234</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">G1</span>
       <span class="section-title">Git Temelleri</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1370,7 +1349,6 @@ git push
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">G2</span>
       <span class="section-title">Branch Yönetimi</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1424,7 +1402,6 @@ git branch -d feature/login-page</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">G3</span>
       <span class="section-title">İleri Seviye Git</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1473,7 +1450,6 @@ git stash pop
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">G4</span>
       <span class="section-title">Conflict Çözme</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1515,7 +1491,6 @@ bu diğer branch'in değişikliği
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">G5</span>
       <span class="section-title">Git Hooks</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1558,7 +1533,6 @@ fi</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">G6</span>
       <span class="section-title">Git Log ve Tarih</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1612,7 +1586,6 @@ git diff HEAD~1 HEAD
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">D1</span>
       <span class="section-title">Temel Kavramlar</span>
-      <span class="badge badge-upcoming">Docker</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1679,7 +1652,6 @@ Docker ile:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">D2</span>
       <span class="section-title">Container Yönetimi</span>
-      <span class="badge badge-upcoming">Docker</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1758,7 +1730,6 @@ astuncpinar@LY-P270:~$ docker ps    <span class="comment">← doğru, host üzer
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">D3</span>
       <span class="section-title">Image Yönetimi</span>
-      <span class="badge badge-upcoming">Docker</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1820,7 +1791,6 @@ node:18-alpine  ~170 MB   <span class="comment">← alpine tabanı + Node.js —
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">D4</span>
       <span class="section-title">Volume ve Port</span>
-      <span class="badge badge-upcoming">Docker</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1893,7 +1863,6 @@ docker run -p 5432:5432 postgres
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">D5</span>
       <span class="section-title">Dockerfile</span>
-      <span class="badge badge-upcoming">Docker</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -1976,7 +1945,6 @@ docker run connect-playwright yarn lint</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">D6</span>
       <span class="section-title">Docker Compose</span>
-      <span class="badge badge-upcoming">Docker</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2064,7 +2032,6 @@ volumes:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">—</span>
       <span class="section-title">Bash Nedir?</span>
-      <span class="badge badge-done">Ön Okuma</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2125,7 +2092,6 @@ Bash, diğer dillerin altındaki yapıştırıcıdır.</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">S1</span>
       <span class="section-title">Script Temelleri</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2191,7 +2157,6 @@ echo "Bitti."</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">S2</span>
       <span class="section-title">Değişkenler</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2255,7 +2220,6 @@ echo "Log: $LOG_DOSYASI"</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">S3</span>
       <span class="section-title">Koşullar — if / elif / else</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2319,7 +2283,6 @@ fi</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">S4</span>
       <span class="section-title">Döngüler — for / while</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2387,7 +2350,6 @@ done</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">S5</span>
       <span class="section-title">Fonksiyonlar</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2459,7 +2421,6 @@ log "Deploy tamamlandı"</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">S6</span>
       <span class="section-title">Dosya ve String İşlemleri</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2521,7 +2482,6 @@ echo "Ortam: $ORTAM"</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">S7</span>
       <span class="section-title">Parametre ve Hata Yönetimi</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2588,7 +2548,6 @@ fi</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">S8</span>
       <span class="section-title">Gerçek Dünya Scriptleri</span>
-      <span class="badge badge-upcoming">Sıradaki</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2682,7 +2641,6 @@ log "Ortam hazır, testler başlatılıyor..."</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">P1</span>
       <span class="section-title">Proje Kurulumu</span>
-      <span class="badge badge-upcoming">Project</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2743,7 +2701,6 @@ log "Ortam hazır, testler başlatılıyor..."</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">P2</span>
       <span class="section-title">Git Akışı</span>
-      <span class="badge badge-upcoming">Project</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2812,7 +2769,6 @@ log "Ortam hazır, testler başlatılıyor..."</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">P3</span>
       <span class="section-title">Linux Görevleri</span>
-      <span class="badge badge-upcoming">Project</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2876,7 +2832,6 @@ log "Ortam hazır, testler başlatılıyor..."</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">P4</span>
       <span class="section-title">Otomatize Et</span>
-      <span class="badge badge-upcoming">Project</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -2952,7 +2907,6 @@ echo "[$DATE] Sağlık kontrolü tamamlandı" >> "$LOG"</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">C1</span>
       <span class="section-title">Temel Kavramlar</span>
-      <span class="badge badge-upcoming">CI/CD</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3012,7 +2966,6 @@ CI/CD ile:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">C2</span>
       <span class="section-title">GitHub Actions</span>
-      <span class="badge badge-upcoming">CI/CD</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3086,7 +3039,6 @@ jobs:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">C3</span>
       <span class="section-title">Pipeline Adımları</span>
-      <span class="badge badge-upcoming">CI/CD</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3154,7 +3106,6 @@ jobs:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">C4</span>
       <span class="section-title">Ortamlar</span>
-      <span class="badge badge-upcoming">CI/CD</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3207,7 +3158,6 @@ production → canlı — gerçek kullanıcılar, gerçek veri — dağıtım i�
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">C5</span>
       <span class="section-title">Gizli Değerler ve Değişkenler</span>
-      <span class="badge badge-upcoming">CI/CD</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3270,7 +3220,6 @@ env:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">C6</span>
       <span class="section-title">Gerçek Dünya</span>
-      <span class="badge badge-upcoming">CI/CD</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3312,7 +3261,6 @@ env:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">K1</span>
       <span class="section-title">Temel Kavramlar</span>
-      <span class="badge badge-upcoming">Kubernetes</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3380,7 +3328,6 @@ Kubernetes o image'ları çeker ve nerede çalıştıracağına karar verir.</co
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">K2</span>
       <span class="section-title">Mimari</span>
-      <span class="badge badge-upcoming">Kubernetes</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3458,7 +3405,6 @@ Kubernetes o image'ları çeker ve nerede çalıştıracağına karar verir.</co
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">K3</span>
       <span class="section-title">kubectl</span>
-      <span class="badge badge-upcoming">Kubernetes</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3538,7 +3484,6 @@ kubectl apply -f app.yaml -n staging</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">K4</span>
       <span class="section-title">İş Yükleri — Pod, Deployment, ReplicaSet</span>
-      <span class="badge badge-upcoming">Kubernetes</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3677,7 +3622,6 @@ kubectl rollout resume deployment/web-app</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">K5</span>
       <span class="section-title">Service ve Ağ</span>
-      <span class="badge badge-upcoming">Kubernetes</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3788,7 +3732,6 @@ spec:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">K6</span>
       <span class="section-title">Config ve Depolama</span>
-      <span class="badge badge-upcoming">Kubernetes</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -3908,7 +3851,6 @@ spec:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">K7</span>
       <span class="section-title">Gerçek Dünya</span>
-      <span class="badge badge-upcoming">Kubernetes</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4030,7 +3972,6 @@ kubectl port-forward pod/&lt;pod-adı&gt; 8080:3000 -n my-api</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">T1</span>
       <span class="section-title">Terraform Nedir?</span>
-      <span class="badge badge-upcoming">Terraform</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4096,7 +4037,6 @@ Cloudflare → DNS, SSL sertifikaları...
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">T2</span>
       <span class="section-title">Dosya Yapısı ve Sözdizimi</span>
-      <span class="badge badge-upcoming">Terraform</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4208,7 +4148,6 @@ ingress {
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">T3</span>
       <span class="section-title">Temel Komutlar</span>
-      <span class="badge badge-upcoming">Terraform</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4288,7 +4227,6 @@ Plan: 1 to add, 1 to change, 1 to destroy.
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">T4</span>
       <span class="section-title">Değişkenler ve Çıktılar</span>
-      <span class="badge badge-upcoming">Terraform</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4417,7 +4355,6 @@ terraform apply
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">T5</span>
       <span class="section-title">Modüller</span>
-      <span class="badge badge-upcoming">Terraform</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4528,7 +4465,6 @@ module "vpc" {
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">T6</span>
       <span class="section-title">State Yönetimi</span>
-      <span class="badge badge-upcoming">Terraform</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4625,7 +4561,6 @@ terraform import aws_instance.web i-0abc123</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">T7</span>
       <span class="section-title">Gerçek Dünya Senaryosu</span>
-      <span class="badge badge-upcoming">Terraform</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4730,7 +4665,6 @@ jobs:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">A1</span>
       <span class="section-title">Temel Kavramlar</span>
-      <span class="badge badge-upcoming">AWS</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4831,7 +4765,6 @@ aws sts get-caller-identity
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">A2</span>
       <span class="section-title">IAM — Kimlik ve Erişim Yönetimi</span>
-      <span class="badge badge-upcoming">AWS</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -4951,7 +4884,6 @@ aws iam simulate-principal-policy \
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">A3</span>
       <span class="section-title">EC2 — Sanal Sunucu</span>
-      <span class="badge badge-upcoming">AWS</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -5081,7 +5013,6 @@ echo "&lt;h1&gt;Merhaba AWS&lt;/h1&gt;" > /var/www/html/index.html'
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">A4</span>
       <span class="section-title">S3 — Nesne Depolama</span>
-      <span class="badge badge-upcoming">AWS</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -5208,7 +5139,6 @@ aws s3 sync /var/log/app/ s3://log-archive/$(date +%Y%m%d)/</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">A5</span>
       <span class="section-title">VPC — Sanal Özel Ağ</span>
-      <span class="badge badge-upcoming">AWS</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -5309,7 +5239,6 @@ internet → Load Balancer (public)
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">A6</span>
       <span class="section-title">RDS ve Yönetilen Servisler</span>
-      <span class="badge badge-upcoming">AWS</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -5431,7 +5360,6 @@ aws logs get-log-events \
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">A7</span>
       <span class="section-title">Gerçek Dünya — Tam AWS Mimarisi</span>
-      <span class="badge badge-upcoming">AWS</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -5571,7 +5499,6 @@ aws cloudtrail describe-trails</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">M1</span>
       <span class="section-title">Temel Kavramlar</span>
-      <span class="badge badge-upcoming">Monitoring</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -5654,7 +5581,6 @@ Doygunluk   → sistem ne kadar dolu / kapasiteye ne kadar yakın</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">M2</span>
       <span class="section-title">Prometheus</span>
-      <span class="badge badge-upcoming">Monitoring</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -5796,7 +5722,6 @@ app.get('/metrics', async (req, res) => {
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">M3</span>
       <span class="section-title">Grafana — Dashboard ve Görselleştirme</span>
-      <span class="badge badge-upcoming">Monitoring</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -5912,7 +5837,6 @@ Ortam: [production ▼]   Sunucu: [api-1 ▼]</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">M4</span>
       <span class="section-title">Alarmlar ve Uyarılar</span>
-      <span class="badge badge-upcoming">Monitoring</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -6072,7 +5996,6 @@ p99 gecikme > 2 saniye            ← performans sorunu
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">M5</span>
       <span class="section-title">Log Yönetimi</span>
-      <span class="badge badge-upcoming">Monitoring</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -6217,7 +6140,6 @@ scrape_configs:
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">M6</span>
       <span class="section-title">SLI, SLO, SLA</span>
-      <span class="badge badge-upcoming">Monitoring</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -6321,7 +6243,6 @@ Kalan bütçe: 31.8 dk
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">M7</span>
       <span class="section-title">Gerçek Dünya — Olay Müdahalesi</span>
-      <span class="badge badge-upcoming">Monitoring</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -6489,7 +6410,6 @@ open localhost:3000   <span class="comment">← Grafana</span></code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">★</span>
       <span class="section-title">Proje Senaryosu — Ne İnşa Ediyoruz?</span>
-      <span class="badge badge-upcoming">Giriş</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -6538,7 +6458,6 @@ open localhost:3000   <span class="comment">← Grafana</span></code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Gün 1</span>
       <span class="section-title">Sistemi Tanı ve Ortamı Kur</span>
-      <span class="badge badge-upcoming">Linux B1–B8</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -6783,7 +6702,6 @@ grep "platform-ops" /etc/hosts</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Gün 1</span>
       <span class="section-title">Versiyonu Başlat — Repo, Branch, Hook</span>
-      <span class="badge badge-upcoming">Git G1–G6</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -7085,7 +7003,6 @@ git push origin --tags
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Gün 2</span>
       <span class="section-title">API'yi Paketle — Docker ile Konteynerizasyon</span>
-      <span class="badge badge-upcoming">Docker D1–D6</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -7482,7 +7399,6 @@ git log --oneline --graph --all</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Gün 3</span>
       <span class="section-title">Her Şeyi Otomatize Et — Bash Scriptleri</span>
-      <span class="badge badge-upcoming">Bash S1–S8</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -7854,7 +7770,6 @@ git log --oneline --graph --all</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Gün 4</span>
       <span class="section-title">Pipeline Kur — GitHub Actions CI/CD</span>
-      <span class="badge badge-upcoming">CI/CD C1–C6</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -8112,7 +8027,6 @@ git log --oneline --graph --all</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Gün 5</span>
       <span class="section-title">Cluster'a Deploy Et — Kubernetes</span>
-      <span class="badge badge-upcoming">Kubernetes K1–K7</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -8444,7 +8358,6 @@ git log --oneline --graph --all</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Gün 6</span>
       <span class="section-title">Altyapıyı Kodla — Terraform</span>
-      <span class="badge badge-upcoming">Terraform T1–T7</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -8757,7 +8670,6 @@ git log --oneline --graph --all</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Gün 7</span>
       <span class="section-title">Bulut Hazırlığı — AWS CLI ile LocalStack</span>
-      <span class="badge badge-upcoming">AWS A1–A7</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -9016,7 +8928,6 @@ git log --oneline --graph --all</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Gün 8</span>
       <span class="section-title">İzlemeye Al — Prometheus + Grafana + Alertmanager</span>
-      <span class="badge badge-upcoming">Monitoring M1–M7</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -9480,7 +9391,6 @@ echo "=== platform-ops production'a hazir ==="</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">Sıfırla</span>
       <span class="section-title">Proje Nasıl Silinir?</span>
-      <span class="badge badge-upcoming">Temizlik</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
@@ -9584,7 +9494,6 @@ echo "Settings → Danger Zone → Delete this repository"</code></pre>
     <div class="section-header" onclick="toggle(this)">
       <span class="section-num">🎯</span>
       <span class="section-title">Production Senaryoları — Mülakat ve Gerçek Hayat</span>
-      <span class="badge badge-upcoming">10 Senaryo + Lab</span>
       <span class="chevron">▼</span>
     </div>
     <div class="section-body">
