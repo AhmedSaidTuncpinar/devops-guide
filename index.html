@@ -615,13 +615,13 @@ ls ~/.vscode-server/bin/ 2>/dev/null | head -3 || echo "WSL server henüz kurulm
       </div>
       <div>
         <div class="block-title">Dosya Sistemi Yapısı</div>
-        <pre><code>/           <span class="comment">→ kök, her şeyin başlangıcı</span>
-/etc        <span class="comment">→ konfigürasyon dosyaları</span>
-/home       <span class="comment">→ kullanıcı klasörleri</span>
-/var/log    <span class="comment">→ log dosyaları</span>
-/tmp        <span class="comment">→ geçici dosyalar</span>
-/usr/bin    <span class="comment">→ programlar</span>
-/proc       <span class="comment">→ kernel ve process bilgisi</span></code></pre>
+        <pre><code>/           <span class="comment">→ root, the start of everything</span>
+/etc        <span class="comment">→ configuration files</span>
+/home       <span class="comment">→ user directories</span>
+/var/log    <span class="comment">→ log files</span>
+/tmp        <span class="comment">→ temporary files</span>
+/usr/bin    <span class="comment">→ programs</span>
+/proc       <span class="comment">→ kernel and process information</span></code></pre>
       </div>
       <div class="exercises">
         <div class="block-title">Günlük Ödev</div>
@@ -741,25 +741,25 @@ x = çalıştır / klasörde: içine gir  (1)
       </div>
       <div>
         <div class="block-title">Pipe Zinciri Örnekleri</div>
-        <pre><code><span class="comment"># passwd'den sadece kullanıcı adlarını al</span>
+        <pre><code><span class="comment"># get only usernames from passwd</span>
 cut -d: -f1 /etc/passwd
 
-<span class="comment"># 7. sütunu al, sırala, tekrarları say</span>
+<span class="comment"># get 7th column, sort, count duplicates</span>
 cut -d: -f7 /etc/passwd | sort | uniq -c
 
-<span class="comment"># nologin olan kaç kullanıcı var</span>
+<span class="comment"># how many users have nologin</span>
 grep "nologin" /etc/passwd | wc -l
 
-<span class="comment"># satır numarasıyla bul</span>
+<span class="comment"># find with line number</span>
 grep -n "root" /etc/passwd
 
-<span class="comment"># klasörleri filtrele (ls -la çıktısından)</span>
+<span class="comment"># filter directories (from ls -la output)</span>
 ls -la /project | grep "^d"
 
-<span class="comment"># proje içinde recursive ara</span>
+<span class="comment"># search recursively inside project</span>
 grep -r "import" /project/utils
 
-<span class="comment"># büyük/küçük harf duyarsız</span>
+<span class="comment"># case insensitive</span>
 grep -i "ERROR" app.log | wc -l</code></pre>
       </div>
       <div class="exercises">
@@ -801,14 +801,14 @@ grep -i "ERROR" app.log | wc -l</code></pre>
       </div>
       <div>
         <div class="block-title">Örnek</div>
-        <pre><code><span class="comment"># tüm processleri listele, filtrele</span>
+        <pre><code><span class="comment"># list all processes, filter</span>
 ps aux | grep nginx
 
-<span class="comment"># arka planda çalıştır</span>
+<span class="comment"># run in the background</span>
 sleep 60 &
 jobs
 
-<span class="comment"># PID bul ve durdur</span>
+<span class="comment"># find PID and stop</span>
 kill 1234</code></pre>
       </div>
       <div class="exercises">
@@ -849,10 +849,10 @@ kill 1234</code></pre>
       </div>
       <div>
         <div class="block-title">Kritik Dosyalar</div>
-        <pre><code>/etc/passwd   <span class="comment">→ kullanıcı listesi</span>
-/etc/shadow   <span class="comment">→ şifreler (şifreli)</span>
-/etc/group    <span class="comment">→ grup listesi</span>
-/etc/sudoers  <span class="comment">→ sudo yetkileri</span></code></pre>
+        <pre><code>/etc/passwd   <span class="comment">→ user list</span>
+/etc/shadow   <span class="comment">→ passwords (encrypted)</span>
+/etc/group    <span class="comment">→ group list</span>
+/etc/sudoers  <span class="comment">→ sudo permissions</span></code></pre>
       </div>
       <div class="exercises">
         <div class="block-title">Ödev</div>
@@ -891,12 +891,12 @@ kill 1234</code></pre>
       </div>
       <div>
         <div class="block-title">Cron Syntax</div>
-        <pre><code><span class="comment"># dakika saat gün ay haftaGünü komut</span>
-* * * * *       <span class="comment">→ her dakika</span>
-0 * * * *       <span class="comment">→ her saat başı</span>
-0 0 * * *       <span class="comment">→ her gece yarısı</span>
-0 9 * * 1       <span class="comment">→ her Pazartesi 09:00</span>
-*/5 * * * *     <span class="comment">→ her 5 dakikada bir</span></code></pre>
+        <pre><code><span class="comment"># minute hour day month weekday command</span>
+* * * * *       <span class="comment">→ every minute</span>
+0 * * * *       <span class="comment">→ every hour</span>
+0 0 * * *       <span class="comment">→ every midnight</span>
+0 9 * * 1       <span class="comment">→ every Monday 09:00</span>
+*/5 * * * *     <span class="comment">→ every 5 minutes</span></code></pre>
       </div>
       <div class="exercises">
         <div class="block-title">Ödev</div>
@@ -1296,10 +1296,10 @@ kill 1234</code></pre>
     <div class="section-body">
       <div>
         <div class="block-title">Temel Kavramlar</div>
-        <pre><code>Working Directory  <span class="comment">→ dosyaların bulunduğu yer</span>
-Staging Area       <span class="comment">→ commit'e hazır alan (index)</span>
-Repository         <span class="comment">→ commit geçmişi (.git klasörü)</span>
-Remote             <span class="comment">→ uzak repo (GitHub, GitLab)</span></code></pre>
+        <pre><code>Working Directory  <span class="comment">→ where files are located</span>
+Staging Area       <span class="comment">→ area ready to commit (index)</span>
+Repository         <span class="comment">→ commit history (.git directory)</span>
+Remote             <span class="comment">→ remote repo (GitHub, GitLab)</span></code></pre>
       </div>
       <div>
         <div class="block-title">Komutlar</div>
@@ -1318,19 +1318,19 @@ Remote             <span class="comment">→ uzak repo (GitHub, GitLab)</span></
       </div>
       <div>
         <div class="block-title">Tipik İş Akışı</div>
-        <pre><code><span class="comment"># değişiklikleri gör</span>
+        <pre><code><span class="comment"># see changes</span>
 git status
-<span class="comment"># → Git | git status = hangi dosyalar değişti, staged mi unstaged mi — her şeyden önce buna bak — EZBER</span>
+<span class="comment"># → Git | git status = which files changed, staged or unstaged — check this before anything else — EZBER</span>
 
-<span class="comment"># dosyaları stage'e ekle</span>
+<span class="comment"># add files to stage</span>
 git add dosya.ts
 
-<span class="comment"># commit oluştur</span>
+<span class="comment"># create commit</span>
 git commit -m "feat: yeni özellik eklendi"
 
-<span class="comment"># uzak repoya gönder</span>
+<span class="comment"># push to remote repo</span>
 git push
-<span class="comment"># → Git | git push = local commit'leri remote'a gönder — EZBER</span></code></pre>
+<span class="comment"># → Git | git push = send local commits to remote — EZBER</span></code></pre>
       </div>
       <div class="exercises">
         <div class="block-title">Ödev</div>
@@ -1368,20 +1368,20 @@ git push
       </div>
       <div>
         <div class="block-title">Tipik Branch İş Akışı</div>
-        <pre><code><span class="comment"># yeni feature branch oluştur</span>
+        <pre><code><span class="comment"># create new feature branch</span>
 git checkout -b feature/login-page
-<span class="comment"># → Git | git checkout -b = yeni branch oluştur ve hemen geç — EZBER</span>
+<span class="comment"># → Git | git checkout -b = create new branch and switch immediately — EZBER</span>
 
-<span class="comment"># değişiklikleri yap, commit at</span>
+<span class="comment"># make changes, commit</span>
 git add .
 git commit -m "feat: login sayfası eklendi"
 
-<span class="comment"># main'e dön ve merge et</span>
+<span class="comment"># return to main and merge</span>
 git checkout main
 git merge feature/login-page
-<span class="comment"># → Git | git merge = branch'i mevcut branch'e birleştir — EZBER</span>
+<span class="comment"># → Git | git merge = merge branch into current branch — EZBER</span>
 
-<span class="comment"># branch'i sil</span>
+<span class="comment"># delete branch</span>
 git branch -d feature/login-page</code></pre>
       </div>
       <div class="exercises">
@@ -1421,17 +1421,17 @@ git branch -d feature/login-page</code></pre>
       </div>
       <div>
         <div class="block-title">stash Örneği</div>
-        <pre><code><span class="comment"># yarım kalan değişikliği sakla</span>
+        <pre><code><span class="comment"># stash unfinished changes</span>
 git stash
-<span class="comment"># → Git | git stash = yarım kalan değişikliği geçici sakla — EZBER</span>
+<span class="comment"># → Git | git stash = temporarily stash unfinished changes — EZBER</span>
 
-<span class="comment"># başka branch'e geç, iş yap</span>
+<span class="comment"># switch to another branch, do work</span>
 git checkout hotfix/bug
 
-<span class="comment"># geri dön ve saklananı getir</span>
+<span class="comment"># go back and retrieve stashed changes</span>
 git checkout feature/login
 git stash pop
-<span class="comment"># → Git | git stash pop = saklanan değişikliği geri getir — EZBER</span></code></pre>
+<span class="comment"># → Git | git stash pop = restore stashed changes — EZBER</span></code></pre>
       </div>
       <div class="exercises">
         <div class="block-title">Ödev</div>
@@ -1455,7 +1455,7 @@ git stash pop
     <div class="section-body">
       <div>
         <div class="block-title">Conflict Ne Zaman Çıkar?</div>
-        <pre><code><span class="comment"># İki branch aynı satırı değiştirmişse</span>
+        <pre><code><span class="comment"># if two branches changed the same line</span>
 <<<<<<< HEAD
 bu benim değişikliğim
 =======
@@ -1496,20 +1496,20 @@ bu diğer branch'in değişikliği
     <div class="section-body">
       <div>
         <div class="block-title">Hook Nedir?</div>
-        <pre><code><span class="comment"># git olaylarında otomatik çalışan scriptler</span>
+        <pre><code><span class="comment"># scripts that run automatically on git events</span>
 .git/hooks/
 
-pre-commit      <span class="comment">→ commit'ten önce çalışır</span>
-commit-msg      <span class="comment">→ commit mesajını kontrol eder</span>
-pre-push        <span class="comment">→ push'tan önce çalışır</span>
-post-commit     <span class="comment">→ commit'ten sonra çalışır</span></code></pre>
+pre-commit      <span class="comment">→ runs before commit</span>
+commit-msg      <span class="comment">→ checks commit message</span>
+pre-push        <span class="comment">→ runs before push</span>
+post-commit     <span class="comment">→ runs after commit</span></code></pre>
       </div>
       <div>
         <div class="block-title">pre-commit Hook Örneği</div>
-        <pre><code><span class="comment"># .git/hooks/pre-commit dosyası</span>
+        <pre><code><span class="comment"># .git/hooks/pre-commit file</span>
 #!/bin/bash
 
-<span class="comment"># test'leri çalıştır, başarısız olursa commit engelle</span>
+<span class="comment"># run tests, block commit if they fail</span>
 npm test
 if [ $? -ne 0 ]; then
   echo "Testler başarısız, commit engellendi"
@@ -1552,20 +1552,20 @@ fi</code></pre>
       </div>
       <div>
         <div class="block-title">Örnek</div>
-        <pre><code><span class="comment"># kısa log</span>
+        <pre><code><span class="comment"># short log</span>
 git log --oneline -5
-<span class="comment"># → Git | git log --oneline = commit geçmişini kısa formatla gör — EZBER</span>
+<span class="comment"># → Git | git log --oneline = view commit history in short format — EZBER</span>
 
-<span class="comment"># branch grafiği</span>
+<span class="comment"># branch graph</span>
 git log --oneline --graph --all
 
-<span class="comment"># kimin yazdığını bul</span>
+<span class="comment"># find who wrote it</span>
 git blame tests/specs/01-login-page.spec.ts
-<span class="comment"># → Git | git blame = her satırı kimin yazdığını göster — EZBER</span>
+<span class="comment"># → Git | git blame = show who wrote each line — EZBER</span>
 
-<span class="comment"># son değişiklikleri gör</span>
+<span class="comment"># see latest changes</span>
 git diff HEAD~1 HEAD
-<span class="comment"># → Git | git diff HEAD~1 HEAD = son commit'te ne değişti — EZBER</span></code></pre>
+<span class="comment"># → Git | git diff HEAD~1 HEAD = what changed in the last commit — EZBER</span></code></pre>
       </div>
       <div class="exercises">
         <div class="block-title">Ödev</div>
@@ -1607,9 +1607,9 @@ Network    → container'ların birbiriyle konuşma yöntemi</code></pre>
 Container  → o tariften pişirilen yemek
 Registry   → tarif kitabı (Docker Hub)
 
-<span class="comment"># aynı tariften (image) sınırsız yemek (container) pişirebilirsin</span>
-<span class="comment"># yemeği silmek tarifi bozmaz</span>
-<span class="comment"># her container sıfırdan ve özdeş başlar</span></code></pre>
+<span class="comment"># from the same recipe (image) you can cook unlimited meals (containers)</span>
+<span class="comment"># deleting the meal does not break the recipe</span>
+<span class="comment"># every container starts from scratch and identically</span></code></pre>
       </div>
       <div>
         <div class="block-title">Docker Olmadan vs Docker ile</div>
@@ -1687,27 +1687,27 @@ Docker ile:
   ubuntu:22.04 \
   /bin/bash
 
-<span class="comment"># run          → yeni container oluştur ve başlat</span>
-<span class="comment"># -i           → stdin açık tut (etkileşimli)</span>
-<span class="comment"># -t           → terminal tahsis et (prompt görebilmek için)</span>
-<span class="comment"># --name       → sonradan isimle çağırabilmek için isim ver</span>
-<span class="comment"># -v host:cont → host klasörünü container'a bağla</span>
-<span class="comment"># :ro          → sadece okunabilir — /project'e yazamaz</span>
-<span class="comment"># ubuntu:22.04 → kullanılacak image</span>
-<span class="comment"># /bin/bash    → container içinde çalıştırılacak komut</span></code></pre>
+<span class="comment"># run          → create and start a new container</span>
+<span class="comment"># -i           → keep stdin open (interactive)</span>
+<span class="comment"># -t           → allocate a terminal (to see the prompt)</span>
+<span class="comment"># --name       → give a name to call it by later</span>
+<span class="comment"># -v host:cont → mount host directory into container</span>
+<span class="comment"># :ro          → read-only — cannot write to /project</span>
+<span class="comment"># ubuntu:22.04 → image to use</span>
+<span class="comment"># /bin/bash    → command to run inside the container</span></code></pre>
       </div>
       <div>
         <div class="block-title">Sık Yapılan Hata — Container İçinden Docker Çalıştırmak</div>
-        <pre><code><span class="comment"># YANLIŞ — container içinden docker komutu çalıştırmak</span>
+        <pre><code><span class="comment"># WRONG — running docker commands from inside a container</span>
 root@efe1a6609f48:/# docker ps
 bash: docker: command not found
 
-<span class="comment"># container içinde docker yüklü değil</span>
-<span class="comment"># docker komutları sadece HOST makinede çalışır</span>
-<span class="comment"># önce container'dan çık, sonra docker komutunu çalıştır</span>
+<span class="comment"># docker is not installed inside the container</span>
+<span class="comment"># docker commands only run on the HOST machine</span>
+<span class="comment"># exit the container first, then run the docker command</span>
 
 root@efe1a6609f48:/# exit
-astuncpinar@LY-P270:~$ docker ps    <span class="comment">← doğru, host üzerinde</span></code></pre>
+astuncpinar@LY-P270:~$ docker ps    <span class="comment">← correct, on the host</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ödev</div>
@@ -1754,23 +1754,23 @@ astuncpinar@LY-P270:~$ docker ps    <span class="comment">← doğru, host üzer
       </div>
       <div>
         <div class="block-title">Katmanlar Nasıl Çalışır?</div>
-        <pre><code>FROM ubuntu:22.04          <span class="comment">← Katman 1: temel işletim sistemi (~77MB)</span>
-RUN apt-get update         <span class="comment">← Katman 2: paket indeksi</span>
-RUN apt-get install -y git <span class="comment">← Katman 3: git kuruldu</span>
-COPY . /app                <span class="comment">← Katman 4: senin dosyaların</span>
+        <pre><code>FROM ubuntu:22.04          <span class="comment">← Layer 1: base operating system (~77MB)</span>
+RUN apt-get update         <span class="comment">← Layer 2: package index</span>
+RUN apt-get install -y git <span class="comment">← Layer 3: git installed</span>
+COPY . /app                <span class="comment">← Layer 4: your files</span>
 
-<span class="comment"># sadece COPY değiştiyse Docker 1-3 katmanlarını önbellekten kullanır</span>
-<span class="comment"># RUN apt-get install değiştiyse katman 3 ve 4 yeniden oluşur</span>
-<span class="comment"># en az değişen şeyleri en ÜSTE koy</span></code></pre>
+<span class="comment"># if only COPY changed, Docker uses layers 1-3 from cache</span>
+<span class="comment"># if RUN apt-get install changed, layers 3 and 4 are rebuilt</span>
+<span class="comment"># put the least-changing things at the TOP</span></code></pre>
       </div>
       <div>
         <div class="block-title">Image Boyutu — ubuntu vs alpine</div>
-        <pre><code>ubuntu:22.04    ~77 MB    <span class="comment">← tam işletim sistemi, çok araç dahil</span>
-alpine:3.18     ~7 MB     <span class="comment">← minimal işletim sistemi, çok hızlı indirilir</span>
-node:18         ~1.1 GB   <span class="comment">← ubuntu tabanı + Node.js</span>
-node:18-alpine  ~170 MB   <span class="comment">← alpine tabanı + Node.js — bunu tercih et</span>
+        <pre><code>ubuntu:22.04    ~77 MB    <span class="comment">← full operating system, many tools included</span>
+alpine:3.18     ~7 MB     <span class="comment">← minimal operating system, downloads very fast</span>
+node:18         ~1.1 GB   <span class="comment">← ubuntu base + Node.js</span>
+node:18-alpine  ~170 MB   <span class="comment">← alpine base + Node.js — prefer this</span>
 
-<span class="comment"># küçük image = daha hızlı indirme, daha hızlı CI, daha az saldırı yüzeyi</span></code></pre>
+<span class="comment"># small image = faster download, faster CI, smaller attack surface</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ödev</div>
@@ -1799,16 +1799,16 @@ node:18-alpine  ~170 MB   <span class="comment">← alpine tabanı + Node.js —
       </div>
       <div>
         <div class="block-title">Volume — Üç Türü</div>
-        <pre><code><span class="comment"># 1. Bind mount — belirli bir host klasörünü container'a bağla</span>
+        <pre><code><span class="comment"># 1. Bind mount — mount a specific host directory into the container</span>
 docker run -v /home/astuncpinar/connect-playwright:/project ubuntu
 
-<span class="comment"># 2. Salt okunur bind mount — container okuyabilir ama yazamaz</span>
+<span class="comment"># 2. Read-only bind mount — container can read but cannot write</span>
 docker run -v /home/astuncpinar/connect-playwright:/project:ro ubuntu
 
-<span class="comment"># 3. Named volume — Docker depolama yerini yönetir</span>
+<span class="comment"># 3. Named volume — Docker manages the storage location</span>
 docker run -v mydata:/app/data postgres
-docker volume ls               <span class="comment">← tüm named volume'ları listele</span>
-docker volume inspect mydata   <span class="comment">← nerede depolandığını gör</span></code></pre>
+docker volume ls               <span class="comment">← list all named volumes</span>
+docker volume inspect mydata   <span class="comment">← see where it is stored</span></code></pre>
       </div>
       <div>
         <div class="block-title">linux-lab2 Neden :ro Kullanıyor?</div>
@@ -1816,22 +1816,22 @@ docker volume inspect mydata   <span class="comment">← nerede depolandığın�
   -v /home/astuncpinar/connect-playwright:/project:ro \
   ubuntu:22.04 /bin/bash
 
-<span class="comment"># :ro = salt okunur (read-only)</span>
-<span class="comment"># container /project'teki tüm dosyaları okuyabilir</span>
-<span class="comment"># container /project'te değişiklik yapamaz, silemez, oluşturamaz</span>
-<span class="comment"># gerçek kod tabanını kazara değişiklikten korur</span></code></pre>
+<span class="comment"># :ro = read-only</span>
+<span class="comment"># container can read all files in /project</span>
+<span class="comment"># container cannot modify, delete, or create files in /project</span>
+<span class="comment"># protects the real codebase from accidental changes</span></code></pre>
       </div>
       <div>
         <div class="block-title">Port — Container Servislerini Dışarıya Açmak</div>
         <pre><code><span class="comment"># format: -p HOST_PORT:CONTAINER_PORT</span>
 
 docker run -p 8080:3000 myapp
-<span class="comment"># → tarayıcıdan: localhost:8080</span>
-<span class="comment"># → container 3000 portunda trafiği alır</span>
+<span class="comment"># → from browser: localhost:8080</span>
+<span class="comment"># → container receives traffic on port 3000</span>
 
 docker run -p 5432:5432 postgres
-<span class="comment"># → veritabanı istemcisi localhost:5432'ye bağlanır</span>
-<span class="comment"># → container içindeki postgres 5432'yi dinler</span></code></pre>
+<span class="comment"># → database client connects to localhost:5432</span>
+<span class="comment"># → postgres inside the container listens on 5432</span></code></pre>
       </div>
       <div>
         <div class="block-title">Port Komutları</div>
@@ -1887,42 +1887,42 @@ docker run -p 5432:5432 postgres
       <div>
         <div class="block-title">connect-playwright Dockerfile'ı — Satır Satır</div>
         <pre><code>FROM node:18
-<span class="comment"># resmi Node.js 18 image'ından başla (Debian tabanlı)</span>
+<span class="comment"># start from the official Node.js 18 image (Debian-based)</span>
 
 RUN apt-get update &amp;&amp; apt-get install -y git
-<span class="comment"># git kur — yarn postinstall'da git config çalıştığı için gerekli</span>
+<span class="comment"># install git — required because git config runs in yarn postinstall</span>
 
 WORKDIR /usr/src/app
-<span class="comment"># bundan sonraki tüm komutlar bu klasörde çalışır</span>
+<span class="comment"># all subsequent commands run in this directory</span>
 
 COPY package.json yarn.lock ./
-<span class="comment"># bağımlılık dosyalarını kaynaktan ÖNCE kopyala — önbellek hilesi</span>
-<span class="comment"># kaynak değişse ama package.json değişmese → yarn install önbellekten</span>
+<span class="comment"># copy dependency files BEFORE source — cache trick</span>
+<span class="comment"># if source changes but package.json does not → yarn install from cache</span>
 
 RUN yarn install --ignore-scripts
-<span class="comment"># paketleri kur — --ignore-scripts postinstall git hook'unu atlar</span>
+<span class="comment"># install packages — --ignore-scripts skips the postinstall git hook</span>
 
 COPY . .
-<span class="comment"># tüm kaynak dosyaları kopyala (paketler kurulduktan sonra)</span>
+<span class="comment"># copy all source files (after packages are installed)</span>
 
 CMD ["yarn", "test"]
-<span class="comment"># container başladığında çalıştırılacak varsayılan komut</span></code></pre>
+<span class="comment"># default command to run when container starts</span></code></pre>
       </div>
       <div>
         <div class="block-title">Build ve Çalıştır</div>
-        <pre><code><span class="comment"># bulunduğun klasördeki Dockerfile'dan image oluştur</span>
+        <pre><code><span class="comment"># build image from Dockerfile in current directory</span>
 docker build -t connect-playwright .
 
-<span class="comment"># tag ile build</span>
+<span class="comment"># build with tag</span>
 docker build -t myapp:1.0 .
 
-<span class="comment"># build argümanı ile build</span>
+<span class="comment"># build with build argument</span>
 docker build --build-arg NPM_TOKEN=abc123 -t myapp .
 
-<span class="comment"># image'ı çalıştır</span>
+<span class="comment"># run the image</span>
 docker run connect-playwright
 
-<span class="comment"># farklı komutla çalıştır (CMD'yi geçersiz kılar)</span>
+<span class="comment"># run with a different command (overrides CMD)</span>
 docker run connect-playwright yarn lint</code></pre>
       </div>
       <div>
@@ -1953,12 +1953,12 @@ docker run connect-playwright yarn lint</code></pre>
       </div>
       <div>
         <div class="block-title">Tek Container vs Compose</div>
-        <pre><code><span class="comment"># compose olmadan — 3 ayrı komut, manuel ağ kurulumu</span>
+        <pre><code><span class="comment"># without compose — 3 separate commands, manual network setup</span>
 docker run -d --name db postgres:15
 docker run -d --name cache redis:7
 docker run -d --name web -p 8080:3000 --link db --link cache myapp
 
-<span class="comment"># compose ile — tek komut, ağ otomatik</span>
+<span class="comment"># with compose — single command, network automatic</span>
 docker compose up -d</code></pre>
       </div>
       <div>
@@ -1966,21 +1966,21 @@ docker compose up -d</code></pre>
         <pre><code>services:
 
   web:
-    build: .                      <span class="comment"># bu klasördeki Dockerfile'dan image oluştur</span>
+    build: .                      <span class="comment"># build image from Dockerfile in this directory</span>
     ports:
       - "8080:3000"               <span class="comment"># host:container</span>
     depends_on:
-      - db                        <span class="comment"># önce db başlasın</span>
+      - db                        <span class="comment"># let db start first</span>
     environment:
       DATABASE_URL: postgres://postgres:secret@db:5432/myapp
       NODE_ENV: development
     volumes:
-      - .:/app                    <span class="comment"># canlı yeniden yükleme için kaynak mount</span>
+      - .:/app                    <span class="comment"># source mount for live reload</span>
 
   db:
-    image: postgres:15            <span class="comment"># resmi image, build'e gerek yok</span>
+    image: postgres:15            <span class="comment"># official image, no build needed</span>
     volumes:
-      - pgdata:/var/lib/postgresql/data   <span class="comment"># veritabanı dosyalarını kalıcı tut</span>
+      - pgdata:/var/lib/postgresql/data   <span class="comment"># keep database files persistent</span>
     environment:
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: myapp
@@ -1989,7 +1989,7 @@ docker compose up -d</code></pre>
     image: redis:7-alpine
 
 volumes:
-  pgdata:                         <span class="comment"># named volume — Docker yönetir</span></code></pre>
+  pgdata:                         <span class="comment"># named volume — Docker manages</span></code></pre>
       </div>
       <div>
         <div class="block-title">Compose Komutları</div>
@@ -2097,12 +2097,12 @@ Bash, diğer dillerin altındaki yapıştırıcıdır.</code></pre>
     <div class="section-body">
       <div>
         <div class="block-title">Script Nedir?</div>
-        <pre><code><span class="comment"># Script = sıralı komutları bir dosyaya yaz, tek seferde çalıştır</span>
-<span class="comment"># Her gün yaptığın 10 komutu scriptle → 1 komuta indir</span>
+        <pre><code><span class="comment"># Script = write sequential commands to a file, run all at once</span>
+<span class="comment"># Script the 10 commands you run every day → reduce to 1 command</span>
 
-<span class="comment"># shebang: hangi shell çalıştıracak</span>
-#!/bin/bash        <span class="comment">→ bash ile çalıştır</span>
-#!/usr/bin/env bash <span class="comment">→ daha taşınabilir versiyon</span></code></pre>
+<span class="comment"># shebang: which shell will run it</span>
+#!/bin/bash        <span class="comment">→ run with bash</span>
+#!/usr/bin/env bash <span class="comment">→ more portable version</span></code></pre>
       </div>
       <div>
         <div class="block-title">Komutlar</div>
@@ -2130,13 +2130,13 @@ echo "Bitti."</code></pre>
       </div>
       <div>
         <div class="block-title">Gerçek Hayatta Ne Zaman Kullanırsın?</div>
-        <pre><code><span class="comment"># CI/CD'de her deploy öncesi çalışan script</span>
+        <pre><code><span class="comment"># script that runs before every deploy in CI/CD</span>
 ./deploy-check.sh
 
-<span class="comment"># Sabah sunucu kontrolü</span>
+<span class="comment"># morning server check</span>
 ./morning-check.sh
 
-<span class="comment"># Playwright testleri başlatmadan önce ortam hazırlama</span>
+<span class="comment"># prepare the environment before starting Playwright tests</span>
 ./setup-test-env.sh && npm run test</code></pre>
       </div>
       <div class="exercises">
@@ -2162,17 +2162,17 @@ echo "Bitti."</code></pre>
     <div class="section-body">
       <div>
         <div class="block-title">Tanımlama ve Kullanma</div>
-        <pre><code><span class="comment"># tanımla — = etrafında boşluk olmaz</span>
+        <pre><code><span class="comment"># define — no spaces around =</span>
 ISIM="ahmed"
 SAYI=42
 KLASOR="/project/tests"
 
-<span class="comment"># kullan — $ ile oku</span>
+<span class="comment"># use — read with $</span>
 echo $ISIM
 echo "Merhaba $ISIM"
-echo "Klasör: ${KLASOR}/specs"    <span class="comment">→ {} ile sınır belirt</span>
+echo "Klasör: ${KLASOR}/specs"    <span class="comment">→ delimit with {}</span>
 
-<span class="comment"># komut çıktısını değişkene ata</span>
+<span class="comment"># assign command output to variable</span>
 TARIH=$(date)
 DOSYA_SAYISI=$(ls /project | wc -l)
 echo "Bugün: $TARIH"
@@ -2194,12 +2194,12 @@ echo "Dosya sayısı: $DOSYA_SAYISI"</code></pre>
       </div>
       <div>
         <div class="block-title">Gerçek Hayatta Ne Zaman Kullanırsın?</div>
-        <pre><code><span class="comment"># deploy scripti — environment değişkeni ile</span>
+        <pre><code><span class="comment"># deploy script — with environment variable</span>
 ORTAM="production"
 VERSIYON="1.4.2"
 echo "Deploy ediliyor: $ORTAM v$VERSIYON"
 
-<span class="comment"># log dosyası ismine tarih ekle</span>
+<span class="comment"># add date to log file name</span>
 LOG_DOSYASI="test-$(date +%Y%m%d).log"
 echo "Log: $LOG_DOSYASI"</code></pre>
       </div>
@@ -2231,7 +2231,7 @@ elif [ başka koşul ]; then
   echo "belki"
 else
   echo "yanlış"
-fi                  <span class="comment">→ if'in tersi, bloğu kapatır</span></code></pre>
+fi                  <span class="comment">→ opposite of if, closes the block</span></code></pre>
       </div>
       <div>
         <div class="block-title">Karşılaştırma Operatörleri</div>
@@ -2250,7 +2250,7 @@ fi                  <span class="comment">→ if'in tersi, bloğu kapatır</span
       </div>
       <div>
         <div class="block-title">Gerçek Hayatta Ne Zaman Kullanırsın?</div>
-        <pre><code><span class="comment"># disk doluysa uyar</span>
+        <pre><code><span class="comment"># warn if disk is full</span>
 DOLULUK=$(df / | tail -1 | awk '{print $5}' | tr -d '%')
 if [ $DOLULUK -gt 80 ]; then
   echo "UYARI: Disk %$DOLULUK dolu!"
@@ -2258,7 +2258,7 @@ else
   echo "Disk normal: %$DOLULUK"
 fi
 
-<span class="comment"># .env dosyası var mı kontrol et</span>
+<span class="comment"># check if .env file exists</span>
 if [ -f ".env" ]; then
   echo ".env bulundu"
 else
@@ -2288,31 +2288,31 @@ fi</code></pre>
     <div class="section-body">
       <div>
         <div class="block-title">for Döngüsü</div>
-        <pre><code><span class="comment"># liste üzerinde dön</span>
+        <pre><code><span class="comment"># loop over a list</span>
 for ORTAM in dev staging production; do
   echo "Kontrol ediliyor: $ORTAM"
 done
 
-<span class="comment"># klasördeki dosyalar üzerinde dön</span>
+<span class="comment"># loop over files in a directory</span>
 for DOSYA in /project/tests/specs/*.spec.ts; do
   echo "Spec: $DOSYA"
 done
 
-<span class="comment"># sayı aralığı</span>
+<span class="comment"># number range</span>
 for i in {1..5}; do
   echo "Adım $i"
 done</code></pre>
       </div>
       <div>
         <div class="block-title">while Döngüsü</div>
-        <pre><code><span class="comment"># koşul doğru olduğu sürece çalış</span>
+        <pre><code><span class="comment"># run while condition is true</span>
 SAYAC=1
 while [ $SAYAC -le 5 ]; do
   echo "Deneme $SAYAC"
   SAYAC=$((SAYAC + 1))
 done
 
-<span class="comment"># servis ayağa kalkana kadar bekle</span>
+<span class="comment"># wait until the service is up</span>
 while ! curl -s http://localhost:3000 > /dev/null; do
   echo "Servis bekleniyor..."
   sleep 2
@@ -2321,13 +2321,13 @@ echo "Servis hazır!"</code></pre>
       </div>
       <div>
         <div class="block-title">Gerçek Hayatta Ne Zaman Kullanırsın?</div>
-        <pre><code><span class="comment"># tüm spec dosyalarını listele</span>
+        <pre><code><span class="comment"># list all spec files</span>
 for SPEC in /project/tests/specs/*.spec.ts; do
   SATIR=$(wc -l < $SPEC)
   echo "$SPEC → $SATIR satır"
 done
 
-<span class="comment"># CI'da deploy sonrası health check — hazır olana kadar bekle</span>
+<span class="comment"># post-deploy health check in CI — wait until ready</span>
 while ! curl -s https://app.in-part.com/health | grep -q "ok"; do
   echo "Bekleniyor..."
   sleep 5
@@ -2355,16 +2355,16 @@ done</code></pre>
     <div class="section-body">
       <div>
         <div class="block-title">Tanımlama ve Çağırma</div>
-        <pre><code><span class="comment"># tanımla</span>
+        <pre><code><span class="comment"># define</span>
 disk_kontrol() {
   DOLULUK=$(df / | tail -1 | awk '{print $5}' | tr -d '%')
   echo "Disk: %$DOLULUK"
 }
 
-<span class="comment"># çağır</span>
+<span class="comment"># call</span>
 disk_kontrol
 
-<span class="comment"># parametre al ($1, $2...)</span>
+<span class="comment"># accept parameters ($1, $2...)</span>
 selamlama() {
   echo "Merhaba $1, ortam: $2"
 }
@@ -2374,9 +2374,9 @@ selamlama "ahmed" "production"</code></pre>
         <div class="block-title">Return ve Çıkış Kodu</div>
         <pre><code>dosya_var_mi() {
   if [ -f "$1" ]; then
-    return 0    <span class="comment">→ başarı (true)</span>
+    return 0    <span class="comment">→ success (true)</span>
   else
-    return 1    <span class="comment">→ başarısız (false)</span>
+    return 1    <span class="comment">→ failure (false)</span>
   fi
 }
 
@@ -2388,7 +2388,7 @@ fi</code></pre>
       </div>
       <div>
         <div class="block-title">Gerçek Hayatta Ne Zaman Kullanırsın?</div>
-        <pre><code><span class="comment"># deploy scriptinde fonksiyonlarla organize et</span>
+        <pre><code><span class="comment"># organize with functions in the deploy script</span>
 log() {
   echo "[$(date +%H:%M:%S)] $1"
 }
@@ -2426,19 +2426,19 @@ log "Deploy tamamlandı"</code></pre>
     <div class="section-body">
       <div>
         <div class="block-title">Dosya Okuma ve Yazma</div>
-        <pre><code><span class="comment"># dosyaya yaz (üstüne yaz)</span>
+        <pre><code><span class="comment"># write to file (overwrite)</span>
 echo "log satırı" > dosya.log
 
-<span class="comment"># dosyaya ekle (append)</span>
+<span class="comment"># append to file</span>
 echo "yeni satır" >> dosya.log
-<span class="comment"># → Bash | >> = dosyaya ekle (üstüne yazmaz) — log dosyaları için şart — EZBER</span>
+<span class="comment"># → Bash | &gt;&gt; = append to file (does not overwrite) — essential for log files — EZBER</span>
 
-<span class="comment"># dosyayı satır satır oku</span>
+<span class="comment"># read file line by line</span>
 while IFS= read -r SATIR; do
   echo "Satır: $SATIR"
 done < dosya.log
 
-<span class="comment"># kullanıcıdan input al</span>
+<span class="comment"># get input from user</span>
 read -p "Ortam: " ORTAM
 echo "Seçilen: $ORTAM"</code></pre>
       </div>
@@ -2456,12 +2456,12 @@ echo "Seçilen: $ORTAM"</code></pre>
       </div>
       <div>
         <div class="block-title">Gerçek Hayatta Ne Zaman Kullanırsın?</div>
-        <pre><code><span class="comment"># log dosyasına tarihli satır ekle</span>
+        <pre><code><span class="comment"># add a dated line to the log file</span>
 LOG="deploy.log"
 echo "[$(date)] Deploy başladı" >> $LOG
 echo "[$(date)] Deploy tamamlandı" >> $LOG
 
-<span class="comment"># ortam değişkeni boşsa varsayılan kullan</span>
+<span class="comment"># use default if environment variable is empty</span>
 ORTAM=${NODE_ENV:-development}
 echo "Ortam: $ORTAM"</code></pre>
       </div>
@@ -2493,33 +2493,33 @@ VERSIYON=$2   <span class="comment">→ "v1.4.2"</span>
 
 echo "Deploy: $ORTAM - $VERSIYON"
 
-<span class="comment"># parametre verilmedi mi kontrol et</span>
+<span class="comment"># check if no parameter was given</span>
 if [ -z "$1" ]; then
   echo "Kullanım: ./deploy.sh [ortam]"
   exit 1
-<span class="comment"># → Bash | exit 1 = sıfır dışı çıkış = hata sinyali — CI/CD pipeline bunu görünce adımı başarısız sayar — EZBER</span>
+<span class="comment"># → Bash | exit 1 = non-zero exit = error signal — CI/CD pipeline marks the step as failed when it sees this — EZBER</span>
 fi</code></pre>
       </div>
       <div>
         <div class="block-title">Hata Yönetimi</div>
-        <pre><code><span class="comment"># set -e → herhangi bir komut hata verirse dur</span>
+        <pre><code><span class="comment"># set -e → stop if any command fails</span>
 #!/bin/bash
 set -e
-<span class="comment"># → Bash | set -e = herhangi bir komut hata verince script dur — production scriptinin ilk satırı — EZBER</span>
+<span class="comment"># → Bash | set -e = stop script when any command fails — first line of a production script — EZBER</span>
 
-<span class="comment"># set -u → tanımsız değişken kullanılırsa dur</span>
+<span class="comment"># set -u → stop if an undefined variable is used</span>
 set -u
 
-<span class="comment"># trap → script çöktüğünde çalışacak kod</span>
+<span class="comment"># trap → code to run when the script crashes</span>
 trap "echo 'Hata oluştu, temizleniyor...'; exit 1" ERR
 
 echo "Adım 1"
-komut_olmayan   <span class="comment">→ hata verir, trap devreye girer</span>
-echo "Adım 2"  <span class="comment">→ çalışmaz</span></code></pre>
+komut_olmayan   <span class="comment">→ causes error, trap kicks in</span>
+echo "Adım 2"  <span class="comment">→ does not run</span></code></pre>
       </div>
       <div>
         <div class="block-title">Gerçek Hayatta Ne Zaman Kullanırsın?</div>
-        <pre><code><span class="comment"># parametreli deploy scripti</span>
+        <pre><code><span class="comment"># deploy script with parameters</span>
 #!/bin/bash
 set -e
 
@@ -2590,7 +2590,7 @@ mkdir -p $HEDEF
 cp -r $KAYNAK $HEDEF/tests_$TARIH
 echo "Yedek alındı: $HEDEF/tests_$TARIH"
 
-<span class="comment"># 7 günden eski yedekleri sil</span>
+<span class="comment"># delete backups older than 7 days</span>
 find $HEDEF -mtime +7 -exec rm -rf {} \;
 echo "Eski yedekler temizlendi"</code></pre>
       </div>
@@ -2975,14 +2975,14 @@ CI/CD ile:
 
 name: CI Pipeline
 
-on:                          <span class="comment"># tetikleyici</span>
+on:                          <span class="comment"># trigger</span>
   push:
     branches: [main, master]
   pull_request:
     branches: [main, master]
 
 jobs:
-  test:                      <span class="comment"># job adı</span>
+  test:                      <span class="comment"># job name</span>
     runs-on: ubuntu-latest   <span class="comment"># runner</span>
 
     steps:
@@ -3049,33 +3049,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      <span class="comment"># 1. kodu al</span>
+      <span class="comment"># 1. get the code</span>
       - uses: actions/checkout@v4
 
-      <span class="comment"># 2. çalışma ortamını kur</span>
+      <span class="comment"># 2. set up the runtime environment</span>
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      <span class="comment"># 3. bağımlılıkları önbelleğe al (pipeline'ı hızlandırır)</span>
+      <span class="comment"># 3. cache dependencies (speeds up the pipeline)</span>
       - uses: actions/cache@v4
         with:
           path: ~/.yarn/cache
           key: yarn-${{ hashFiles('yarn.lock') }}
 
-      <span class="comment"># 4. paketleri yükle</span>
+      <span class="comment"># 4. install packages</span>
       - run: yarn install --frozen-lockfile
 
       <span class="comment"># 5. lint</span>
       - run: yarn lint
 
-      <span class="comment"># 6. testler</span>
+      <span class="comment"># 6. tests</span>
       - run: yarn test
 
-      <span class="comment"># 7. derleme</span>
+      <span class="comment"># 7. build</span>
       - run: yarn build
 
-      <span class="comment"># 8. derleme çıktısını kaydet</span>
+      <span class="comment"># 8. save build output</span>
       - uses: actions/upload-artifact@v4
         with:
           name: build-output
@@ -3083,10 +3083,10 @@ jobs:
       </div>
       <div>
         <div class="block-title">Adım Anatomisi</div>
-        <pre><code>- name: Linting çalıştır       <span class="comment"># GitHub arayüzünde görünen ad</span>
-  run: yarn lint               <span class="comment"># çalıştırılacak shell komutu</span>
-  working-directory: ./app     <span class="comment"># isteğe bağlı: bu klasörde çalıştır</span>
-  env:                         <span class="comment"># isteğe bağlı: bu adım için ortam değişkenleri</span>
+        <pre><code>- name: Linting çalıştır       <span class="comment"># name shown in the GitHub interface</span>
+  run: yarn lint               <span class="comment"># shell command to run</span>
+  working-directory: ./app     <span class="comment"># optional: run in this directory</span>
+  env:                         <span class="comment"># optional: environment variables for this step</span>
     NODE_ENV: test</code></pre>
       </div>
       <div>
@@ -3120,15 +3120,15 @@ production → canlı — gerçek kullanıcılar, gerçek veri — dağıtım i�
         <pre><code>jobs:
   deploy-staging:
     runs-on: ubuntu-latest
-    environment: staging          <span class="comment"># GitHub Environment'a bağlanır</span>
+    environment: staging          <span class="comment"># connects to GitHub Environment</span>
     if: github.ref == 'refs/heads/main'
     steps:
       - run: echo "Staging'e dağıtılıyor..."
 
   deploy-production:
     runs-on: ubuntu-latest
-    environment: production       <span class="comment"># GitHub'da manuel onay gerektirir</span>
-    needs: deploy-staging         <span class="comment"># staging başarılı olduktan sonra çalışır</span>
+    environment: production       <span class="comment"># requires manual approval on GitHub</span>
+    needs: deploy-staging         <span class="comment"># runs after staging succeeds</span>
     steps:
       - run: echo "Production'a dağıtılıyor..."</code></pre>
       </div>
@@ -3163,12 +3163,12 @@ production → canlı — gerçek kullanıcılar, gerçek veri — dağıtım i�
     <div class="section-body">
       <div>
         <div class="block-title">Neden Secret?</div>
-        <pre><code><span class="comment"># Bunları workflow dosyasına ASLA doğrudan yazma:</span>
-API_KEY=abc123secret          <span class="comment">← git geçmişinde herkes görebilir</span>
-DATABASE_PASSWORD=hunter2     <span class="comment">← kalıcı olarak ifşa olur</span>
+        <pre><code><span class="comment"># NEVER write these directly in the workflow file:</span>
+API_KEY=abc123secret          <span class="comment">← everyone can see it in git history</span>
+DATABASE_PASSWORD=hunter2     <span class="comment">← permanently exposed</span>
 
-<span class="comment"># GitHub → Settings → Secrets'a ekle</span>
-<span class="comment"># Sonra workflow'da şöyle referans ver:</span>
+<span class="comment"># add to GitHub → Settings → Secrets</span>
+<span class="comment"># then reference it in the workflow like this:</span>
 env:
   API_KEY: ${{ secrets.API_KEY }}</code></pre>
       </div>
@@ -3190,7 +3190,7 @@ env:
         run: ./deploy.sh
         env:
           DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-          SERVER_URL: ${{ vars.SERVER_URL }}        <span class="comment"># değişken, secret değil</span>
+          SERVER_URL: ${{ vars.SERVER_URL }}        <span class="comment"># variable, not a secret</span>
           NODE_ENV: production</code></pre>
       </div>
       <div>
@@ -3229,12 +3229,12 @@ env:
       <div>
         <div class="block-title">Tam Workflow — Kendin Yaz</div>
         <pre><code><span class="comment"># .github/workflows/ci.yml</span>
-<span class="comment"># Gereksinimler:</span>
-<span class="comment"># - tetikleyici: main'e push ve main'e pull_request</span>
-<span class="comment"># - job: ubuntu-latest üzerinde build-and-test</span>
-<span class="comment"># - adımlar: checkout, setup-node 18, yarn install, yarn test, yarn build</span>
-<span class="comment"># - ikinci job: deploy — build-and-test'e depends, sadece main branch'te</span>
-<span class="comment"># - deploy adımı: echo "${{ github.actor }} tarafından ${{ github.sha }} dağıtıldı"</span></code></pre>
+<span class="comment"># Requirements:</span>
+<span class="comment"># - trigger: push to main and pull_request to main</span>
+<span class="comment"># - job: build-and-test on ubuntu-latest</span>
+<span class="comment"># - steps: checkout, setup-node 18, yarn install, yarn test, yarn build</span>
+<span class="comment"># - second job: deploy — depends on build-and-test, only on main branch</span>
+<span class="comment"># - deploy step: echo "${{ github.actor }} deployed ${{ github.sha }}"</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ödev</div>
@@ -3415,11 +3415,11 @@ Kubernetes o image'ları çeker ve nerede çalıştıracağına karar verir.</co
         <div class="block-title">kubectl Komut Kalıbı</div>
         <pre><code>kubectl [fiil] [kaynak] [isim] [bayraklar]
 
-kubectl get pods                  <span class="comment"># tüm pod'ları listele</span>
-kubectl get pod my-pod            <span class="comment"># tek pod'u al</span>
-kubectl describe pod my-pod       <span class="comment"># tam detaylar</span>
-kubectl delete pod my-pod         <span class="comment"># sil</span>
-kubectl apply -f file.yaml        <span class="comment"># dosyadan oluştur veya güncelle</span></code></pre>
+kubectl get pods                  <span class="comment"># list all pods</span>
+kubectl get pod my-pod            <span class="comment"># get a single pod</span>
+kubectl describe pod my-pod       <span class="comment"># full details</span>
+kubectl delete pod my-pod         <span class="comment"># delete</span>
+kubectl apply -f file.yaml        <span class="comment"># create or update from file</span></code></pre>
       </div>
       <div>
         <div class="block-title">Temel kubectl Komutları</div>
@@ -3452,16 +3452,16 @@ kubectl apply -f file.yaml        <span class="comment"># dosyadan oluştur veya
       </div>
       <div>
         <div class="block-title">Namespace'ler</div>
-        <pre><code><span class="comment"># namespace'ler klasör gibi — kaynakları izole eder</span>
+        <pre><code><span class="comment"># namespaces are like folders — they isolate resources</span>
 kubectl get pods                          <span class="comment"># default namespace</span>
-kubectl get pods -n kube-system           <span class="comment"># sistem namespace'i</span>
-kubectl get pods -n my-app               <span class="comment"># özel namespace</span>
-kubectl get pods -A                       <span class="comment"># tüm namespace'ler</span>
+kubectl get pods -n kube-system           <span class="comment"># system namespace</span>
+kubectl get pods -n my-app               <span class="comment"># custom namespace</span>
+kubectl get pods -A                       <span class="comment"># all namespaces</span>
 
-<span class="comment"># namespace oluştur</span>
+<span class="comment"># create namespace</span>
 kubectl create namespace staging
 
-<span class="comment"># belirli namespace'e dağıt</span>
+<span class="comment"># deploy to specific namespace</span>
 kubectl apply -f app.yaml -n staging</code></pre>
       </div>
       <div>
@@ -3492,7 +3492,7 @@ kubectl apply -f app.yaml -n staging</code></pre>
       </div>
       <div>
         <div class="block-title">Pod — En Küçük Birim</div>
-        <pre><code><span class="comment"># pod.yaml — production'da nadiren doğrudan kullanılır</span>
+        <pre><code><span class="comment"># pod.yaml — rarely used directly in production</span>
 apiVersion: v1
 kind: Pod
 metadata:
@@ -3515,13 +3515,13 @@ spec:
       </div>
       <div>
         <div class="block-title">Neden Pod'ları Doğrudan Kullanmıyoruz?</div>
-        <pre><code><span class="comment"># manuel Pod oluşturur ve çökerse:</span>
-<span class="comment"># → öylece kalır. Kimse yeniden başlatmaz.</span>
+        <pre><code><span class="comment"># creates a manual Pod — if it crashes:</span>
+<span class="comment"># → it just stays there. Nobody restarts it.</span>
 
-<span class="comment"># 3 replikalı Deployment oluşturur ve bir Pod çökerse:</span>
-<span class="comment"># → ReplicaSet yalnızca 2'sinin çalıştığını saptar</span>
-<span class="comment"># → anında yedek Pod oluşturur</span>
-<span class="comment"># → her zaman 3 tanesi çalışır</span></code></pre>
+<span class="comment"># creates a 3-replica Deployment — if a Pod crashes:</span>
+<span class="comment"># → ReplicaSet detects only 2 are running</span>
+<span class="comment"># → immediately creates a replacement Pod</span>
+<span class="comment"># → always keeps 3 running</span></code></pre>
       </div>
       <div>
         <div class="block-title">Deployment — Gerçekten Kullandığın Şey</div>
@@ -3532,16 +3532,16 @@ metadata:
   name: web-app
   namespace: default
 spec:
-  replicas: 3                    <span class="comment"># 3 kopya çalıştır</span>
+  replicas: 3                    <span class="comment"># run 3 replicas</span>
   selector:
     matchLabels:
-      app: web                   <span class="comment"># bu etikete sahip pod'ları yönet</span>
+      app: web                   <span class="comment"># manage pods with this label</span>
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 1          <span class="comment"># güncelleme sırasında en fazla 1 pod kapalı</span>
-      maxSurge: 1                <span class="comment"># güncelleme sırasında en fazla 1 ekstra pod</span>
-  template:                      <span class="comment"># pod şablonu — her pod böyle görünür</span>
+      maxUnavailable: 1          <span class="comment"># max 1 pod down during update</span>
+      maxSurge: 1                <span class="comment"># max 1 extra pod during update</span>
+  template:                      <span class="comment"># pod template — every pod looks like this</span>
     metadata:
       labels:
         app: web
@@ -3551,13 +3551,13 @@ spec:
           image: nginx:1.25
           ports:
             - containerPort: 80
-          readinessProbe:         <span class="comment"># pod hazır olduğunda trafiği gönder</span>
+          readinessProbe:         <span class="comment"># send traffic when pod is ready</span>
             httpGet:
               path: /health
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 10
-          livenessProbe:          <span class="comment"># pod sağlıksız olursa yeniden başlat</span>
+          livenessProbe:          <span class="comment"># restart pod if it becomes unhealthy</span>
             httpGet:
               path: /health
               port: 80
@@ -3570,36 +3570,36 @@ spec:
 ReplicaSet → Pod'ları yönetir (doğru sayıyı sağlar)
 Pod        → container'ını çalıştırır
 
-<span class="comment"># Deployment'ı sen tanımlarsın. Kubernetes ReplicaSet ve Pod'ları yönetir.</span>
-<span class="comment"># rolling update sırasında:</span>
-<span class="comment">#   eski ReplicaSet küçülür</span>
-<span class="comment">#   yeni ReplicaSet büyür</span>
-<span class="comment">#   Deployment hızı kontrol eder</span></code></pre>
+<span class="comment"># You define the Deployment. Kubernetes manages ReplicaSets and Pods.</span>
+<span class="comment"># during rolling update:</span>
+<span class="comment">#   old ReplicaSet shrinks</span>
+<span class="comment">#   new ReplicaSet grows</span>
+<span class="comment">#   Deployment controls the speed</span></code></pre>
       </div>
       <div>
         <div class="block-title">Yaygın Deployment Komutları</div>
-        <pre><code><span class="comment"># deployment uygula</span>
+        <pre><code><span class="comment"># apply deployment</span>
 kubectl apply -f deployment.yaml
 
-<span class="comment"># rollout durumunu kontrol et</span>
+<span class="comment"># check rollout status</span>
 kubectl rollout status deployment/web-app
 
-<span class="comment"># image güncelle (rolling update tetikler)</span>
+<span class="comment"># update image (triggers rolling update)</span>
 kubectl set image deployment/web-app web=nginx:1.26
 
-<span class="comment"># manuel ölçeklendir</span>
+<span class="comment"># scale manually</span>
 kubectl scale deployment web-app --replicas=5
 
-<span class="comment"># önceki sürüme geri al</span>
+<span class="comment"># roll back to previous version</span>
 kubectl rollout undo deployment/web-app
 
-<span class="comment"># rollout geçmişini gör</span>
+<span class="comment"># view rollout history</span>
 kubectl rollout history deployment/web-app
 
-<span class="comment"># rollout'u duraklat</span>
+<span class="comment"># pause rollout</span>
 kubectl rollout pause deployment/web-app
 
-<span class="comment"># devam ettir</span>
+<span class="comment"># resume</span>
 kubectl rollout resume deployment/web-app</code></pre>
       </div>
       <div>
@@ -3646,15 +3646,15 @@ kind: Service
 metadata:
   name: web-service
 spec:
-  type: ClusterIP            <span class="comment"># varsayılan tür</span>
+  type: ClusterIP            <span class="comment"># default type</span>
   selector:
-    app: web                 <span class="comment"># bu etiketli pod'lara trafiği yönlendir</span>
+    app: web                 <span class="comment"># route traffic to pods with this label</span>
   ports:
-    - port: 80               <span class="comment"># service'in dinlediği port</span>
-      targetPort: 80         <span class="comment"># container'ın dinlediği port</span>
+    - port: 80               <span class="comment"># port the service listens on</span>
+      targetPort: 80         <span class="comment"># port the container listens on</span>
 
-<span class="comment"># diğer pod'lar bu service'e şöyle erişir: http://web-service:80</span>
-<span class="comment"># Kubernetes DNS "web-service"'i ClusterIP'ye otomatik çözer</span></code></pre>
+<span class="comment"># other pods access this service like: http://web-service:80</span>
+<span class="comment"># Kubernetes DNS automatically resolves "web-service" to ClusterIP</span></code></pre>
       </div>
       <div>
         <div class="block-title">NodePort Service — Test İçin Dış Erişim</div>
@@ -3669,14 +3669,14 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30080        <span class="comment"># &lt;node-ip&gt;:30080'den erişilebilir</span>
+      nodePort: 30080        <span class="comment"># accessible via &lt;node-ip&gt;:30080</span>
 
 <span class="comment"># minikube: minikube service web-nodeport --url</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ingress — Cluster'a HTTP Yönlendirme</div>
-        <pre><code><span class="comment"># Ingress, harici HTTP/HTTPS trafiğini Service'lere yönlendirir</span>
-<span class="comment"># tek Ingress birçok LoadBalancer'ın yerini alır → daha ucuz</span>
+        <pre><code><span class="comment"># Ingress routes external HTTP/HTTPS traffic to Services</span>
+<span class="comment"># single Ingress replaces many LoadBalancers → cheaper</span>
 
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -3751,16 +3751,16 @@ data:
   API_URL: https://api.example.com
 
 ---
-<span class="comment"># Pod'da kullan — ortam değişkenleri olarak</span>
+<span class="comment"># use in Pod — as environment variables</span>
 spec:
   containers:
     - name: web
       image: myapp:1.0
       envFrom:
         - configMapRef:
-            name: app-config      <span class="comment"># tüm anahtarları env var olarak enjekte et</span>
+            name: app-config      <span class="comment"># inject all keys as env vars</span>
 
-<span class="comment"># veya tek tek seç:</span>
+<span class="comment"># or pick individually:</span>
       env:
         - name: NODE_ENV
           valueFrom:
@@ -3770,46 +3770,46 @@ spec:
       </div>
       <div>
         <div class="block-title">Secret — Hassas Veri</div>
-        <pre><code><span class="comment"># secret.yaml — değerler base64 ile kodlanmış olmalı</span>
+        <pre><code><span class="comment"># secret.yaml — values must be base64 encoded</span>
 apiVersion: v1
 kind: Secret
 metadata:
   name: app-secrets
 type: Opaque
 data:
-  DB_PASSWORD: c2VjcmV0MTIz        <span class="comment"># "secret123"ün base64'ü</span>
-  API_TOKEN: dG9rZW5hYmM=          <span class="comment"># "tokenabc"nin base64'ü</span>
+  DB_PASSWORD: c2VjcmV0MTIz        <span class="comment"># base64 of "secret123"</span>
+  API_TOKEN: dG9rZW5hYmM=          <span class="comment"># base64 of "tokenabc"</span>
 
-<span class="comment"># değer kodla:</span>
+<span class="comment"># encode a value:</span>
 echo -n "secret123" | base64
 
-<span class="comment"># Pod'da kullan:</span>
+<span class="comment"># use in Pod:</span>
       envFrom:
         - secretRef:
             name: app-secrets
 
-<span class="comment"># ÖNEMLİ: Secret'lar base64 kodludur, varsayılan olarak şifreli DEĞİLDİR</span>
-<span class="comment"># Gerçek güvenlik için: Sealed Secrets veya harici secret manager kullan</span></code></pre>
+<span class="comment"># IMPORTANT: Secrets are base64 encoded, NOT encrypted by default</span>
+<span class="comment"># For real security: use Sealed Secrets or an external secret manager</span></code></pre>
       </div>
       <div>
         <div class="block-title">PersistentVolume ve PersistentVolumeClaim</div>
-        <pre><code><span class="comment"># PV = gerçek depolama (admin / bulut tarafından sağlanır)</span>
-<span class="comment"># PVC = depolama talebi (geliştirici tarafından yapılır)</span>
-<span class="comment"># Pod = PVC'yi kullanır</span>
+        <pre><code><span class="comment"># PV = actual storage (provisioned by admin / cloud)</span>
+<span class="comment"># PVC = storage request (made by developer)</span>
+<span class="comment"># Pod = uses the PVC</span>
 
-<span class="comment"># pvc.yaml — 5GB depolama talep et</span>
+<span class="comment"># pvc.yaml — request 5GB of storage</span>
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: db-storage
 spec:
   accessModes:
-    - ReadWriteOnce          <span class="comment"># tek node okuyup yazabilir</span>
+    - ReadWriteOnce          <span class="comment"># single node can read and write</span>
   resources:
     requests:
       storage: 5Gi
 
-<span class="comment"># Pod'da kullan:</span>
+<span class="comment"># use in Pod:</span>
 spec:
   volumes:
     - name: db-data
@@ -3859,89 +3859,89 @@ spec:
       </div>
       <div>
         <div class="block-title">Tam Production Kurulumu — Her Şeyi Dağıt</div>
-        <pre><code><span class="comment"># 1. namespace — uygulamayı izole et</span>
+        <pre><code><span class="comment"># 1. namespace — isolate the app</span>
 kubectl create namespace my-api
 
-<span class="comment"># 2. configmap — uygulama config'i</span>
+<span class="comment"># 2. configmap — app configuration</span>
 kubectl apply -f configmap.yaml -n my-api
 
-<span class="comment"># 3. secret — hassas değerler</span>
+<span class="comment"># 3. secret — sensitive values</span>
 kubectl apply -f secret.yaml -n my-api
 
-<span class="comment"># 4. deployment — 3 replika çalıştır</span>
+<span class="comment"># 4. deployment — run 3 replicas</span>
 kubectl apply -f deployment.yaml -n my-api
 
-<span class="comment"># 5. service — cluster içinde açık et</span>
+<span class="comment"># 5. service — expose inside the cluster</span>
 kubectl apply -f service.yaml -n my-api
 
-<span class="comment"># 6. her şeyi doğrula</span>
+<span class="comment"># 6. verify everything</span>
 kubectl get all -n my-api</code></pre>
       </div>
       <div>
         <div class="block-title">Başarısız Pod'u Debug Etme</div>
-        <pre><code><span class="comment"># pod CrashLoopBackOff veya Error durumunda mı?</span>
+        <pre><code><span class="comment"># is the pod in CrashLoopBackOff or Error state?</span>
 
-<span class="comment"># adım 1: ne olduğunu gör</span>
+<span class="comment"># step 1: see what happened</span>
 kubectl get pods -n my-api
-kubectl describe pod &lt;pod-adı&gt; -n my-api    <span class="comment"># Events bölümünü kontrol et</span>
+kubectl describe pod &lt;pod-adı&gt; -n my-api    <span class="comment"># check the Events section</span>
 
-<span class="comment"># adım 2: logları oku</span>
+<span class="comment"># step 2: read the logs</span>
 kubectl logs &lt;pod-adı&gt; -n my-api
-kubectl logs &lt;pod-adı&gt; -n my-api --previous  <span class="comment"># çöken instance'ın logları</span>
+kubectl logs &lt;pod-adı&gt; -n my-api --previous  <span class="comment"># logs from the crashing instance</span>
 
-<span class="comment"># adım 3: içine gir</span>
+<span class="comment"># step 3: get inside</span>
 kubectl exec -it &lt;pod-adı&gt; -n my-api -- bash
 
-<span class="comment"># adım 4: namespace genelinde event'leri kontrol et</span>
+<span class="comment"># step 4: check events across the namespace</span>
 kubectl get events -n my-api --sort-by='.lastTimestamp'</code></pre>
       </div>
       <div>
         <div class="block-title">Rolling Update ve Geri Alma</div>
-        <pre><code><span class="comment"># yeni sürüme güncelle</span>
+        <pre><code><span class="comment"># update to new version</span>
 kubectl set image deployment/my-api api=myapp:2.0 -n my-api
 
-<span class="comment"># güncellemeyi gerçek zamanlı izle</span>
+<span class="comment"># watch the update in real time</span>
 kubectl rollout status deployment/my-api -n my-api
 
-<span class="comment"># bir şey bozuldu? hemen geri al</span>
+<span class="comment"># something broke? roll back immediately</span>
 kubectl rollout undo deployment/my-api -n my-api
 
-<span class="comment"># rollout geçmişini gör</span>
+<span class="comment"># view rollout history</span>
 kubectl rollout history deployment/my-api -n my-api
 
-<span class="comment"># belirli sürüme geri al</span>
+<span class="comment"># roll back to a specific version</span>
 kubectl rollout undo deployment/my-api --to-revision=2 -n my-api</code></pre>
       </div>
       <div>
         <div class="block-title">Yatay Pod Otomatik Ölçeklendirici — Otomatik Ölçekleme</div>
-        <pre><code><span class="comment"># CPU kullanımına göre otomatik ölçeklendir</span>
+        <pre><code><span class="comment"># autoscale based on CPU usage</span>
 kubectl autoscale deployment my-api \
   --min=2 \
   --max=10 \
   --cpu-percent=70 \
   -n my-api
 
-<span class="comment"># mevcut ölçeği gör</span>
+<span class="comment"># see current scale</span>
 kubectl get hpa -n my-api</code></pre>
       </div>
       <div>
         <div class="block-title">Faydalı Debug Tek Satırları</div>
-        <pre><code><span class="comment"># çalışmayan pod'lar hangileri?</span>
+        <pre><code><span class="comment"># which pods are not running?</span>
 kubectl get pods -A | grep -v Running | grep -v Completed
 
-<span class="comment"># zamana göre sıralı tüm event'ler — az önce ne oldu?</span>
+<span class="comment"># all events sorted by time — what just happened?</span>
 kubectl get events -A --sort-by='.lastTimestamp' | tail -20
 
-<span class="comment"># pod başına kaynak kullanımı</span>
+<span class="comment"># resource usage per pod</span>
 kubectl top pods -n my-api
 
-<span class="comment"># node başına kaynak kullanımı</span>
+<span class="comment"># resource usage per node</span>
 kubectl top nodes
 
-<span class="comment"># her pod hangi image'ı çalıştırıyor?</span>
+<span class="comment"># which image is each pod running?</span>
 kubectl get pods -n my-api -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.spec.containers[*].image}{"\n"}{end}'
 
-<span class="comment"># port-forward — pod'a localhost'tan doğrudan eriş</span>
+<span class="comment"># port-forward — access pod directly from localhost</span>
 kubectl port-forward pod/&lt;pod-adı&gt; 8080:3000 -n my-api</code></pre>
       </div>
       <div>
@@ -4018,7 +4018,7 @@ GitHub   → repo, branch protection, team ayarları
 Kubernetes → deployment, service, namespace...
 Cloudflare → DNS, SSL sertifikaları...
 
-<span class="comment"># aynı araç, farklı provider — yöntemi hep aynı</span></code></pre>
+<span class="comment"># same tool, different provider — the method is always the same</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ödev</div>
@@ -4061,22 +4061,22 @@ Cloudflare → DNS, SSL sertifikaları...
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.0"        <span class="comment"># 5.x versiyonları kabul et</span>
+      version = "~> 5.0"        <span class="comment"># accept 5.x versions</span>
     }
   }
 }
 
 provider "aws" {
-  region = "eu-west-1"          <span class="comment"># İrlanda</span>
+  region = "eu-west-1"          <span class="comment"># Ireland</span>
 }</code></pre>
       </div>
       <div>
         <div class="block-title">Resource Tanımı — main.tf</div>
-        <pre><code><span class="comment"># Sözdizimi:</span>
-<span class="comment"># resource "provider_tip" "yerel_isim" { ... }</span>
+        <pre><code><span class="comment"># Syntax:</span>
+<span class="comment"># resource "provider_type" "local_name" { ... }</span>
 
 resource "aws_s3_bucket" "log_bucket" {
-  bucket = "sirket-loglar-2026"   <span class="comment"># S3 bucket adı</span>
+  bucket = "sirket-loglar-2026"   <span class="comment"># S3 bucket name</span>
 
   tags = {
     Environment = "production"
@@ -4093,9 +4093,9 @@ resource "aws_instance" "web_server" {
   }
 }
 
-<span class="comment"># başka kaynaktan değer almak:</span>
+<span class="comment"># get value from another resource:</span>
 resource "aws_s3_bucket_versioning" "log_bucket_versioning" {
-  bucket = aws_s3_bucket.log_bucket.id     <span class="comment"># referans!</span>
+  bucket = aws_s3_bucket.log_bucket.id     <span class="comment"># reference!</span>
 
   versioning_configuration {
     status = "Enabled"
@@ -4107,22 +4107,22 @@ resource "aws_s3_bucket_versioning" "log_bucket_versioning" {
         <pre><code><span class="comment"># string</span>
 name = "platform-tool"
 
-<span class="comment"># sayı</span>
+<span class="comment"># number</span>
 port = 8080
 
 <span class="comment"># boolean</span>
 enabled = true
 
-<span class="comment"># liste</span>
+<span class="comment"># list</span>
 availability_zones = ["eu-west-1a", "eu-west-1b"]
 
-<span class="comment"># map (anahtar-değer)</span>
+<span class="comment"># map (key-value)</span>
 tags = {
   Environment = "staging"
   Owner       = "platform-team"
 }
 
-<span class="comment"># blok içinde blok</span>
+<span class="comment"># block inside a block</span>
 ingress {
   from_port = 80
   to_port   = 80
@@ -4156,11 +4156,11 @@ ingress {
       </div>
       <div>
         <div class="block-title">Temel İş Akışı</div>
-        <pre><code>terraform init      <span class="comment"># 1. provider'ları indir, klasörü hazırla</span>
-terraform validate  <span class="comment"># 2. sözdizimi doğru mu? hata var mı?</span>
-terraform plan      <span class="comment"># 3. ne yapılacak? göster ama yapma</span>
-terraform apply     <span class="comment"># 4. planı uygula, gerçekten oluştur</span>
-terraform destroy   <span class="comment"># 5. her şeyi sil (dikkat!)</span></code></pre>
+        <pre><code>terraform init      <span class="comment"># 1. download providers, prepare the directory</span>
+terraform validate  <span class="comment"># 2. is the syntax correct? any errors?</span>
+terraform plan      <span class="comment"># 3. what will be done? show but don't do it</span>
+terraform apply     <span class="comment"># 4. apply the plan, actually create</span>
+terraform destroy   <span class="comment"># 5. delete everything (careful!)</span></code></pre>
       </div>
       <div>
         <div class="block-title">Tüm Komutlar</div>
@@ -4203,10 +4203,10 @@ terraform destroy   <span class="comment"># 5. her şeyi sil (dikkat!)</span></c
 
 Plan: 1 to add, 1 to change, 1 to destroy.
 
-<span class="comment"># + yeşil = oluşturulacak</span>
-<span class="comment"># ~ sarı = değiştirilecek</span>
-<span class="comment"># - kırmızı = silinecek</span>
-<span class="comment"># -/+ = silinip yeniden oluşturulacak (dikkat!)</span></code></pre>
+<span class="comment"># + green = will be created</span>
+<span class="comment"># ~ yellow = will be changed</span>
+<span class="comment"># - red = will be deleted</span>
+<span class="comment"># -/+ = will be deleted and recreated (careful!)</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ödev</div>
@@ -4235,7 +4235,7 @@ Plan: 1 to add, 1 to change, 1 to destroy.
       </div>
       <div>
         <div class="block-title">Değişken Tanımlama — variables.tf</div>
-        <pre><code><span class="comment"># tip: string, number, bool, list, map, object</span>
+        <pre><code><span class="comment"># type: string, number, bool, list, map, object</span>
 
 variable "ortam" {
   type        = string
@@ -4266,8 +4266,8 @@ variable "etiketler" {
       </div>
       <div>
         <div class="block-title">Değişken Değerleri — terraform.tfvars</div>
-        <pre><code><span class="comment"># terraform.tfvars — bu dosyayı git'e ekleme (şifreler olabilir)</span>
-<span class="comment"># .gitignore'a ekle: terraform.tfvars</span>
+        <pre><code><span class="comment"># terraform.tfvars — do not add this to git (may contain passwords)</span>
+<span class="comment"># add to .gitignore: terraform.tfvars</span>
 
 ortam          = "production"
 instance_tipi  = "t3.medium"
@@ -4282,15 +4282,15 @@ etiketler = {
       <div>
         <div class="block-title">Değişkeni Kullanmak — main.tf</div>
         <pre><code>resource "aws_instance" "web" {
-  instance_type = var.instance_tipi    <span class="comment"># değişkenden al</span>
-  count         = var.replica_sayisi   <span class="comment"># kaç tane oluşturacak</span>
+  instance_type = var.instance_tipi    <span class="comment"># get from variable</span>
+  count         = var.replica_sayisi   <span class="comment"># how many to create</span>
 
-  tags = merge(var.etiketler, {        <span class="comment"># etiketleri birleştir</span>
+  tags = merge(var.etiketler, {        <span class="comment"># merge tags</span>
     Name = "web-${var.ortam}-${count.index}"
   })
 }
 
-<span class="comment"># locals — hesaplanmış değerler, sık tekrar edilen ifadeler</span>
+<span class="comment"># locals — computed values, frequently repeated expressions</span>
 locals {
   uygulama_adi = "${var.ortam}-platform-tool"
   ortak_etiketler = merge(var.etiketler, {
@@ -4300,8 +4300,8 @@ locals {
       </div>
       <div>
         <div class="block-title">Çıktılar — outputs.tf</div>
-        <pre><code><span class="comment"># apply bittikten sonra bu değerler ekrana yazılır</span>
-<span class="comment"># ve diğer modüller tarafından kullanılabilir</span>
+        <pre><code><span class="comment"># these values are printed after apply completes</span>
+<span class="comment"># and can be used by other modules</span>
 
 output "web_sunucu_ip" {
   description = "Web sunucusunun public IP adresi"
@@ -4311,26 +4311,26 @@ output "web_sunucu_ip" {
 output "veritabani_adresi" {
   description = "RDS endpoint adresi"
   value       = aws_db_instance.main.endpoint
-  sensitive   = true    <span class="comment"># ekranda gösterme, loglamaya düşme</span>
+  sensitive   = true    <span class="comment"># do not show on screen, do not log</span>
 }
 
-<span class="comment"># apply sonrası:</span>
+<span class="comment"># after apply:</span>
 terraform output web_sunucu_ip
-terraform output -raw web_sunucu_ip    <span class="comment"># sadece değeri al (script için)</span></code></pre>
+terraform output -raw web_sunucu_ip    <span class="comment"># get only the value (for scripts)</span></code></pre>
       </div>
       <div>
         <div class="block-title">Değişken Değeri Nasıl Verilir?</div>
-        <pre><code><span class="comment"># 1. terraform.tfvars dosyasından (otomatik okunur)</span>
+        <pre><code><span class="comment"># 1. from terraform.tfvars file (read automatically)</span>
 terraform apply
 
-<span class="comment"># 2. komut satırından</span>
+<span class="comment"># 2. from command line</span>
 terraform apply -var="ortam=production"
 
-<span class="comment"># 3. ortam değişkeninden</span>
+<span class="comment"># 3. from environment variable</span>
 export TF_VAR_ortam=production
 terraform apply
 
-<span class="comment"># 4. apply sırasında Terraform sorar (default yok ise)</span>
+<span class="comment"># 4. Terraform asks during apply (if no default)</span>
 terraform apply
 # var.ortam
 #   Ortam adı: staging veya production
@@ -4363,16 +4363,16 @@ terraform apply
       </div>
       <div>
         <div class="block-title">Modülsüz vs Modüllü</div>
-        <pre><code><span class="comment"># MODÜLSÜZ — staging ve production için ayrı ayrı yaz</span>
+        <pre><code><span class="comment"># WITHOUT MODULE — write separately for staging and production</span>
 <span class="comment"># staging/main.tf</span>
 resource "aws_instance" "web" { instance_type = "t3.micro" ... }
 resource "aws_security_group" "web_sg" { ... }
 
-<span class="comment"># production/main.tf — aynı kodu tekrar yaz</span>
+<span class="comment"># production/main.tf — write the same code again</span>
 resource "aws_instance" "web" { instance_type = "t3.large" ... }
 resource "aws_security_group" "web_sg" { ... }
 
-<span class="comment"># MODÜLLÜ — bir kez yaz, iki kez çağır</span>
+<span class="comment"># WITH MODULE — write once, call twice</span>
 module "staging_web" {
   source         = "./modules/web-server"
   instance_tipi  = "t3.micro"
@@ -4416,19 +4416,19 @@ output "instance_id" {
       </div>
       <div>
         <div class="block-title">Modülü Çağırmak</div>
-        <pre><code><span class="comment"># main.tf — kök modül</span>
+        <pre><code><span class="comment"># main.tf — root module</span>
 module "web" {
-  source        = "./modules/web-server"   <span class="comment"># yerel klasör</span>
+  source        = "./modules/web-server"   <span class="comment"># local folder</span>
   instance_tipi = var.instance_tipi
   ortam         = var.ortam
 }
 
-<span class="comment"># modülün çıktısını kullanmak</span>
+<span class="comment"># use module output</span>
 output "web_id" {
   value = module.web.instance_id
 }
 
-<span class="comment"># uzak modül — Terraform Registry'den</span>
+<span class="comment"># remote module — from Terraform Registry</span>
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.0.0"
@@ -4473,8 +4473,8 @@ module "vpc" {
       </div>
       <div>
         <div class="block-title">State Nedir?</div>
-        <pre><code><span class="comment"># terraform apply çalıştırdıktan sonra terraform.tfstate oluşur</span>
-<span class="comment"># içinde şunlar var:</span>
+        <pre><code><span class="comment"># terraform.tfstate is created after terraform apply runs</span>
+<span class="comment"># it contains:</span>
 
 {
   "resources": [
@@ -4492,24 +4492,24 @@ module "vpc" {
   ]
 }
 
-<span class="comment"># bir sonraki plan'da:</span>
-<span class="comment"># Terraform state'i okur → gerçek AWS ile karşılaştırır → farkı söyler</span></code></pre>
+<span class="comment"># on the next plan:</span>
+<span class="comment"># Terraform reads state → compares with real AWS → reports the diff</span></code></pre>
       </div>
       <div>
         <div class="block-title">Yerel State vs Uzak State</div>
-        <pre><code><span class="comment"># YEREL STATE — sadece senin bilgisayarında</span>
+        <pre><code><span class="comment"># LOCAL STATE — only on your machine</span>
 terraform.tfstate    ← git'e ekleme! şifreler içerebilir
 
-<span class="comment"># Sorun: takım çalışmasında herkes farklı state görür</span>
-<span class="comment"># Sorun: dosya silinirse her şey kaybolur</span>
+<span class="comment"># Problem: in team work everyone sees a different state</span>
+<span class="comment"># Problem: if the file is deleted everything is lost</span>
 
-<span class="comment"># UZAK STATE — S3 + DynamoDB (AWS için standart)</span>
+<span class="comment"># REMOTE STATE — S3 + DynamoDB (standard for AWS)</span>
 terraform {
   backend "s3" {
     bucket         = "sirket-terraform-state"
     key            = "production/terraform.tfstate"
     region         = "eu-west-1"
-    dynamodb_table = "terraform-lock"   <span class="comment"># aynı anda iki kişi apply etmesin</span>
+    dynamodb_table = "terraform-lock"   <span class="comment"># prevent two people from applying at the same time</span>
     encrypt        = true
   }
 }</code></pre>
@@ -4529,17 +4529,17 @@ terraform {
       </div>
       <div>
         <div class="block-title">State Sorunları ve Çözümleri</div>
-        <pre><code><span class="comment"># Sorun: state lock — başka biri apply yapıyor</span>
+        <pre><code><span class="comment"># Problem: state lock — someone else is applying</span>
 Error: Error locking state: ConditionalCheckFailedException
-<span class="comment"># Çözüm: bekle veya force-unlock (dikkatli!)</span>
+<span class="comment"># Solution: wait or force-unlock (be careful!)</span>
 terraform force-unlock LOCK_ID
 
-<span class="comment"># Sorun: state'de var ama AWS'de yok (biri elle silmiş)</span>
-<span class="comment"># Çözüm: state'ten çıkar</span>
+<span class="comment"># Problem: exists in state but not in AWS (someone deleted it manually)</span>
+<span class="comment"># Solution: remove from state</span>
 terraform state rm aws_instance.web
 
-<span class="comment"># Sorun: AWS'de var ama state'de yok (Terraform dışında oluşturulmuş)</span>
-<span class="comment"># Çözüm: import et</span>
+<span class="comment"># Problem: exists in AWS but not in state (created outside Terraform)</span>
+<span class="comment"># Solution: import it</span>
 terraform import aws_instance.web i-0abc123</code></pre>
       </div>
       <div>
@@ -4624,7 +4624,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main'   <span class="comment"># sadece main'de apply</span>
+        if: github.ref == 'refs/heads/main'   <span class="comment"># apply only on main</span>
         run: terraform apply tfplan
         working-directory: environments/staging</code></pre>
       </div>
@@ -4693,11 +4693,11 @@ Route 53    → DNS servisi</code></pre>
   ├── eu-west-1b   ← veri merkezi 2
   └── eu-west-1c   ← veri merkezi 3
 
-<span class="comment"># her AZ bağımsız güç, soğutma, ağ altyapısına sahip</span>
-<span class="comment"># bir AZ çöktüğünde diğerleri çalışmaya devam eder</span>
-<span class="comment"># production'da her zaman birden fazla AZ kullan</span>
+<span class="comment"># each AZ has independent power, cooling, and network infrastructure</span>
+<span class="comment"># if one AZ goes down the others keep running</span>
+<span class="comment"># always use more than one AZ in production</span>
 
-<span class="comment"># senin bölgelerin muhtemelen:</span>
+<span class="comment"># your regions are probably:</span>
 eu-west-1   ← Avrupa (İrlanda) — Inpart gibi İngiliz şirketler için yaygın
 us-east-1   ← ABD (Virginia) — AWS'nin ana bölgesi, en ucuz fiyatlar</code></pre>
       </div>
@@ -4715,25 +4715,25 @@ us-east-1   ← ABD (Virginia) — AWS'nin ana bölgesi, en ucuz fiyatlar</code>
       </div>
       <div>
         <div class="block-title">AWS CLI Kurulum ve Yapılandırma</div>
-        <pre><code><span class="comment"># AWS CLI'yi kur (Ubuntu/WSL)</span>
+        <pre><code><span class="comment"># install AWS CLI (Ubuntu/WSL)</span>
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 
-<span class="comment"># sürümü doğrula</span>
+<span class="comment"># verify version</span>
 aws --version
 
-<span class="comment"># kimlik bilgilerini yapılandır</span>
+<span class="comment"># configure credentials</span>
 aws configure
-<span class="comment"># → AWS | aws configure = kimlik bilgilerini ayarla — Access Key, Secret, region, output format gir — EZBER</span>
-<span class="comment"># AWS Access Key ID: [IAM'den alırsın]</span>
-<span class="comment"># AWS Secret Access Key: [IAM'den alırsın]</span>
+<span class="comment"># → AWS | aws configure = set credentials — enter Access Key, Secret, region, output format — EZBER</span>
+<span class="comment"># AWS Access Key ID: [get from IAM]</span>
+<span class="comment"># AWS Secret Access Key: [get from IAM]</span>
 <span class="comment"># Default region name: eu-west-1</span>
 <span class="comment"># Default output format: json</span>
 
-<span class="comment"># bağlantıyı test et</span>
+<span class="comment"># test the connection</span>
 aws sts get-caller-identity
-<span class="comment"># → AWS | aws sts get-caller-identity = "ben kimim?" — hesap ID, kullanıcı/rol adı, ARN gösterir — EZBER</span></code></pre>
+<span class="comment"># → AWS | aws sts get-caller-identity = "who am I?" — shows account ID, user/role name, ARN — EZBER</span></code></pre>
       </div>
       <div>
         <div class="block-title">AWS Hesap Yapısı</div>
@@ -4744,8 +4744,8 @@ aws sts get-caller-identity
             ├── geliştirici-2  → EC2 + S3
             └── cicd-bot       → deploy için gereken minimum izin
 
-<span class="comment"># root kullanıcıyla günlük işlem YAPMA</span>
-<span class="comment"># her kullanıcıya/robota minimum gerekli izni ver (least privilege)</span></code></pre>
+<span class="comment"># DO NOT use the root account for daily operations</span>
+<span class="comment"># give each user/robot only the minimum required permission (least privilege)</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ödev</div>
@@ -4785,19 +4785,19 @@ aws sts get-caller-identity
       </div>
       <div>
         <div class="block-title">Policy — İzin Kuralı (JSON)</div>
-        <pre><code><span class="comment"># S3'teki belirli bucket'a sadece okuma izni</span>
+        <pre><code><span class="comment"># read-only permission on a specific S3 bucket</span>
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Effect": "Allow",               <span class="comment">← izin ver (Deny de olabilir)</span>
+      "Effect": "Allow",               <span class="comment">← allow (can also be Deny)</span>
       "Action": [
-        "s3:GetObject",                <span class="comment">← nesne oku</span>
-        "s3:ListBucket"                <span class="comment">← bucket içeriğini listele</span>
+        "s3:GetObject",                <span class="comment">← read object</span>
+        "s3:ListBucket"                <span class="comment">← list bucket contents</span>
       ],
       "Resource": [
-        "arn:aws:s3:::my-bucket",      <span class="comment">← bucket'ın kendisi</span>
-        "arn:aws:s3:::my-bucket/*"     <span class="comment">← bucket içindeki her şey</span>
+        "arn:aws:s3:::my-bucket",      <span class="comment">← the bucket itself</span>
+        "arn:aws:s3:::my-bucket/*"     <span class="comment">← everything inside the bucket</span>
       ]
     }
   ]
@@ -4805,63 +4805,63 @@ aws sts get-caller-identity
       </div>
       <div>
         <div class="block-title">ARN — Amazon Resource Name</div>
-        <pre><code><span class="comment"># her AWS kaynağının benzersiz adresi</span>
+        <pre><code><span class="comment"># unique address of every AWS resource</span>
 arn:aws:s3:::my-bucket
 arn:aws:ec2:eu-west-1:123456789:instance/i-0abc123
 arn:aws:iam::123456789:user/ahmed.tuncpinar
 
-<span class="comment"># format: arn:bölüm:servis:region:hesap-id:kaynak</span></code></pre>
+<span class="comment"># format: arn:partition:service:region:account-id:resource</span></code></pre>
       </div>
       <div>
         <div class="block-title">Role — Servisler ve CI/CD İçin</div>
-        <pre><code><span class="comment"># EC2 instance'ının S3'e yazabilmesi için</span>
-<span class="comment"># access key gerekmez — role attach edersin</span>
+        <pre><code><span class="comment"># for an EC2 instance to write to S3</span>
+<span class="comment"># no access key needed — attach a role</span>
 
 EC2 instance → IAM Role (S3WriteAccess) → S3 bucket'a yazabilir
 
-<span class="comment"># GitHub Actions'tan AWS'e deploy için</span>
-<span class="comment"># access key yerine OIDC ile role assume</span>
+<span class="comment"># for deploying from GitHub Actions to AWS</span>
+<span class="comment"># use OIDC to assume role instead of access key</span>
 GitHub Actions → OIDC → IAM Role → ECS'e deploy
 
-<span class="comment"># role kullanmanın faydası:</span>
-<span class="comment"># - access key dosyaya/koda yazmak gerekmez</span>
-<span class="comment"># - otomatik dönen geçici kimlik bilgileri</span>
-<span class="comment"># - daha güvenli</span></code></pre>
+<span class="comment"># benefits of using roles:</span>
+<span class="comment"># - no need to write access key to files/code</span>
+<span class="comment"># - automatically rotating temporary credentials</span>
+<span class="comment"># - more secure</span></code></pre>
       </div>
       <div>
         <div class="block-title">Temel Kural: Least Privilege</div>
-        <pre><code><span class="comment"># YANLIŞ — her şeye tam erişim</span>
+        <pre><code><span class="comment"># WRONG — full access to everything</span>
 {
   "Effect": "Allow",
   "Action": "*",
   "Resource": "*"
 }
 
-<span class="comment"># DOĞRU — sadece ihtiyaç duyulan izinler</span>
+<span class="comment"># CORRECT — only the permissions needed</span>
 {
   "Effect": "Allow",
   "Action": ["s3:PutObject"],
   "Resource": "arn:aws:s3:::deploy-bucket/*"
 }
 
-<span class="comment"># her kullanıcıya/role'e sadece işini yapacak kadar izin ver</span>
-<span class="comment"># bu güvenlik ihlallerinin etkisini sınırlar</span></code></pre>
+<span class="comment"># give each user/role only enough permission to do their job</span>
+<span class="comment"># this limits the impact of security breaches</span></code></pre>
       </div>
       <div>
         <div class="block-title">IAM CLI Komutları</div>
-        <pre><code><span class="comment"># mevcut kullanıcıları listele</span>
+        <pre><code><span class="comment"># list current users</span>
 aws iam list-users
 
-<span class="comment"># kullanıcının izinlerini gör</span>
+<span class="comment"># see user permissions</span>
 aws iam list-attached-user-policies --user-name ahmed
 
-<span class="comment"># rolleri listele</span>
+<span class="comment"># list roles</span>
 aws iam list-roles
 
-<span class="comment"># kendi kimliğini doğrula</span>
+<span class="comment"># verify your own identity</span>
 aws sts get-caller-identity
 
-<span class="comment"># belirli bir servise erişimin var mı simüle et</span>
+<span class="comment"># simulate whether you have access to a specific service</span>
 aws iam simulate-principal-policy \
   --policy-source-arn arn:aws:iam::123456:user/ahmed \
   --action-names s3:PutObject</code></pre>
@@ -4909,17 +4909,17 @@ t3.medium  →  2 vCPU,  4 GB RAM     ~$28/ay
 t3.large   →  2 vCPU,  8 GB RAM     ~$55/ay
 t3.xlarge  →  4 vCPU, 16 GB RAM     ~$110/ay
 
-<span class="comment"># bütçen varsa büyük başla, yoksa küçük başla ve ölçeklendir</span>
-<span class="comment"># t3.micro Free Tier — ilk 12 ay ücretsiz yeni hesaplarda</span></code></pre>
+<span class="comment"># if you have budget start big, otherwise start small and scale</span>
+<span class="comment"># t3.micro Free Tier — free for the first 12 months on new accounts</span></code></pre>
       </div>
       <div>
         <div class="block-title">EC2 CLI ile Başlatma</div>
-        <pre><code><span class="comment"># mevcut instance'ları listele</span>
+        <pre><code><span class="comment"># list current instances</span>
 aws ec2 describe-instances \
   --query 'Reservations[*].Instances[*].[InstanceId,State.Name,InstanceType,PublicIpAddress]' \
   --output table
 
-<span class="comment"># instance başlat</span>
+<span class="comment"># start an instance</span>
 aws ec2 run-instances \
   --image-id ami-0694d931cee176e7d \   <span class="comment">← Ubuntu 22.04 AMI (eu-west-1)</span>
   --instance-type t3.micro \
@@ -4928,34 +4928,34 @@ aws ec2 run-instances \
   --subnet-id subnet-0abc123 \
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=web-server}]'
 
-<span class="comment"># instance'ı durdur (fatura kesilmez ama EBS devam eder)</span>
+<span class="comment"># stop the instance (no billing but EBS continues)</span>
 aws ec2 stop-instances --instance-ids i-0abc123
 
-<span class="comment"># instance'ı başlat</span>
+<span class="comment"># start the instance</span>
 aws ec2 start-instances --instance-ids i-0abc123
 
-<span class="comment"># instance'ı sonlandır (kalıcı sil)</span>
+<span class="comment"># terminate the instance (permanent delete)</span>
 aws ec2 terminate-instances --instance-ids i-0abc123</code></pre>
       </div>
       <div>
         <div class="block-title">Security Group — Güvenlik Duvarı</div>
-        <pre><code><span class="comment"># security group = instance'ın güvenlik duvarı</span>
-<span class="comment"># hangi portlara, nereden erişilebilir?</span>
+        <pre><code><span class="comment"># security group = the instance's firewall</span>
+<span class="comment"># which ports are accessible, from where?</span>
 
-<span class="comment"># gelen trafik kuralları (inbound)</span>
+<span class="comment"># inbound traffic rules</span>
 aws ec2 authorize-security-group-ingress \
   --group-id sg-0abc123 \
   --protocol tcp \
   --port 22 \
-  --cidr 0.0.0.0/0    <span class="comment">← SSH her yerden (production'da kısıtla!)</span>
+  --cidr 0.0.0.0/0    <span class="comment">← SSH from anywhere (restrict in production!)</span>
 
 aws ec2 authorize-security-group-ingress \
   --group-id sg-0abc123 \
   --protocol tcp \
   --port 443 \
-  --cidr 0.0.0.0/0    <span class="comment">← HTTPS her yerden</span>
+  --cidr 0.0.0.0/0    <span class="comment">← HTTPS from anywhere</span>
 
-<span class="comment"># yaygın port kuralları</span>
+<span class="comment"># common port rules</span>
 22    → SSH (sadece ofis IP'nden aç)
 80    → HTTP
 443   → HTTPS
@@ -4965,15 +4965,15 @@ aws ec2 authorize-security-group-ingress \
       </div>
       <div>
         <div class="block-title">SSH ile Bağlanma</div>
-        <pre><code><span class="comment"># key pair indir (.pem dosyası) ve izinlerini ayarla</span>
+        <pre><code><span class="comment"># download key pair (.pem file) and set permissions</span>
 chmod 400 benim-anahtar.pem
-<span class="comment"># → Linux | chmod 400 = sadece sahip okusun — SSH key için zorunlu, yoksa SSH reddeder — EZBER</span>
+<span class="comment"># → Linux | chmod 400 = owner read only — required for SSH key, SSH will reject it otherwise — EZBER</span>
 
-<span class="comment"># instance'a bağlan</span>
+<span class="comment"># connect to instance</span>
 ssh -i benim-anahtar.pem ubuntu@&lt;public-ip&gt;
-<span class="comment"># → SSH | ssh -i = hangi key dosyasıyla bağlan — -i = identity file — EZBER</span>
+<span class="comment"># → SSH | ssh -i = which key file to connect with — -i = identity file — EZBER</span>
 
-<span class="comment"># AMI'ye göre varsayılan kullanıcılar:</span>
+<span class="comment"># default users by AMI:</span>
 Ubuntu    → ubuntu
 Amazon Linux → ec2-user
 RHEL      → ec2-user
@@ -4981,7 +4981,7 @@ Debian    → admin</code></pre>
       </div>
       <div>
         <div class="block-title">User Data — Başlangıç Scripti</div>
-        <pre><code><span class="comment"># instance ilk başladığında otomatik çalışan script</span>
+        <pre><code><span class="comment"># script that runs automatically when the instance first starts</span>
 aws ec2 run-instances \
   --image-id ami-0694d931cee176e7d \
   --instance-type t3.micro \
@@ -4992,8 +4992,8 @@ systemctl start nginx
 systemctl enable nginx
 echo "&lt;h1&gt;Merhaba AWS&lt;/h1&gt;" > /var/www/html/index.html'
 
-<span class="comment"># instance hazır olduğunda nginx kurulu ve çalışıyor olur</span>
-<span class="comment"># Terraform'da da user_data olarak kullanırsın</span></code></pre>
+<span class="comment"># nginx will be installed and running when the instance is ready</span>
+<span class="comment"># you also use this as user_data in Terraform</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ödev</div>
@@ -5026,7 +5026,7 @@ Object    → bir dosya + metadata. Boyut sınırı yok (teorik).
 Key       → nesnenin yolu/adı. Klasör mantığı simüle eder.
 Prefix    → key'in klasör gibi davranan bölümü
 
-<span class="comment"># örnek:</span>
+<span class="comment"># example:</span>
 Bucket:  inpart-deploy-artifacts
 Object:  builds/connect-playwright/v1.2.3/report.html
 Key:     builds/connect-playwright/v1.2.3/report.html
@@ -5034,34 +5034,34 @@ Prefix:  builds/connect-playwright/</code></pre>
       </div>
       <div>
         <div class="block-title">S3 CLI Komutları</div>
-        <pre><code><span class="comment"># bucket oluştur</span>
+        <pre><code><span class="comment"># create bucket</span>
 aws s3 mb s3://benim-bucket-adim --region eu-west-1
-<span class="comment"># → AWS S3 | aws s3 mb = make bucket, --region zorunlu — EZBER</span>
+<span class="comment"># → AWS S3 | aws s3 mb = make bucket, --region required — EZBER</span>
 
-<span class="comment"># bucket'ları listele</span>
+<span class="comment"># list buckets</span>
 aws s3 ls
 
-<span class="comment"># bucket içeriğini listele</span>
+<span class="comment"># list bucket contents</span>
 aws s3 ls s3://benim-bucket-adim/
 
-<span class="comment"># dosya yükle</span>
+<span class="comment"># upload file</span>
 aws s3 cp dosya.txt s3://benim-bucket-adim/
-<span class="comment"># → AWS S3 | aws s3 cp = kopyala — yerel→S3 veya S3→yerel çalışır — EZBER</span>
+<span class="comment"># → AWS S3 | aws s3 cp = copy — works local→S3 or S3→local — EZBER</span>
 
-<span class="comment"># klasör yükle (recursive)</span>
+<span class="comment"># upload folder (recursive)</span>
 aws s3 cp dist/ s3://benim-bucket-adim/builds/v1.0/ --recursive
 
-<span class="comment"># dosya indir</span>
+<span class="comment"># download file</span>
 aws s3 cp s3://benim-bucket-adim/dosya.txt .
 
-<span class="comment"># sync — sadece değişenleri yükle (build artifacts için ideal)</span>
+<span class="comment"># sync — upload only what changed (ideal for build artifacts)</span>
 aws s3 sync dist/ s3://benim-bucket-adim/site/ --delete
-<span class="comment"># → AWS S3 | aws s3 sync --delete = sadece değişenleri yükle, fazlaları sil — CI/CD deploy kalıbı — EZBER</span>
+<span class="comment"># → AWS S3 | aws s3 sync --delete = upload only changed files, delete extras — CI/CD deploy pattern — EZBER</span>
 
-<span class="comment"># dosya sil</span>
+<span class="comment"># delete file</span>
 aws s3 rm s3://benim-bucket-adim/dosya.txt
 
-<span class="comment"># bucket sil (önce boşaltman gerekir)</span>
+<span class="comment"># delete bucket (you must empty it first)</span>
 aws s3 rb s3://benim-bucket-adim --force</code></pre>
       </div>
       <div>
@@ -5076,12 +5076,12 @@ aws s3 rb s3://benim-bucket-adim --force</code></pre>
       </div>
       <div>
         <div class="block-title">Yaygın Kullanım Senaryoları</div>
-        <pre><code><span class="comment"># 1. Statik web sitesi hosting</span>
+        <pre><code><span class="comment"># 1. Static website hosting</span>
 aws s3 website s3://site.example.com \
   --index-document index.html \
   --error-document error.html
 
-<span class="comment"># 2. Terraform state dosyası (T6'da gördün)</span>
+<span class="comment"># 2. Terraform state file (you saw this in T6)</span>
 terraform {
   backend "s3" {
     bucket = "terraform-state-bucket"
@@ -5090,15 +5090,15 @@ terraform {
   }
 }
 
-<span class="comment"># 3. CI/CD build artifact'ları</span>
+<span class="comment"># 3. CI/CD build artifacts</span>
 aws s3 cp report.html s3://test-reports/playwright/$(date +%Y%m%d)/
 
-<span class="comment"># 4. Uygulama log arşivi</span>
+<span class="comment"># 4. Application log archive</span>
 aws s3 sync /var/log/app/ s3://log-archive/$(date +%Y%m%d)/</code></pre>
       </div>
       <div>
         <div class="block-title">Bucket Policy — Erişim Kontrolü</div>
-        <pre><code><span class="comment"># tüm dünyaya okuma izni (statik site için)</span>
+        <pre><code><span class="comment"># read permission for everyone (for static site)</span>
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -5111,7 +5111,7 @@ aws s3 sync /var/log/app/ s3://log-archive/$(date +%Y%m%d)/</code></pre>
   ]
 }
 
-<span class="comment"># sadece belirli IAM role'e yazma izni (CI/CD için)</span>
+<span class="comment"># write permission only for specific IAM role (for CI/CD)</span>
 {
   "Effect": "Allow",
   "Principal": {
@@ -5193,33 +5193,33 @@ NAT Gateway → Private subnet'lerin dışarıya çıkışı</code></pre>
       </div>
       <div>
         <div class="block-title">VPC CLI Komutları</div>
-        <pre><code><span class="comment"># mevcut VPC'leri listele</span>
+        <pre><code><span class="comment"># list existing VPCs</span>
 aws ec2 describe-vpcs --output table
 
-<span class="comment"># subnet'leri listele</span>
+<span class="comment"># list subnets</span>
 aws ec2 describe-subnets --output table
 
-<span class="comment"># internet gateway'leri listele</span>
+<span class="comment"># list internet gateways</span>
 aws ec2 describe-internet-gateways --output table
 
-<span class="comment"># route table'ları listele</span>
+<span class="comment"># list route tables</span>
 aws ec2 describe-route-tables --output table
 
-<span class="comment"># güvenlik gruplarını listele</span>
+<span class="comment"># list security groups</span>
 aws ec2 describe-security-groups --output table</code></pre>
       </div>
       <div>
         <div class="block-title">Neden Public / Private Subnet Ayrımı?</div>
-        <pre><code><span class="comment"># veritabanını public subnet'e koyarsan:</span>
+        <pre><code><span class="comment"># if you put the database in a public subnet:</span>
 internet → veritabanı   ← saldırılara açık!
 
-<span class="comment"># doğru mimari:</span>
+<span class="comment"># correct architecture:</span>
 internet → Load Balancer (public)
          → Uygulama Sunucusu (private)  → veritabanı (db subnet, private)
 
-<span class="comment"># veritabanı asla internetten doğrudan erişilemez</span>
-<span class="comment"># sadece aynı VPC içindeki uygulama sunucusu erişebilir</span>
-<span class="comment"># security group ile bu kontrol edilir</span></code></pre>
+<span class="comment"># database is never directly accessible from the internet</span>
+<span class="comment"># only the application server inside the same VPC can access it</span>
+<span class="comment"># this is controlled via security group</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ödev</div>
@@ -5260,10 +5260,10 @@ internet → Load Balancer (public)
       </div>
       <div>
         <div class="block-title">RDS — Yönetilen Veritabanı</div>
-        <pre><code><span class="comment"># desteklenen veritabanları:</span>
+        <pre><code><span class="comment"># supported databases:</span>
 PostgreSQL, MySQL, MariaDB, Oracle, SQL Server, Aurora
 
-<span class="comment"># RDS instance oluştur (CLI)</span>
+<span class="comment"># create RDS instance (CLI)</span>
 aws rds create-db-instance \
   --db-instance-identifier myapp-db \
   --db-instance-class db.t3.micro \
@@ -5274,10 +5274,10 @@ aws rds create-db-instance \
   --allocated-storage 20 \
   --db-subnet-group-name private-subnet-group \
   --vpc-security-group-ids sg-0abc123 \
-  --multi-az \           <span class="comment">← yüksek erişilebilirlik için ikinci AZ'de standby</span>
-  --backup-retention-period 7  <span class="comment">← 7 gün yedek tut</span>
+  --multi-az \           <span class="comment">← standby in second AZ for high availability</span>
+  --backup-retention-period 7  <span class="comment">← keep backups for 7 days</span>
 
-<span class="comment"># RDS instance'larını listele</span>
+<span class="comment"># list RDS instances</span>
 aws rds describe-db-instances \
   --query 'DBInstances[*].[DBInstanceIdentifier,DBInstanceStatus,Endpoint.Address]' \
   --output table</code></pre>
@@ -5298,31 +5298,31 @@ aws rds describe-db-instances \
       </div>
       <div>
         <div class="block-title">ECS — Yönetilen Container Servisi</div>
-        <pre><code><span class="comment"># ECS: AWS'nin kendi container orkestrasyon servisi</span>
-<span class="comment"># Kubernetes'e alternatif — daha basit, AWS'ye özgü</span>
+        <pre><code><span class="comment"># ECS: AWS's own container orchestration service</span>
+<span class="comment"># alternative to Kubernetes — simpler, AWS-native</span>
 
-<span class="comment"># temel kavramlar:</span>
+<span class="comment"># core concepts:</span>
 Cluster   → container'ları çalıştıran mantıksal grup
 Service   → belirli sayıda task'ı sürekli çalıştırır
 Task      → bir veya daha fazla container (Pod gibi)
 Task Def  → hangi image, CPU, RAM, port (Deployment gibi)
 
-<span class="comment"># mevcut ECS cluster'larını listele</span>
+<span class="comment"># list existing ECS clusters</span>
 aws ecs list-clusters
 
-<span class="comment"># cluster'daki service'leri listele</span>
+<span class="comment"># list services in a cluster</span>
 aws ecs list-services --cluster benim-cluster
 
-<span class="comment"># yeni deploy — yeni image ile service güncelle</span>
+<span class="comment"># new deploy — update service with new image</span>
 aws ecs update-service \
   --cluster benim-cluster \
   --service benim-service \
   --force-new-deployment
-<span class="comment"># → AWS ECS | aws ecs update-service --force-new-deployment = yeni image ile yeniden deploy et — production deploy komutu — EZBER</span></code></pre>
+<span class="comment"># → AWS ECS | aws ecs update-service --force-new-deployment = redeploy with new image — production deploy command — EZBER</span></code></pre>
       </div>
       <div>
         <div class="block-title">CloudWatch — İzleme ve Loglar</div>
-        <pre><code><span class="comment"># EC2 instance'ının CPU kullanımını gör</span>
+        <pre><code><span class="comment"># see CPU usage of EC2 instance</span>
 aws cloudwatch get-metric-statistics \
   --namespace AWS/EC2 \
   --metric-name CPUUtilization \
@@ -5333,10 +5333,10 @@ aws cloudwatch get-metric-statistics \
   --statistics Average \
   --output table
 
-<span class="comment"># log gruplarını listele</span>
+<span class="comment"># list log groups</span>
 aws logs describe-log-groups --output table
 
-<span class="comment"># belirli log grubunun son loglarını gör</span>
+<span class="comment"># view recent logs of a specific log group</span>
 aws logs get-log-events \
   --log-group-name /ecs/benim-servisim \
   --log-stream-name &lt;stream-adı&gt; \
@@ -5405,7 +5405,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write   <span class="comment">← OIDC için gerekli</span>
+      id-token: write   <span class="comment">← required for OIDC</span>
       contents: read
 
     steps:
@@ -5452,26 +5452,26 @@ jobs:
       </div>
       <div>
         <div class="block-title">Kritik Güvenlik Kuralları</div>
-        <pre><code><span class="comment"># 1. Root hesabı sadece hesap kurulumu için kullan</span>
-<span class="comment">#    Günlük işler için IAM kullanıcısı oluştur</span>
+        <pre><code><span class="comment"># 1. Use root account only for account setup</span>
+<span class="comment">#    Create an IAM user for daily operations</span>
 
-<span class="comment"># 2. MFA'yı her zaman aç</span>
-<span class="comment">#    Root hesap + tüm IAM kullanıcıları için zorunlu</span>
+<span class="comment"># 2. Always enable MFA</span>
+<span class="comment">#    Required for root account + all IAM users</span>
 
-<span class="comment"># 3. Access key'leri koda yazma</span>
-<span class="comment">#    EC2/ECS için IAM Role kullan</span>
-<span class="comment">#    GitHub Actions için OIDC kullan</span>
+<span class="comment"># 3. Never write access keys in code</span>
+<span class="comment">#    Use IAM Role for EC2/ECS</span>
+<span class="comment">#    Use OIDC for GitHub Actions</span>
 
-<span class="comment"># 4. Least privilege — minimum izin</span>
-<span class="comment">#    Sadece işi için gereken izinleri ver</span>
+<span class="comment"># 4. Least privilege — minimum permission</span>
+<span class="comment">#    Give only the permissions needed for the job</span>
 
-<span class="comment"># 5. Veritabanını private subnet'te tut</span>
-<span class="comment">#    Security group ile sadece uygulama sunucusuna izin ver</span>
+<span class="comment"># 5. Keep database in private subnet</span>
+<span class="comment">#    Allow only application server via security group</span>
 
-<span class="comment"># 6. Tüm altyapıyı Terraform ile yönet</span>
-<span class="comment">#    Manuel konsoldan kaynak oluşturma</span>
+<span class="comment"># 6. Manage all infrastructure with Terraform</span>
+<span class="comment">#    No manual resource creation from console</span>
 
-<span class="comment"># 7. CloudTrail'i aç — kim ne yaptı takip et</span>
+<span class="comment"># 7. Enable CloudTrail — track who did what</span>
 aws cloudtrail describe-trails</code></pre>
       </div>
       <div>
@@ -5547,17 +5547,17 @@ Monitoring ile:
       </div>
       <div>
         <div class="block-title">İzlenecek Temel Metrikler — Her Servis İçin</div>
-        <pre><code><span class="comment"># RED yöntemi — Request-based servisler için</span>
+        <pre><code><span class="comment"># RED method — for Request-based services</span>
 Rate        → saniyede kaç istek geliyor?
 Errors      → hataların oranı nedir? (%1 üstü alarm)
 Duration    → istekler ne kadar sürede yanıtlanıyor? (p99)
 
-<span class="comment"># USE yöntemi — Altyapı kaynakları için</span>
+<span class="comment"># USE method — for Infrastructure resources</span>
 Utilization → kaynak ne kadar dolu? (CPU %80 üstü)
 Saturation  → kuyruk oluşuyor mu? (disk I/O bekleme)
 Errors      → hata sayısı/oranı
 
-<span class="comment"># The Four Golden Signals (Google SRE kitabından)</span>
+<span class="comment"># The Four Golden Signals (from Google SRE book)</span>
 Gecikme     → isteğin yanıt süresi
 Trafik      → sistemin yük miktarı (istek/sn)
 Hatalar     → başarısız isteklerin oranı
@@ -5605,52 +5605,52 @@ Doygunluk   → sistem ne kadar dolu / kapasiteye ne kadar yakın</code></pre>
       <div>
         <div class="block-title">Prometheus Yapılandırması — prometheus.yml</div>
         <pre><code>global:
-  scrape_interval: 15s      <span class="comment"># her 15 saniyede bir scrape et</span>
-  evaluation_interval: 15s  <span class="comment"># alarm kurallarını her 15 saniyede değerlendir</span>
+  scrape_interval: 15s      <span class="comment"># scrape every 15 seconds</span>
+  evaluation_interval: 15s  <span class="comment"># evaluate alarm rules every 15 seconds</span>
 
 scrape_configs:
-  - job_name: 'node-exporter'       <span class="comment"># sunucu metrikleri</span>
+  - job_name: 'node-exporter'       <span class="comment"># server metrics</span>
     static_configs:
       - targets: ['localhost:9100']
 
-  - job_name: 'my-api'              <span class="comment"># uygulama metrikleri</span>
+  - job_name: 'my-api'              <span class="comment"># application metrics</span>
     static_configs:
       - targets: ['api:3000']
     metrics_path: /metrics
 
-  - job_name: 'kubernetes-pods'     <span class="comment"># Kubernetes pod'ları otomatik keşfet</span>
+  - job_name: 'kubernetes-pods'     <span class="comment"># automatically discover Kubernetes pods</span>
     kubernetes_sd_configs:
       - role: pod</code></pre>
       </div>
       <div>
         <div class="block-title">PromQL — Prometheus Sorgu Dili</div>
-        <pre><code><span class="comment"># anlık CPU kullanımı (0-1 arası, %'ye çevir)</span>
+        <pre><code><span class="comment"># instantaneous CPU usage (0-1 range, convert to %)</span>
 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)
 
-<span class="comment"># son 5 dakikada saniyede kaç HTTP isteği?</span>
+<span class="comment"># how many HTTP requests per second in the last 5 minutes?</span>
 rate(http_requests_total[5m])
-<span class="comment"># → PromQL | rate([5m]) = saniyedeki ortalama artış — her counter metriğinde kullanılır — EZBER</span>
+<span class="comment"># → PromQL | rate([5m]) = average increase per second — used with every counter metric — EZBER</span>
 
-<span class="comment"># son 5 dakikadaki hata oranı</span>
+<span class="comment"># error rate in the last 5 minutes</span>
 rate(http_requests_total{status=~"5.."}[5m])
   /
 rate(http_requests_total[5m])
 
-<span class="comment"># 95. yüzdelik gecikme (p95)</span>
+<span class="comment"># 95th percentile latency (p95)</span>
 histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
-<span class="comment"># → PromQL | histogram_quantile(0.95, ...) = p95 gecikme — SLO dashboardunun kalp atışı — EZBER</span>
+<span class="comment"># → PromQL | histogram_quantile(0.95, ...) = p95 latency — heartbeat of the SLO dashboard — EZBER</span>
 
-<span class="comment"># bellek kullanımı (GB)</span>
+<span class="comment"># memory usage (GB)</span>
 (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / 1024^3
 
-<span class="comment"># disk doluluk yüzdesi</span>
+<span class="comment"># disk usage percentage</span>
 100 - ((node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes) * 100)</code></pre>
       </div>
       <div>
         <div class="block-title">Node Exporter — Sunucu Metrikleri</div>
-        <pre><code><span class="comment"># Node Exporter: sunucunun sistem metriklerini /metrics endpoint'inde sunar</span>
+        <pre><code><span class="comment"># Node Exporter: exposes server system metrics at the /metrics endpoint</span>
 
-<span class="comment"># Docker ile başlat</span>
+<span class="comment"># start with Docker</span>
 docker run -d \
   --name node-exporter \
   --net="host" \
@@ -5659,7 +5659,7 @@ docker run -d \
   prom/node-exporter:latest \
   --path.rootfs=/host
 
-<span class="comment"># sunduğu metrikler:</span>
+<span class="comment"># metrics it exposes:</span>
 node_cpu_seconds_total        → CPU kullanımı
 node_memory_MemAvailable_bytes → kullanılabilir bellek
 node_filesystem_avail_bytes   → boş disk
@@ -5668,7 +5668,7 @@ node_load1                    → 1 dakika yük ortalaması</code></pre>
       </div>
       <div>
         <div class="block-title">Node.js Uygulamasına Metrik Ekleme</div>
-        <pre><code><span class="comment"># prom-client kütüphanesi ile</span>
+        <pre><code><span class="comment"># with prom-client library</span>
 import { Registry, Counter, Histogram } from 'prom-client'
 
 const registry = new Registry()
@@ -5688,7 +5688,7 @@ const httpDuration = new Histogram({
   registers: [registry]
 })
 
-<span class="comment"># middleware olarak ekle</span>
+<span class="comment"># add as middleware</span>
 app.use((req, res, next) => {
   const end = httpDuration.startTimer({ method: req.method, path: req.path })
   res.on('finish', () => {
@@ -5698,7 +5698,7 @@ app.use((req, res, next) => {
   next()
 })
 
-<span class="comment"># /metrics endpoint'i aç — Prometheus buradan okur</span>
+<span class="comment"># expose /metrics endpoint — Prometheus reads from here</span>
 app.get('/metrics', async (req, res) => {
   res.set('Content-Type', registry.contentType)
   res.send(await registry.metrics())
@@ -5777,24 +5777,24 @@ volumes:
       </div>
       <div>
         <div class="block-title">İyi Bir Dashboard Ne İçerir?</div>
-        <pre><code><span class="comment"># Üst satır — anlık durum (stat paneller)</span>
+        <pre><code><span class="comment"># Top row — instant state (stat panels)</span>
 [Uptime]  [İstek/sn]  [Hata Oranı %]  [p99 Gecikme ms]
 
-<span class="comment"># Orta satır — zaman serisi grafikler</span>
+<span class="comment"># Middle row — time series charts</span>
 [HTTP İstek Oranı — son 1 saat]
 [Yanıt Süresi (p50 / p95 / p99)]
 [Hata Sayısı endpoint'e göre]
 
-<span class="comment"># Alt satır — altyapı</span>
+<span class="comment"># Bottom row — infrastructure</span>
 [CPU Kullanımı]  [Bellek]  [Disk]  [Ağ]
 
-<span class="comment"># Variable ile filtrele</span>
+<span class="comment"># Filter with Variable</span>
 Ortam: [production ▼]   Sunucu: [api-1 ▼]</code></pre>
       </div>
       <div>
         <div class="block-title">Hazır Dashboard'lar — Grafana Kütüphanesi</div>
-        <pre><code><span class="comment"># Grafana dashboard ID ile hazır dashboard içe aktar</span>
-<span class="comment"># Grafana UI → Dashboards → Import → ID gir</span>
+        <pre><code><span class="comment"># Import ready-made dashboard by Grafana dashboard ID</span>
+<span class="comment"># Grafana UI → Dashboards → Import → enter ID</span>
 
 1860   → Node Exporter Full (sunucu metrikleri — en çok kullanılan)
 315    → Kubernetes Cluster Monitoring
@@ -5802,8 +5802,8 @@ Ortam: [production ▼]   Sunucu: [api-1 ▼]</code></pre>
 7587   → PostgreSQL / RDS
 11074  → Node.js Application Dashboard
 
-<span class="comment"># bu dashboard'ları sıfırdan yazmana gerek yok</span>
-<span class="comment"># topluluğun hazırladığı olanları özelleştirirsin</span></code></pre>
+<span class="comment"># you don't need to write these dashboards from scratch</span>
+<span class="comment"># you customize what the community has prepared</span></code></pre>
       </div>
       <div>
         <div class="block-title">Panel Türleri ve Ne Zaman Kullanılır</div>
@@ -5870,7 +5870,7 @@ groups:
 
       - alert: YuksekCPU
         expr: 100 - (avg by(instance)(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
-        for: 5m                   <span class="comment"># 5 dakika sürekli aşılırsa alarm ver</span>
+        for: 5m                   <span class="comment"># alert if exceeded continuously for 5 minutes</span>
         labels:
           severity: warning
         annotations:
@@ -5909,18 +5909,18 @@ global:
 
 route:
   group_by: ['alertname', 'instance']
-  group_wait: 30s          <span class="comment"># birden fazla alarm varsa grupla bekle</span>
-  group_interval: 5m       <span class="comment"># aynı gruptaki alarmlara tekrar bildirim aralığı</span>
-  repeat_interval: 4h      <span class="comment"># çözülmemiş alarm tekrar bildirim aralığı</span>
+  group_wait: 30s          <span class="comment"># wait before sending if there are multiple alarms</span>
+  group_interval: 5m       <span class="comment"># interval for repeat notifications for alarms in the same group</span>
+  repeat_interval: 4h      <span class="comment"># interval for repeat notifications for unresolved alarms</span>
   receiver: slack-ops
 
   routes:
     - match:
         severity: critical
-      receiver: pagerduty   <span class="comment"># kritik → nöbetçiyi ara</span>
+      receiver: pagerduty   <span class="comment"># critical → call the on-call engineer</span>
     - match:
         severity: warning
-      receiver: slack-ops   <span class="comment"># uyarı → Slack'e yaz</span>
+      receiver: slack-ops   <span class="comment"># warning → write to Slack</span>
 
 receivers:
   - name: slack-ops
@@ -5938,7 +5938,7 @@ receivers:
       </div>
       <div>
         <div class="block-title">AWS CloudWatch Alarmları</div>
-        <pre><code><span class="comment"># EC2 CPU alarmı oluştur</span>
+        <pre><code><span class="comment"># create EC2 CPU alarm</span>
 aws cloudwatch put-metric-alarm \
   --alarm-name "api-server-yuksek-cpu" \
   --alarm-description "CPU 5 dakika %85 üstünde" \
@@ -5952,31 +5952,31 @@ aws cloudwatch put-metric-alarm \
   --statistic Average \
   --alarm-actions arn:aws:sns:eu-west-1:123456:ops-alerts
 
-<span class="comment"># mevcut alarmları listele</span>
+<span class="comment"># list current alarms</span>
 aws cloudwatch describe-alarms --output table
-<span class="comment"># → AWS | aws cloudwatch describe-alarms = tüm alarmları listele — ilk kontrol komutu — EZBER</span>
+<span class="comment"># → AWS | aws cloudwatch describe-alarms = list all alarms — first check command — EZBER</span>
 
-<span class="comment"># alarm durumuna göre filtrele</span>
+<span class="comment"># filter by alarm state</span>
 aws cloudwatch describe-alarms --state-value ALARM --output table</code></pre>
       </div>
       <div>
         <div class="block-title">İyi Alarm Tasarımı — Kurallar</div>
-        <pre><code><span class="comment"># YANLIŞ — gürültülü alarm</span>
+        <pre><code><span class="comment"># WRONG — noisy alarm</span>
 CPU > %60 → alarm ver   ← her sunucu bunu zaten aşar
 
-<span class="comment"># YANLIŞ — geç alarm</span>
+<span class="comment"># WRONG — late alarm</span>
 Disk > %99 → alarm ver  ← dolduğunda iş işten geçmiştir
 
-<span class="comment"># DOĞRU</span>
+<span class="comment"># CORRECT</span>
 CPU > %85 ve 5 dakika boyunca    ← gerçekten sorun var
 Disk > %80                       ← temizlemeye vakit var
 Hata oranı > %1 ve 2 dakika      ← kullanıcı etkiliyor
 p99 gecikme > 2 saniye            ← performans sorunu
 
-<span class="comment"># İyi alarm:</span>
-<span class="comment"># - actionable — ne yapacağını biliyorsun</span>
-<span class="comment"># - acil — şu an müdahale gerekiyor</span>
-<span class="comment"># - doğru — false positive yok</span></code></pre>
+<span class="comment"># Good alarm:</span>
+<span class="comment"># - actionable — you know what to do</span>
+<span class="comment"># - urgent — action required right now</span>
+<span class="comment"># - accurate — no false positives</span></code></pre>
       </div>
       <div>
         <div class="block-title">Ödev</div>
@@ -6010,15 +6010,15 @@ WARN    → sorun olabilir ama devam ediyor — "Retry yapıldı (1/3)"
 ERROR   → hata — işlem başarısız oldu — "DB bağlantısı kurulamadı"
 FATAL   → sistem kapanıyor — "Port zaten kullanımda, servis başlatılamıyor"
 
-<span class="comment"># production'da genellikle INFO ve üstü loglanır</span>
-<span class="comment"># DEBUG her ortamda açık bırakma — performansı etkiler ve disk doldurur</span></code></pre>
+<span class="comment"># in production typically INFO and above are logged</span>
+<span class="comment"># don't leave DEBUG on in every environment — affects performance and fills disk</span></code></pre>
       </div>
       <div>
         <div class="block-title">Yapılandırılmış Log — JSON Formatı</div>
-        <pre><code><span class="comment"># YANLIŞ — düz metin (arama yapılamaz)</span>
+        <pre><code><span class="comment"># WRONG — plain text (not searchable)</span>
 [2026-08-11 09:15:23] ERROR: User 42 ile ödeme başarısız oldu, tutar: 150TL
 
-<span class="comment"># DOĞRU — yapılandırılmış JSON (filtrele, ara, analiz et)</span>
+<span class="comment"># CORRECT — structured JSON (filter, search, analyze)</span>
 {
   "timestamp": "2026-08-11T09:15:23Z",
   "level": "error",
@@ -6032,28 +6032,28 @@ FATAL   → sistem kapanıyor — "Port zaten kullanımda, servis başlatılamı
   "version": "2.1.4"
 }
 
-<span class="comment"># JSON logla şunu yapabilirsin:</span>
-<span class="comment"># → tüm userId=42 hatalarını filtrele</span>
-<span class="comment"># → errorCode bazında hataları say</span>
-<span class="comment"># → traceId ile ilgili tüm log satırlarını bul</span></code></pre>
+<span class="comment"># with JSON logging you can:</span>
+<span class="comment"># → filter all userId=42 errors</span>
+<span class="comment"># → count errors by errorCode</span>
+<span class="comment"># → find all log lines by traceId</span></code></pre>
       </div>
       <div>
         <div class="block-title">AWS CloudWatch Logs</div>
-        <pre><code><span class="comment"># log gruplarını listele</span>
+        <pre><code><span class="comment"># list log groups</span>
 aws logs describe-log-groups --output table
 
-<span class="comment"># belirli bir log grubunu canlı takip et</span>
+<span class="comment"># live-tail a specific log group</span>
 aws logs tail /ecs/api-service --follow
-<span class="comment"># → AWS Logs | aws logs tail --follow = CloudWatch log grubunu canlı takip et — docker logs -f'in AWS karşılığı — EZBER</span>
+<span class="comment"># → AWS Logs | aws logs tail --follow = live-tail a CloudWatch log group — AWS equivalent of docker logs -f — EZBER</span>
 
-<span class="comment"># belirli bir zaman aralığında logları sorgula</span>
+<span class="comment"># query logs in a specific time range</span>
 aws logs filter-log-events \
   --log-group-name /ecs/api-service \
   --start-time $(date -d "1 hour ago" +%s000) \
   --filter-pattern '"ERROR"' \
   --output table
 
-<span class="comment"># CloudWatch Logs Insights — SQL benzeri sorgu</span>
+<span class="comment"># CloudWatch Logs Insights — SQL-like query</span>
 aws logs start-query \
   --log-group-name /ecs/api-service \
   --start-time $(date -d "1 hour ago" +%s) \
@@ -6062,30 +6062,30 @@ aws logs start-query \
       </div>
       <div>
         <div class="block-title">Grafana Loki — Prometheus'un Log Versiyonu</div>
-        <pre><code><span class="comment"># Loki: logları indekslemez, label'lar üzerinden sorgular</span>
-<span class="comment"># Prometheus ile aynı label sistemi — birlikte mükemmel çalışır</span>
+        <pre><code><span class="comment"># Loki: does not index logs, queries via labels</span>
+<span class="comment"># same label system as Prometheus — works perfectly together</span>
 
-<span class="comment"># LogQL — Loki sorgu dili</span>
+<span class="comment"># LogQL — Loki query language</span>
 
-<span class="comment"># tüm api-service logları</span>
+<span class="comment"># all api-service logs</span>
 {app="api-service"}
 
-<span class="comment"># sadece hata satırları</span>
+<span class="comment"># only error lines</span>
 {app="api-service"} |= "ERROR"
 
-<span class="comment"># JSON parse et ve userId'ye göre filtrele</span>
+<span class="comment"># parse JSON and filter by userId</span>
 {app="api-service"} | json | userId = "42"
 
-<span class="comment"># son 5 dakikadaki hata sayısı</span>
+<span class="comment"># error count in the last 5 minutes</span>
 count_over_time({app="api-service"} |= "ERROR" [5m])
 
-<span class="comment"># Docker Compose ile Loki ekle</span>
+<span class="comment"># add Loki with Docker Compose</span>
   loki:
     image: grafana/loki:latest
     ports:
       - "3100:3100"
 
-  promtail:         <span class="comment">← log toplayıcı (node_exporter'ın log versiyonu)</span>
+  promtail:         <span class="comment">← log collector (the log version of node_exporter)</span>
     image: grafana/promtail:latest
     volumes:
       - /var/log:/var/log
@@ -6176,22 +6176,22 @@ SLA — Service Level Agreement (Anlaşma)
       </div>
       <div>
         <div class="block-title">Error Budget — Hata Bütçesi</div>
-        <pre><code><span class="comment"># SLO %99.9 → aylık 43.8 dakika kesinti hakkı</span>
-<span class="comment"># bu senin "hata bütçen"</span>
+        <pre><code><span class="comment"># SLO 99.9% → 43.8 minutes of downtime allowed per month</span>
+<span class="comment"># this is your "error budget"</span>
 
 Hata bütçesi kaldı mı?
   → Evet → yeni özellik deploy edebilirsin
   → Hayır → deployment dondur, güvenilirlik çalış
 
-<span class="comment"># örnek:</span>
+<span class="comment"># example:</span>
 Hedef SLO: %99.9 (aylık 43.8 dk kesinti hakkı)
 Bu ay olan kesintiler: 12 dk
 Kalan bütçe: 31.8 dk
 
-<span class="comment"># hata bütçesi tükendiyse:</span>
-<span class="comment"># → yeni deploy yok</span>
-<span class="comment"># → güvenilirlik iyileştirmesine odaklan</span>
-<span class="comment"># → postmortem yap</span></code></pre>
+<span class="comment"># if error budget is exhausted:</span>
+<span class="comment"># → no new deploys</span>
+<span class="comment"># → focus on reliability improvements</span>
+<span class="comment"># → do a postmortem</span></code></pre>
       </div>
       <div>
         <div class="block-title">Yaygın SLI Metrikleri</div>
@@ -6206,14 +6206,14 @@ Kalan bütçe: 31.8 dk
       </div>
       <div>
         <div class="block-title">Prometheus ile SLO İzleme</div>
-        <pre><code><span class="comment"># Son 30 günde başarı oranı (SLI)</span>
+        <pre><code><span class="comment"># Success rate in the last 30 days (SLI)</span>
 (
   sum(rate(http_requests_total{status!~"5.."}[30d]))
   /
   sum(rate(http_requests_total[30d]))
 ) * 100
 
-<span class="comment"># Bu değer SLO hedefinin (%99.9) altına düştüğünde alarm ver</span>
+<span class="comment"># Alert when this value drops below the SLO target (99.9%)</span>
 - alert: SLOIhlali
   expr: |
     (
@@ -6290,8 +6290,8 @@ ADIM 5 — İlet
       </div>
       <div>
         <div class="block-title">Postmortem — Olay Sonrası Analiz</div>
-        <pre><code><span class="comment"># Her önemli olaydan sonra blameless postmortem yaz</span>
-<span class="comment"># Amaç: kişi suçlamak değil, sistemi iyileştirmek</span>
+        <pre><code><span class="comment"># Write a blameless postmortem after every significant incident</span>
+<span class="comment"># Goal: not to blame people, but to improve the system</span>
 
 Postmortem Şablonu:
 ─────────────────────────────────────────
@@ -6336,7 +6336,7 @@ Yapılacaklar:
       </div>
       <div>
         <div class="block-title">Tam Monitoring Stack — Docker Compose</div>
-        <pre><code><span class="comment"># üretim benzeri yerel monitoring ortamı</span>
+        <pre><code><span class="comment"># production-like local monitoring environment</span>
 services:
   prometheus:
     image: prom/prometheus:latest
@@ -6376,10 +6376,10 @@ services:
 volumes:
   grafana-data:
 
-<span class="comment"># başlat</span>
+<span class="comment"># start</span>
 docker compose up -d
 
-<span class="comment"># kontrol et</span>
+<span class="comment"># check</span>
 open localhost:9090   <span class="comment">← Prometheus</span>
 open localhost:9093   <span class="comment">← Alertmanager</span>
 open localhost:3000   <span class="comment">← Grafana</span></code></pre>
@@ -6580,7 +6580,7 @@ systemctl status docker</code></pre>
           <li>
             <strong>7 klasörü tek komutla oluştur.</strong><br>
             <pre style="margin:6px 0"><code>mkdir -p ~/platform-ops/{app,scripts,kubernetes,terraform,monitoring,logs,backups}
-<span class="comment"># → Linux | brace expansion — 7 dizini tek vuruşta açar — EZBER</span></code></pre>
+<span class="comment"># → Linux | brace expansion — opens 7 directories in one shot — EZBER</span></code></pre>
             ✓ Hiçbir hata çıkmaması başarı demektir.
           </li>
 
@@ -6686,7 +6686,7 @@ cat logs/setup.log</code></pre>
             <strong>Local domain tanımla.</strong><br>
             <pre style="margin:6px 0"><code>grep -q "platform-ops.local" /etc/hosts || \
   echo "127.0.0.1 platform-ops.local" | sudo tee -a /etc/hosts
-<span class="comment"># → Linux | grep -q = sessiz dedektif, sadece buldu/bulamadı döner — EZBER</span>
+<span class="comment"># → Linux | grep -q = silent detective, returns only found/not-found — EZBER</span>
 grep "platform-ops" /etc/hosts</code></pre>
             ✓ <code>127.0.0.1 platform-ops.local</code> satırını görürsün.
           </li>
@@ -6783,7 +6783,7 @@ git branch -a</code></pre>
           <li>
             <strong>Feature branch aç — app iskeletini yazacağız.</strong><br>
             <pre style="margin:6px 0"><code>git checkout -b feature/app-skeleton
-<span class="comment"># → Git | checkout -b = oluştur ve hemen geç — EZBER</span>
+<span class="comment"># → Git | checkout -b = create and switch immediately — EZBER</span>
 git branch</code></pre>
             ✓ <code>* feature/app-skeleton</code> görürsün.
           </li>
@@ -6810,7 +6810,7 @@ git commit -m "feat(app): package.json eklendi"</code></pre>
             <strong>develop'a merge et — --no-ff ile merge commit'i zorla yaz.</strong><br>
             <pre style="margin:6px 0"><code>git checkout develop
 git merge --no-ff feature/app-skeleton -m "merge: app iskelet"
-<span class="comment"># → Git | --no-ff = fast-forward yapma, merge commit her zaman yaz — geçmişte ne zaman birleşti görünsün — EZBER</span>
+<span class="comment"># → Git | --no-ff = no fast-forward, always write a merge commit — so history shows when branches merged — EZBER</span>
 git branch -d feature/app-skeleton
 git log --oneline --graph --all</code></pre>
             ✓ Branch grafiğinde merge commit ve dal yapısını görürsün.
@@ -6836,7 +6836,7 @@ git add app/health-todo.txt</code></pre>
           <li>
             <strong>Yarım işi stash'e sakla, develop'a geç.</strong><br>
             <pre style="margin:6px 0"><code>git stash
-<span class="comment"># → Git | stash = yarım kalan değişikliği geçici sakla — EZBER</span>
+<span class="comment"># → Git | stash = temporarily stash unfinished changes — EZBER</span>
 git stash list
 git checkout develop</code></pre>
             ✓ <code>stash@{0}</code> listede görürsün. Working tree temiz.
@@ -6854,7 +6854,7 @@ git commit -m "fix: README güncellendi"</code></pre>
             <strong>Feature branch'e dön, stash'i geri getir.</strong><br>
             <pre style="margin:6px 0"><code>git checkout feature/add-healthcheck
 git stash pop
-<span class="comment"># → Git | stash pop = saklanan değişikliği geri getir — EZBER</span>
+<span class="comment"># → Git | stash pop = restore stashed changes — EZBER</span>
 cat app/health-todo.txt</code></pre>
             ✓ TODO dosyası geri geldi, kaldığın yerden devam edersin.
           </li>
@@ -6901,7 +6901,7 @@ git commit -m "docs: v2"</code></pre>
             <strong>Conflict'i gör, manuel çöz, commit at.</strong><br>
             <pre style="margin:6px 0"><code>git status
 cat README.md
-<span class="comment"># &lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, &gt;&gt;&gt;&gt;&gt;&gt;&gt; işaretlerini görürsün</span>
+<span class="comment"># you will see &lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, &gt;&gt;&gt;&gt;&gt;&gt;&gt; markers</span>
 sed -i '/^&lt;&lt;&lt;&lt;&lt;&lt;&lt;/d; /^=======/d; /^&gt;&gt;&gt;&gt;&gt;&gt;&gt;/d' README.md
 git add README.md
 git commit -m "fix: merge conflict çözüldü"
@@ -6973,7 +6973,7 @@ git blame README.md</code></pre>
             <pre style="margin:6px 0"><code>git checkout main
 git merge --no-ff develop -m "release: v0.1.0 — proje iskelet"
 git tag -a v0.1.0 -m "İlk release — proje başlatıldı"
-<span class="comment"># → Git | -a = annotated tag, mesaj içerir — GitHub'da release olarak görünür — EZBER</span>
+<span class="comment"># → Git | -a = annotated tag, contains a message — appears as a release on GitHub — EZBER</span>
 git tag</code></pre>
             ✓ <code>v0.1.0</code> listede görürsün.
           </li>
@@ -6981,7 +6981,7 @@ git tag</code></pre>
           <li>
             <strong>GitHub'da repo oluştur — push'tan önce yapılması zorunlu.</strong><br>
             <pre style="margin:6px 0"><code>gh repo create platform-ops --private --description "Production-ready DevOps stack"
-<span class="comment"># → Git | --private = repo sadece sana görünür — geliştirme sürecinde şifreler olduğu için private tut — EZBER</span></code></pre>
+<span class="comment"># → Git | --private = repo is only visible to you — keep private during development because it may contain secrets — EZBER</span></code></pre>
             ✓ <code>https://github.com/AhmedSaidTuncpinar/platform-ops</code> bağlantısı görürsün.
           </li>
 
@@ -6989,7 +6989,7 @@ git tag</code></pre>
             <strong>GitHub'a gönder.</strong><br>
             <pre style="margin:6px 0"><code>git push -u origin main
 git push origin --tags
-<span class="comment"># → Git | --tags olmadan tag remote'a gitmez, sadece yerelde kalır — EZBER</span></code></pre>
+<span class="comment"># → Git | without --tags the tag won't go to remote, it stays local only — EZBER</span></code></pre>
             ✓ GitHub reposunda commit ve v0.1.0 tag'i görürsün.
           </li>
 
@@ -7145,7 +7145,7 @@ git commit -m "feat(app): server.js ve .dockerignore eklendi"</code></pre>
             <strong>Bağımlılıkları yerel olarak kur — package-lock.json oluşsun ve repoya eklensin.</strong><br>
             <pre style="margin:6px 0"><code>cd ~/platform-ops/app
 npm install
-<span class="comment"># → Node | npm install = node_modules kur, package-lock.json oluştur — CI/CD için bu dosya şart — EZBER</span>
+<span class="comment"># → Node | npm install = install node_modules, create package-lock.json — this file is essential for CI/CD — EZBER</span>
 ls package-lock.json
 cd ~/platform-ops
 git add app/package-lock.json
@@ -7221,7 +7221,7 @@ curl -s http://localhost:3000/api/items</code></pre>
           <li>
             <strong>Kaynak kullanımını anlık ölç ve container içine gir.</strong><br>
             <pre style="margin:6px 0"><code>docker stats po-v1 --no-stream
-<span class="comment"># → Docker | --no-stream = anlık fotoğraf çek ve çık — script içinde zorunlu, yoksa sonsuza döner — EZBER</span>
+<span class="comment"># → Docker | --no-stream = take a snapshot and exit — required in scripts, otherwise runs forever — EZBER</span>
 docker exec -it po-v1 sh -c "ps aux"</code></pre>
             ✓ <code>appuser</code> ile çalışan <code>node</code> process'i görürsün.
           </li>
@@ -7344,7 +7344,7 @@ docker compose exec postgres psql -U admin -d platform_ops_db -c "\l"</code></pr
           <li>
             <strong>Image'ı yeniden build et, sadece app'i restart et, sonra durdur.</strong><br>
             <pre style="margin:6px 0"><code>docker compose build --no-cache app
-<span class="comment"># → Docker | --no-cache = katman cache'ini atla — "neden eski kod çalışıyor?" sorusunun cevabı — EZBER</span>
+<span class="comment"># → Docker | --no-cache = skip layer cache — the answer to "why is old code running?" — EZBER</span>
 docker compose restart app
 docker compose down</code></pre>
             ✓ <code>docker compose ps</code> boş döner. Volume <code>postgres-data</code> korundu.
@@ -7363,7 +7363,7 @@ docker compose down</code></pre>
             <pre style="margin:6px 0"><code>docker build -t platform-ops:v1 ./app
 docker tag platform-ops:v1 platform-ops:latest
 docker tag platform-ops:v1 ghcr.io/$(git config user.name | tr "[:upper:]" "[:lower:]" | tr " " -)/platform-ops:v1
-<span class="comment"># → Docker | kullanıcı adını Git config'den otomatik al — hardcoded yazmak hata çıkarır — EZBER</span>
+<span class="comment"># → Docker | automatically get username from Git config — hardcoding causes errors — EZBER</span>
 docker images | grep platform-ops</code></pre>
             ✓ Üç farklı tag görürsün.
           </li>
@@ -7373,7 +7373,7 @@ docker images | grep platform-ops</code></pre>
             <pre style="margin:6px 0"><code>docker rmi platform-ops:latest
 docker image prune -f
 docker system prune -f
-<span class="comment"># → Docker | system prune = durmuş container + eski image + boş network tek seferde — -f = onay sorma — EZBER</span></code></pre>
+<span class="comment"># → Docker | system prune = stopped containers + old images + empty networks in one shot — -f = no confirmation prompt — EZBER</span></code></pre>
             ✓ <code>docker system df</code> ile disk kullanımı azaldı.
           </li>
 
@@ -7437,7 +7437,7 @@ ls ~/platform-ops/</code></pre>
             <pre style="margin:6px 0"><code>cat &gt; ~/platform-ops/scripts/setup.sh &lt;&lt; 'SCRIPT'
 #!/bin/bash
 set -euo pipefail
-<span class="comment"># → Bash | -e = hata görünce dur, -u = tanımsız değişken kullanılırsa dur, -o pipefail = pipe hatalarını yakala — EZBER</span>
+<span class="comment"># → Bash | -e = stop on error, -u = stop if undefined variable used, -o pipefail = catch pipe errors — EZBER</span>
 
 APP_NAME="platform-ops"
 BASE_DIR="$HOME/$APP_NAME"
@@ -7547,7 +7547,7 @@ log "Kontrol başlıyor: $URL (max ${MAX_WAIT}s)"
 waited=0
 while [ "$waited" -lt "$MAX_WAIT" ]; do
   HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$URL" 2&gt;/dev/null || echo "000")
-<span class="comment"># → curl | -s sessiz, -o /dev/null gövdeyi at, -w "%{http_code}" sadece kodu yaz — health check'in temeli — EZBER</span>
+<span class="comment"># → curl | -s silent, -o /dev/null discard body, -w "%{http_code}" write only the code — foundation of health checks — EZBER</span>
 
   case "$HTTP_CODE" in
     200) log "[OK] Servis sağlıklı (HTTP $HTTP_CODE)"; exit 0 ;;
@@ -7595,7 +7595,7 @@ RETAIN_DAYS="${1:-7}"
 log() { echo "[$(date '+%H:%M:%S')] $*"; }
 
 trap 'log "HATA: Yedekleme başarısız satır $LINENO"' ERR
-<span class="comment"># → Bash | trap = sinyal yakala, ERR = hata sinyali, $LINENO = hangi satırda patladı — EZBER</span>
+<span class="comment"># → Bash | trap = catch signal, ERR = error signal, $LINENO = which line it crashed on — EZBER</span>
 
 log "=== Yedekleme başlıyor: $APP ==="
 
@@ -7606,7 +7606,7 @@ else
   log "UYARI: DB container bulunamadı — atlandı"
 fi
 
-<span class="comment"># → Bash | tar -c oluştur, -z gzip ile sıkıştır, -f dosya adını belirt — üçü de olmak zorunda — EZBER</span>
+<span class="comment"># → Bash | tar -c create, -z compress with gzip, -f specify filename — all three are required — EZBER</span>
 tar -czf "$BACKUP_DIR/files-${TS}.tar.gz" \
   --exclude="$HOME/$APP/node_modules" \
   --exclude="$HOME/$APP/.terraform" \
@@ -7617,7 +7617,7 @@ tar -czf "$BACKUP_DIR/files-${TS}.tar.gz" \
 log "Dosya yedeği: files-${TS}.tar.gz ($(du -sh "$BACKUP_DIR/files-${TS}.tar.gz" | cut -f1))"
 
 DELETED=$(find "$BACKUP_DIR" -name "*.gz" -mtime +"$RETAIN_DAYS" -print -delete | wc -l)
-<span class="comment"># → Linux | find -mtime +7 = 7 günden eski, -print = yolu yaz, -delete = sil — iki işi tek seferde — EZBER</span>
+<span class="comment"># → Linux | find -mtime +7 = older than 7 days, -print = write path, -delete = delete — two jobs in one — EZBER</span>
 log "$DELETED adet eski yedek silindi (${RETAIN_DAYS} günden eski)"
 
 log "=== Yedekleme tamamlandı ==="
@@ -7664,7 +7664,7 @@ USAGE
 }
 
 while getopts "e:v:dh" opt; do
-<span class="comment"># → Bash | getopts = standart parametre okuyucu, "e:v:dh" = e ve v değer alır (:), d ve h flag — EZBER</span>
+<span class="comment"># → Bash | getopts = standard parameter reader, "e:v:dh" = e and v take values (:), d and h are flags — EZBER</span>
   case "$opt" in
     e) ENV="$OPTARG" ;;
     v) VERSION="$OPTARG" ;;
@@ -8258,7 +8258,7 @@ kubectl get pods -n platform-ops</code></pre>
           <li>
             <strong>Pod'ları canlı izle, sorun varsa describe et.</strong><br>
             <pre style="margin:6px 0"><code>kubectl get pods -n platform-ops -w &
-<span class="comment"># → kubectl | -w = watch — değiştiğinde otomatik günceller — & ile arka plana at — EZBER</span>
+<span class="comment"># → kubectl | -w = watch — auto-updates when changed — background it with & — EZBER</span>
 WATCH_PID=$!
 sleep 15
 kill $WATCH_PID 2>/dev/null
@@ -8279,7 +8279,7 @@ kubectl describe pod -l app=platform-ops -n platform-ops | tail -20</code></pre>
             <strong>Log oku ve pod içine gir.</strong><br>
             <pre style="margin:6px 0"><code>kubectl logs -l app=platform-ops -n platform-ops --tail=20
 POD=$(kubectl get pod -l app=platform-ops -n platform-ops -o jsonpath='{.items[0].metadata.name}')
-<span class="comment"># → kubectl | -o jsonpath = JSON çıktısından tek alanı al — script'te pod adını kullanmak için klasik yöntem — EZBER</span>
+<span class="comment"># → kubectl | -o jsonpath = get a single field from JSON output — classic method for using pod name in a script — EZBER</span>
 kubectl logs "$POD" -n platform-ops
 kubectl exec -it "$POD" -n platform-ops -- sh -c "wget -qO- localhost:3000/health"</code></pre>
             ✓ <code>{"status":"ok",...}</code> döner.
@@ -8313,10 +8313,10 @@ kubectl rollout status deployment/platform-ops -n platform-ops</code></pre>
           <li>
             <strong>Rollback yap, 3'e döndür, port-forward ile test et.</strong><br>
             <pre style="margin:6px 0"><code>kubectl rollout undo deployment/platform-ops -n platform-ops
-<span class="comment"># → kubectl | rollout undo = bir önceki revision'a geri al — production'da panik komutun — EZBER</span>
+<span class="comment"># → kubectl | rollout undo = roll back to previous revision — your panic command in production — EZBER</span>
 kubectl scale deployment platform-ops --replicas=3 -n platform-ops
 kubectl port-forward svc/platform-ops-svc 8080:80 -n platform-ops &
-<span class="comment"># → kubectl | port-forward = cluster içini dışarıya aç — ingress olmadan hızlı test — EZBER</span>
+<span class="comment"># → kubectl | port-forward = expose cluster internals to outside — quick test without ingress — EZBER</span>
 PF_PID=$!
 sleep 2
 curl -s http://localhost:8080/health
@@ -8569,7 +8569,7 @@ EOF</code></pre>
             <strong>Provider'ları indir ve doğrula.</strong><br>
             <pre style="margin:6px 0"><code>cd ~/platform-ops/terraform
 terraform init
-<span class="comment"># → Terraform | init = provider'ları indir, .terraform/ dizinini oluştur — her yeni projede ilk adım — EZBER</span>
+<span class="comment"># → Terraform | init = download providers, create .terraform/ directory — first step in every new project — EZBER</span>
 ls -la .terraform/</code></pre>
             ✓ <code>.terraform/</code> dizini ve <code>.terraform.lock.hcl</code> oluştu.
           </li>
@@ -8577,9 +8577,9 @@ ls -la .terraform/</code></pre>
           <li>
             <strong>Sözdizimini doğrula ve formatı düzelt.</strong><br>
             <pre style="margin:6px 0"><code>terraform validate
-<span class="comment"># → Terraform | validate = sözdizimini kontrol et, kaynak bağımlılıklarını doğrula — plan'dan önce çalıştır — EZBER</span>
+<span class="comment"># → Terraform | validate = check syntax, verify resource dependencies — run before plan — EZBER</span>
 terraform fmt -check 2>/dev/null && echo "Format temiz" || terraform fmt
-<span class="comment"># → Terraform | fmt -check = sadece kontrol et, hatalıysa 1 döner — fmt = yerinde düzelt — EZBER</span></code></pre>
+<span class="comment"># → Terraform | fmt -check = only check, returns 1 if wrong — fmt = fix in place — EZBER</span></code></pre>
             ✓ <code>Success! The configuration is valid.</code> ve <code>Format temiz</code> görürsün.
           </li>
 
@@ -8597,7 +8597,7 @@ terraform fmt -check 2>/dev/null && echo "Format temiz" || terraform fmt
             <pre style="margin:6px 0"><code>terraform plan
 terraform plan -var="environment=staging" -var="replicas=3"
 terraform plan -out=tfplan.bin
-<span class="comment"># → Terraform | -out = planı dondur — apply sırasında plan değişmez, production güvencesi — EZBER</span>
+<span class="comment"># → Terraform | -out = freeze the plan — plan won't change during apply, production safety guarantee — EZBER</span>
 ls -lh tfplan.bin</code></pre>
             ✓ Plan çıktısında <code>4 to add, 0 to change, 0 to destroy</code> görürsün.
           </li>
@@ -8620,7 +8620,7 @@ ls -lh tfplan.bin</code></pre>
             <strong>State dosyasını incele.</strong><br>
             <pre style="margin:6px 0"><code>terraform state list
 terraform state show kubernetes_namespace.platform_ops
-<span class="comment"># → Terraform | state show = o kaynağın tüm detaylarını aç — "neden beklendiği gibi davranmıyor?" sorusunun cevabı — EZBER</span>
+<span class="comment"># → Terraform | state show = open all details of that resource — the answer to "why isn't it behaving as expected?" — EZBER</span>
 terraform output</code></pre>
             ✓ 4 kaynak listede, namespace detayları ve output değerleri görünür.
           </li>
@@ -8643,7 +8643,7 @@ terraform output</code></pre>
             <strong>Altyapıyı yok et ve temizle.</strong><br>
             <pre style="margin:6px 0"><code>rm -f tfplan.bin
 terraform destroy -auto-approve
-<span class="comment"># → Terraform | destroy = state'teki tüm kaynakları sil — -auto-approve = onay sorma — EZBER</span></code></pre>
+<span class="comment"># → Terraform | destroy = delete all resources in state — -auto-approve = no confirmation prompt — EZBER</span></code></pre>
             ✓ <code>Destroy complete! Resources: 4 destroyed.</code> görürsün.
           </li>
 
@@ -8699,7 +8699,7 @@ docker logs localstack | tail -5</code></pre>
           <li>
             <strong>AWS CLI yapılandır ve kimliği doğrula.</strong><br>
             <pre style="margin:6px 0"><code>aws configure set aws_access_key_id test
-<span class="comment"># → AWS | configure set = sihirbaz açmadan tek satırda ayarla — script içinde kullanılır — EZBER</span>
+<span class="comment"># → AWS | configure set = set without opening wizard, one line — used inside scripts — EZBER</span>
 aws configure set aws_secret_access_key test
 aws configure set default.region eu-west-1
 aws configure set default.output json
@@ -8742,7 +8742,7 @@ diff ~/platform-ops/README.md /tmp/README-from-s3.md && echo "Dosyalar aynı"
 awsl s3 rm s3://platform-ops-backups/README.md
 awsl s3 ls s3://platform-ops-backups/ --recursive --human-readable --summarize
 awsl s3 rb s3://platform-ops-logs --force
-<span class="comment"># → AWS | rb = remove bucket, --force = önce içini boşalt sonra sil — içi doluysa --force şart — EZBER</span>
+<span class="comment"># → AWS | rb = remove bucket, --force = empty it first then delete — --force is required if not empty — EZBER</span>
 awsl s3 ls</code></pre>
             ✓ <code>platform-ops-logs</code> silindi, <code>platform-ops-backups</code> hâlâ var.
           </li>
@@ -8765,7 +8765,7 @@ SG_ID=$(awsl ec2 create-security-group \
   --group-name platform-ops-sg \
   --description "platform-ops guvenlik grubu" \
   --query "GroupId" --output text)
-<span class="comment"># → AWS | --query = JMESPath ile JSON'dan istediğin alanı al, --output text = tırnaksız düz metin — değişkene atamak için — EZBER</span>
+<span class="comment"># → AWS | --query = get the field you want from JSON with JMESPath, --output text = plain text without quotes — for assigning to variable — EZBER</span>
 echo "SG ID: $SG_ID"</code></pre>
             ✓ <code>SG ID: sg-xxxxxxxx</code> görürsün.
           </li>
@@ -9176,7 +9176,7 @@ EOF</code></pre>
           <li>
             <strong>Tam stack'i başlat.</strong><br>
             <pre style="margin:6px 0"><code>docker compose -f ~/platform-ops/docker-compose.full.yml up -d
-<span class="comment"># → Docker | -f = hangi compose dosyasını kullan — varsayılan docker-compose.yml değil, bunu kullan — EZBER</span>
+<span class="comment"># → Docker | -f = which compose file to use — not the default docker-compose.yml, use this one — EZBER</span>
 docker compose -f ~/platform-ops/docker-compose.full.yml ps</code></pre>
             ✓ 6 container <code>running</code> görünür.
           </li>
